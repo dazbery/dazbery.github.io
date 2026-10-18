@@ -1,108 +1,286 @@
 <!DOCTYPE html>
-<html lang="ml">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DAZBERY - Rosemary Hair Care</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        body { background-color: #faf9f6; color: #2d3748; }
-        
-        /* Header */
-        header { background: #ffffff; padding: 16px 20px; text-align: center; border-bottom: 1px solid #edf2f7; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
-        .logo { font-size: 24px; font-weight: 800; letter-spacing: 3px; color: #2e5a44; text-transform: uppercase; }
-        
-        /* Banner */
-        .hero { background: linear-gradient(135deg, #e8f0ec 0%, #d2e3d8 100%); padding: 35px 20px; text-align: center; margin-bottom: 25px; border-bottom: 1px solid #c3d9cc; }
-        .hero h1 { font-size: 24px; font-weight: 700; color: #1e3a2b; margin-bottom: 8px; }
-        .hero p { font-size: 14px; color: #3d604d; font-weight: 500; }
-        
-        /* Product Container */
-        .container { padding: 0 15px; max-width: 450px; margin: 0 auto; }
-        .section-title { font-size: 18px; font-weight: 700; color: #2e5a44; margin-bottom: 15px; }
-        
-        /* Product Card */
-        .product-card { background: #ffffff; border-radius: 16px; padding: 18px; box-shadow: 0 8px 20px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; margin-bottom: 20px;}
-        .badge { background: #2e5a44; color: #ffffff; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; display: inline-block; margin-bottom: 12px; letter-spacing: 0.5px; }
-        
-        /* Image Box */
-         .product-img-box { width: 100%; border-radius: 12px; overflow: hidden; background: #ffffff; margin-bottom: 15px; border: 1px solid #f0f0f0; text-align: center;}
-        .product-img-box img { max-width: 100%; height: 300px; display: block; object-fit: contain; margin: 0 auto;}
-        
-        /* Title & Specs */
-        .product-title { font-size: 18px; font-weight: 700; color: #1a202c; margin-bottom: 10px; line-height: 1.3; }
-        
-        /* Key Features Badges */
-        .tag-container { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 15px; }
-        .tag { background: #f0f7f3; color: #2e5a44; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 6px; border: 1px solid #cbe3d5; }
-        
-        .features { list-style: none; margin-bottom: 18px; }
-        .features li { font-size: 13px; color: #4a5568; margin-bottom: 6px; display: flex; align-items: center; }
-        .features li::before { content: "✓"; color: #2e5a44; font-weight: bold; margin-right: 8px; }
-        
-        /* Price & Button */
-        .price-box { font-size: 22px; font-weight: 800; color: #1a202c; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
-        .price-box span { text-decoration: line-through; color: #a0aec0; font-size: 15px; font-weight: 500; }
-        .discount { font-size: 12px; color: #e53e3e; font-weight: 700; background: #fff5f5; padding: 2px 6px; border-radius: 4px; }
-        
-        .buy-btn { width: 100%; background: #2e5a44; color: #ffffff; border: none; padding: 14px; font-weight: 700; border-radius: 10px; font-size: 15px; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 12px rgba(46, 90, 68, 0.25); text-decoration: none; display: block; text-align: center;}
-        .buy-btn:active { background: #214232; transform: scale(0.98); }
-        
-        /* Footer */
-        footer { text-align: center; padding: 25px 15px; font-size: 12px; color: #718096; margin-top: 40px; background: #ffffff; border-top: 1px solid #edf2f7; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DAZBERY | Rosemary Hair Growth Spray (100ml)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2d5a27;
+      --primary-hover: #1f3f1b;
+      --accent: #d4af37;
+      --bg-light: #f8faf7;
+      --text-dark: #1e293b;
+      --text-muted: #64748b;
+      --white: #ffffff;
+      --border: #e2e8f0;
+      --radius: 16px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+    body { background-color: var(--bg-light); color: var(--text-dark); line-height: 1.6; }
+
+    /* Top Announcement Bar */
+    .announcement-bar {
+      background: var(--primary);
+      color: var(--white);
+      text-align: center;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    /* Header */
+    header {
+      background: var(--white);
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo { font-size: 22px; font-weight: 800; letter-spacing: 2px; color: var(--primary); text-transform: uppercase; }
+    nav a { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 14px; margin-left: 20px; }
+
+    /* Container */
+    .container { max-width: 1100px; margin: 0 auto; padding: 24px 16px; }
+
+    /* Hero Section */
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      background: var(--white);
+      padding: 24px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+
+    .product-gallery { position: relative; }
+    .product-main-img { width: 100%; border-radius: 12px; object-fit: cover; aspect-ratio: 1; display: block; }
+    .badge-discount {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: #e11d48;
+      color: white;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    /* Product Details */
+    .product-details h1 { font-size: 26px; font-weight: 800; color: var(--text-dark); margin-bottom: 8px; }
+    .subtitle { color: var(--text-muted); font-size: 14px; margin-bottom: 16px; }
+
+    .price-box {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 20px;
+      background: #f1f5f9;
+      padding: 12px 16px;
+      border-radius: 10px;
+    }
+    .price-offer { font-size: 28px; font-weight: 800; color: var(--primary); }
+    .price-original { font-size: 18px; text-decoration: line-through; color: var(--text-muted); }
+    .prepaid-only-tag { background: #dcfce7; color: #166534; font-size: 12px; font-weight: 700; padding: 4px 8px; border-radius: 6px; }
+
+    /* Warning Box */
+    .warning-box {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 10px;
+      padding: 14px;
+      margin-bottom: 20px;
+      font-size: 13px;
+      color: #92400e;
+    }
+    .warning-box strong { color: #b45309; }
+
+    /* Order Form */
+    .order-form { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
+    .form-group input, .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+    }
+    .btn-buy {
+      background: var(--primary);
+      color: var(--white);
+      padding: 16px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s;
+      width: 100%;
+      text-align: center;
+    }
+    .btn-buy:hover { background: var(--primary-hover); }
+
+    /* Sections */
+    .section-title { font-size: 20px; font-weight: 800; margin: 40px 0 20px; text-align: center; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+
+    .card { background: var(--white); padding: 20px; border-radius: 12px; border: 1px solid var(--border); }
+    .card h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; color: var(--primary); }
+    .card p { font-size: 14px; color: var(--text-muted); }
+
+    /* Reviews */
+    .review-item { background: var(--white); padding: 16px; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 12px; }
+    .review-user { font-weight: 700; font-size: 14px; }
+    .stars { color: #f59e0b; margin: 4px 0; }
+    .review-text { font-size: 13px; color: var(--text-muted); }
+
+    /* Footer */
+    footer { background: #0f172a; color: white; padding: 40px 20px 20px; margin-top: 60px; text-align: center; font-size: 13px; }
+    footer a { color: #94a3b8; text-decoration: none; margin: 0 10px; }
+
+    /* Floating WhatsApp */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #25d366;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 14px;
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 99;
+    }
+
+    @media (max-width: 768px) {
+      .hero-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo">DAZBERY</div>
-    </header>
+  <div class="announcement-bar">🎉 SPECIAL OFFER: 50% OFF + FREE SHIPPING ON ALL PREPAID ORDERS!</div>
 
-    <section class="hero">
-        <h1>Healthy Hair, Naturally</h1>
-        <p>Premium Rosemary & Rice Water Formula</p>
-    </section>
+  <header>
+    <div class="logo">DAZBERY</div>
+    <nav>
+      <a href="#product">Shop</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+  </header>
 
-    <div class="container">
-        <h2 class="section-title">Best Seller</h2>
-        
-        <div class="product-card">
-            <span class="badge">BEST SELLER</span>
-            
-            <div class="product-img-box">
-                
-                <img src="spray.png.PNG" alt="DAZBERY Rosemary & Rice Water Hair Spray 100ml">
-            </div>
+  <div class="container">
+    <!-- Hero Product Section -->
+    <div class="hero-grid" id="product">
+      <div class="product-gallery">
+        <span class="badge-discount">50% OFF</span>
+        <!-- Replace the image link below with your product image URL -->
+        <img src="https://images.unsplash.com/photo-1608248597262-838d2f5a013d?auto=format&fit=crop&w=800&q=80" alt="DAZBERY Rosemary Hair Growth Spray" class="product-main-img">
+      </div>
 
-            <div class="product-title">Rosemary & Rice Water Hair Growth Spray - 100 ml</div>
-            
-            <div class="tag-container">
-                <span class="tag">Rosemary Extract</span>
-                <span class="tag">Rice Water</span>
-                <span class="tag">No Sulfates</span>
-                <span class="tag">No Parabens</span>
-            </div>
+      <div class="product-details">
+        <h1>DAZBERY Rosemary Hair Growth Spray</h1>
+        <p class="subtitle">100ml | Pure Rosemary Leaf Extract & Rice Water Formula</p>
 
-            <ul class="features">
-                <li>Strengthens Roots & Reduces Hair Fall</li>
-                <li>Promotes Hair Growth & Volume</li>
-                <li>100% Pure & Natural Ingredients</li>
-            </ul>
-
-            <div class="price-box">
-                ₹299 <span>₹449</span>
-                <span class="discount">33% OFF</span>
-            </div>
-
-            
-            <a href="#" class="buy-btn">Add To Cart</a>
+        <div class="price-box">
+          <span class="price-offer">₹299</span>
+          <span class="price-original">₹599</span>
+          <span class="prepaid-only-tag">Prepaid Orders Only</span>
         </div>
+
+        <div class="warning-box">
+          ⚠️ <strong>Damage Replacement Notice:</strong>
+          In case of any transit damage or leakage, a continuous, uncut unboxing video recorded right from opening the outer seal must be submitted within 24 hours of delivery to claim a replacement.
+        </div>
+
+        <!-- Checkout Form -->
+        <form class="order-form" id="orderForm">
+          <div class="form-group">
+            <input type="text" placeholder="Full Name" required>
+          </div>
+          <div class="form-group">
+            <input type="tel" placeholder="Mobile / WhatsApp Number" required>
+          </div>
+          <div class="form-group">
+            <textarea placeholder="Delivery Address with PIN code" rows="2" required></textarea>
+          </div>
+          <button type="submit" class="btn-buy">BUY NOW - ₹299 (Prepaid)</button>
+        </form>
+      </div>
     </div>
 
-    <footer>
-        &copy; 2026 DAZBERY. All Rights Reserved.<br>
-        Natural Hair Care Essentials
-    </footer>
+    <!-- Benefits -->
+    <h2 class="section-title">Key Benefits</h2>
+    <div class="grid-3">
+      <div class="card">
+        <h3>🌱 Controls Hair Fall</h3>
+        <p>Strengthens hair roots and reduces excessive hair shedding naturally.</p>
+      </div>
+      <div class="card">
+        <h3>✨ Promotes Growth</h3>
+        <p>Stimulates blood circulation in the scalp to encourage new hair follicles.</p>
+      </div>
+      <div class="card">
+        <h3>💧 Non-Greasy Formula</h3>
+        <p>Water-based spray for quick absorption without any stickiness.</p>
+      </div>
+    </div>
 
+    <!-- Reviews -->
+    <h2 class="section-title" id="reviews">Customer Reviews</h2>
+    <div class="review-item">
+      <div class="review-user">Nabeel K. ✅ Verified Buyer</div>
+      <div class="stars">★★★★★</div>
+      <div class="review-text">Very lightweight spray. Scalp feels fresh and hair fall noticeably reduced in 3 weeks.</div>
+    </div>
+    <div class="review-item">
+      <div class="review-user">Anagha M. ✅ Verified Buyer</div>
+      <div class="stars">★★★★★</div>
+      <div class="review-text">Good packaging and pleasant natural aroma. Totally worth ₹299!</div>
+    </div>
+
+    <!-- FAQ -->
+    <h2 class="section-title" id="faq">Frequently Asked Questions</h2>
+    <div class="card" style="margin-bottom: 10px;">
+      <h3>1. How many days will delivery take?</h3>
+      <p>Orders are processed quickly and delivered to your address within 3 to 7 business days.</p>
+    </div>
+    <div class="card">
+      <h3>2. Is Cash on Delivery (COD) available?</h3>
+      <p>Currently, we only accept Prepaid Orders via UPI, Debit/Credit Cards, and Net Banking to ensure smooth order processing.</p>
+    </div>
+  </div>
+
+  <a href="https://wa.me/" class="whatsapp-float" target="_blank">💬 Chat on WhatsApp</a>
+
+  <footer>
+    <p>&copy; 2026 DAZBERY. All Rights Reserved.</p>
+    <p style="margin-top: 10px;">
+      <a href="#">Privacy Policy</a> | 
+      <a href="#">Terms & Conditions</a> | 
+      <a href="#">Return & Replacement Policy</a>
+    </p>
+  </footer>
+
+  <script>
+    document.getElementById('orderForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Order Form Submitted! Connecting to Payment Gateway...');
+    });
+  </script>
 </body>
 </html>
