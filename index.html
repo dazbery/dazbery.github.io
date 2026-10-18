@@ -195,7 +195,7 @@
       border: 1px solid var(--border-color);
       text-align: center;
     }
-    .auth-card h2 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+    .auth-card h2 { font-size: 20px; font-weight: 700; margin-bottom: 6px; color: var(--text-main); }
     .auth-card p { font-size: 12px; color: var(--text-muted); margin-bottom: 20px; }
 
     /* Sections */
@@ -388,24 +388,22 @@
       </div>
     </div>
 
-    <!-- CUSTOMER LOGIN / DASHBOARD PAGE -->
+    <!-- CUSTOMER SIGNUP / LOGIN & DASHBOARD PAGE -->
     <div id="loginPage" class="page-section">
       <div class="auth-card" id="loginCard">
-        <h2>Customer Login</h2>
-        <p>Enter your mobile number or email to view past orders and tracking.</p>
+        <h2>Customer Sign Up / Login</h2>
+        <p>Sign up or log in with your Gmail or mobile number to track your orders.</p>
         <form onsubmit="handleLogin(event)">
-          <div class="form-group" style="margin-bottom: 12px;"><input type="text" placeholder="Mobile Number or Email" required></div>
-          <button type="submit" class="btn-apply" style="width: 100%; padding: 12px;">CONTINUE</button>
+          <div class="form-group" style="margin-bottom: 12px;"><input type="email" placeholder="Enter your Gmail address" required></div>
+          <button type="submit" class="btn-apply" style="width: 100%; padding: 12px;">CONTINUE WITH GMAIL</button>
         </form>
       </div>
 
       <div class="auth-card" id="dashboardCard" style="display: none; text-align: left;">
-        <h2 style="margin-bottom: 12px; color: #2d5a27;">My Account Dashboard</h2>
-        <p style="margin-bottom: 16px;">Logged in successfully. Here is your recent order history:</p>
-        <div style="background: #f7f7f7; padding: 14px; border-radius: 8px; margin-bottom: 16px;">
-          <div style="font-weight: 700; font-size: 13px;">Order ID: #DZ8942</div>
-          <div style="font-size: 12px; color: var(--text-muted); margin: 4px 0;">Item: Rosemary & Rice Water Hair Growth Spray (100ml)</div>
-          <div style="font-size: 12px; font-weight: 600; color: #16a34a;">Status: Dispatched & In Transit</div>
+        <h2 style="margin-bottom: 12px; color: var(--text-main);">My Account Dashboard</h2>
+        <p id="userEmailDisplay" style="font-size: 13px; font-weight: 600; margin-bottom: 16px; color: var(--text-muted);"></p>
+        <div style="background: #f7f7f7; padding: 16px; border-radius: 8px; margin-bottom: 16px; text-align: center;">
+          <p style="font-size: 13px; color: var(--text-muted);">You have no past orders yet.</p>
         </div>
         <button onclick="handleLogout()" class="btn-apply" style="background: #dc2626; width: 100%;">LOGOUT</button>
       </div>
@@ -463,9 +461,11 @@
 
     function handleLogin(e) {
       e.preventDefault();
+      const email = e.target.querySelector('input[type="email"]').value;
+      document.getElementById('userEmailDisplay').innerText = 'Logged in as: ' + email;
       document.getElementById('loginCard').style.display = 'none';
       document.getElementById('dashboardCard').style.display = 'block';
-      alert('Login successful!');
+      alert('Login / Signup successful!');
     }
 
     function handleLogout() {
