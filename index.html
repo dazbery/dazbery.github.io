@@ -43,10 +43,14 @@
       top: 0;
       z-index: 100;
     }
-    .logo { font-size: 20px; font-weight: 700; letter-spacing: 3px; color: var(--text-main); text-transform: uppercase; }
+    .logo { font-size: 20px; font-weight: 700; letter-spacing: 3px; color: var(--text-main); text-transform: uppercase; cursor: pointer; }
     .nav-links { display: flex; align-items: center; gap: 20px; }
     nav a { text-decoration: none; color: var(--text-muted); font-weight: 500; font-size: 13px; cursor: pointer; }
     nav a:hover { color: var(--text-main); }
+
+    /* Page Views Control */
+    .page-section { display: none; }
+    .page-section.active { display: block; }
 
     /* Container */
     .container { max-width: 1000px; margin: 0 auto; padding: 32px 16px; }
@@ -96,9 +100,7 @@
     }
 
     /* Product Details */
-    .product-details {
-      flex: 1;
-    }
+    .product-details { flex: 1; }
     .product-details h1 { font-size: 24px; font-weight: 700; color: var(--text-main); margin-bottom: 6px; }
     .subtitle { color: var(--text-muted); font-size: 13px; margin-bottom: 16px; }
 
@@ -183,6 +185,19 @@
     }
     .btn-buy:hover { background: #2a2a2a; }
 
+    /* Login & Account Styles */
+    .auth-card {
+      max-width: 420px;
+      margin: 20px auto;
+      background: var(--surface);
+      padding: 30px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-color);
+      text-align: center;
+    }
+    .auth-card h2 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+    .auth-card p { font-size: 12px; color: var(--text-muted); margin-bottom: 20px; }
+
     /* Sections */
     .section-title { font-size: 18px; font-weight: 700; margin: 40px 0 16px; }
     
@@ -218,157 +233,182 @@
   <div class="announcement-bar">COMPLIMENTARY SHIPPING ON ALL PREPAID ORDERS</div>
 
   <header>
-    <div class="logo">DAZBERY</div>
+    <div class="logo" onclick="switchPage('shop')">DAZBERY</div>
     <nav class="nav-links">
-      <a href="#product">Product</a>
-      <a href="#reviews">Reviews</a>
-      <a href="#support">Support</a>
+      <a onclick="switchPage('shop')">Shop</a>
+      <a onclick="switchPage('shop')#reviews">Reviews</a>
+      <a onclick="switchPage('login')">Login / Orders</a>
     </nav>
   </header>
 
   <div class="container">
 
-    <!-- Hero Product Card -->
-    <div class="hero-card" id="product">
-      <div class="product-gallery">
-        <span class="badge-tag">BEST SELLER</span>
-        <img src="spray.PNG" alt="DAZBERY Rosemary & Rice Water Hair Growth Spray" class="product-main-img">
+    <!-- SHOP / PRODUCT PAGE -->
+    <div id="shopPage" class="page-section active">
+      <div class="hero-card" id="product">
+        <div class="product-gallery">
+          <span class="badge-tag">BEST SELLER</span>
+          <img src="spray.PNG" alt="DAZBERY Rosemary & Rice Water Hair Growth Spray" class="product-main-img">
+        </div>
+
+        <div class="product-details">
+          <h1>Rosemary & Rice Water Hair Growth Spray</h1>
+          <p class="subtitle">100ml | Pure Botanical Scalp Mist</p>
+
+          <div class="price-box">
+            <span class="price-offer" id="displayPrice">₹599</span>
+            <span class="price-original" id="strikePrice">₹599</span>
+            <span class="prepaid-tag">Prepaid Only</span>
+          </div>
+
+          <!-- Coupon Section -->
+          <div class="coupon-container">
+            <input type="text" id="couponInput" placeholder="Enter Coupon Code">
+            <button type="button" class="btn-apply" onclick="applyCoupon()">APPLY</button>
+          </div>
+          <div class="coupon-msg" id="couponMsg"></div>
+
+          <!-- Checkout Form with Add to Cart & Buy Now -->
+          <form class="order-form" id="orderForm" onsubmit="handleOrder(event)">
+            <div class="form-group"><input type="text" placeholder="Full Name" required></div>
+            <div class="form-group"><input type="tel" placeholder="Mobile / WhatsApp Number" required></div>
+            <div class="form-group"><textarea placeholder="Delivery Address with PIN code" rows="2" required></textarea></div>
+            
+            <div class="btn-group">
+              <button type="button" class="btn-cart" onclick="addToCartMsg()">Add to Cart</button>
+              <button type="submit" class="btn-buy" id="submitBtn">Buy Now</button>
+            </div>
+          </form>
+        </div>
       </div>
 
-      <div class="product-details">
-        <h1>Rosemary & Rice Water Hair Growth Spray</h1>
-        <p class="subtitle">100ml | Pure Botanical Scalp Mist</p>
-
-        <div class="price-box">
-          <span class="price-offer" id="displayPrice">₹599</span>
-          <span class="price-original" id="strikePrice">₹599</span>
-          <span class="prepaid-tag">Prepaid Only</span>
+      <!-- 13 Real Genuine Reviews -->
+      <h2 class="section-title" id="reviews">Customer Reviews (13)</h2>
+      <div class="reviews-grid" id="reviewsGrid">
+        
+        <!-- Malayalam Reviews -->
+        <div class="review-item">
+          <div class="review-header"><span class="review-user">Sneha (Kochi)</span><span class="verified-badge">✔ Verified</span></div>
+          <div class="stars">★★★★★</div>
+          <div class="review-text">പുതിയ brand ആയതുകൊണ്ട് ആദ്യം ചെറിയ പേടിയുണ്ടായിരുന്നു, പക്ഷെ product nalla quality undu. Hair fall nalla pole kuranju!</div>
         </div>
 
-        <!-- Coupon Section -->
-        <div class="coupon-container">
-          <input type="text" id="couponInput" placeholder="Enter Coupon Code">
-          <button type="button" class="btn-apply" onclick="applyCoupon()">APPLY</button>
+        <div class="review-item">
+          <div class="review-header"><span class="review-user">Favas (Kozhikode)</span><span class="verified-badge">✔ Verified</span></div>
+          <div class="stars">★★★★★</div>
+          <div class="review-text">Super product. Nalla natural smell aanu, sticky alla. Office pokunnathinu munpu spray cheythu pokam.</div>
         </div>
-        <div class="coupon-msg" id="couponMsg"></div>
 
-        <!-- Checkout Form with Add to Cart & Buy Now -->
-        <form class="order-form" id="orderForm" onsubmit="handleOrder(event)">
-          <div class="form-group"><input type="text" placeholder="Full Name" required></div>
-          <div class="form-group"><input type="tel" placeholder="Mobile / WhatsApp Number" required></div>
-          <div class="form-group"><textarea placeholder="Delivery Address with PIN code" rows="2" required></textarea></div>
-          
-          <div class="btn-group">
-            <button type="button" class="btn-cart" onclick="addToCartMsg()">Add to Cart</button>
-            <button type="submit" class="btn-buy" id="submitBtn">Buy Now</button>
-          </div>
+        <div class="review-item">
+          <div class="review-header"><span class="review-user">Anagha (Kannur)</span><span class="verified-badge">✔ Verified</span></div>
+          <div class="stars">★★★★☆</div>
+          <div class="review-text">DAZBERY50 code use cheythu discount-il kitti. Packagingokke nalla safe aayirunnu. Very happy.</div>
+        </div>
+
+        <!-- English Reviews -->
+        <div class="review-item">
+          <div class="review-header"><span class="review-user">Rahul (Bangalore)</span><span class="verified-badge">✔ Verified</span></div>
+          <div class="stars">★★★★★</div>
+          <div class="review-text">Was skeptical as it's a new brand, but quality is genuinely good. Scalp feels very fresh after application.</div>
+        </div>
+
+        <div class="review-item">
+          <div class="review-header"><span class="review-user">Priya (Chennai)</span><span class="verified-badge">✔ Verified</span></div>
+          <div class="stars">★★★★★</div>
+          <div class="review-text">Delivery took 4 days. The spray nozzle is great and it absorbs instantly without any oily residue.</div>
+        </div>
+
+        <div class="review-item">
+          <div class="review-header"><span class="review-user">Kiran (Hyderabad)</span><span class="verified-badge">✔ Verified</span></div>
+          <div class="stars">★★★★★</div>
+          <div class="review-text">Best rosemary spray I've used so far. No irritation and natural herbal scent. Totally worth it.</div>
+        </div>
+
+        <div class="review-item">
+          <div class="review-header"><span class="review-user">Meera (Mumbai)</span><span class="verified-badge">✔ Verified</span></div>
+          <div class="stars">★★★★★</div>
+          <div class="review-text">Using it every night before sleep. Scalp itchiness reduced completely within two weeks.</div>
+        </div>
+
+        <div class="review-item">
+          <div class="review-header"><span class="review-user">Arun (Pune)</span><span class="verified-badge">✔ Verified</span></div>
+          <div class="stars">★★★★☆</div>
+          <div class="review-text">Simple and effective. 100ml bottle easily lasts a month. Reasonable price too.</div>
+        </div>
+
+        <div class="review-item">
+          <div class="review-header"><span class="review-user">Divya (Coimbatore)</span><span class="verified-badge">✔ Verified</span></div>
+          <div class="stars">★★★★★</div>
+          <div class="review-text">Customer support was helpful when I tracked my order. Genuine brand and nice results.</div>
+        </div>
+
+        <div class="review-item">
+          <div class="review-header"><span class="review-user">Vikram (Jaipur)</span><span class="verified-badge">✔ Verified</span></div>
+          <div class="stars">★★★★★</div>
+          <div class="review-text">Lightweight formula. Doesn't weigh down hair at all. Highly recommend for daily care.</div>
+        </div>
+
+        <!-- Hindi Reviews -->
+        <div class="review-item">
+          <div class="review-header"><span class="review-user">Amit Sharma (Delhi)</span><span class="verified-badge">✔ Verified</span></div>
+          <div class="stars">★★★★★</div>
+          <div class="review-text">Shuru me thoda doubt tha naya brand dekh kar, par product kaafi acha hai. Hairfall kam ho gaya hai.</div>
+        </div>
+
+        <div class="review-item">
+          <div class="review-header"><span class="review-user">Neha Gupta (Lucknow)</span><span class="verified-badge">✔ Verified</span></div>
+          <div class="stars">★★★★★</div>
+          <div class="review-text">Bahot accha spray hai! Natural smell hai aur bilkul chipchipa nahi hai. Definitely try karna chahiye.</div>
+        </div>
+
+        <div class="review-item">
+          <div class="review-header"><span class="review-user">Rohit Verma (Indore)</span><span class="verified-badge">✔ Verified</span></div>
+          <div class="stars">★★★★☆</div>
+          <div class="review-text">Packaging safe aayi thi aur delivery bhi time pe ho gayi. Quality ekdum premium hai.</div>
+        </div>
+
+      </div>
+
+      <!-- Verified User Review Submission Box -->
+      <div class="add-review-box">
+        <h3>Write a Verified Review</h3>
+        <p>Only verified customers who purchased this item can submit feedback using their Order ID.</p>
+        <form onsubmit="submitUserReview(event)">
+          <div class="form-group" style="margin-bottom:10px;"><input type="text" id="rName" placeholder="Your Name & City" required></div>
+          <div class="form-group" style="margin-bottom:10px;"><input type="text" id="rOrder" placeholder="Enter Order ID (e.g., DZ9421)" required></div>
+          <div class="form-group" style="margin-bottom:10px;"><textarea id="rText" placeholder="Write your feedback..." rows="2" required></textarea></div>
+          <button type="submit" class="btn-apply" style="width:100%;">Submit Review</button>
         </form>
       </div>
+
+      <!-- Support Notice -->
+      <div id="support" style="margin-top: 40px; background:var(--surface); border:1px solid var(--border-color); padding:20px; border-radius:var(--radius);">
+        <h3 style="font-size:15px; font-weight:700; margin-bottom:6px;">Support & Policies</h3>
+        <p style="font-size:12px; color:var(--text-muted);">For delivery help or damage replacement claims (unboxing video mandatory within 24 hours), contact us at <a href="mailto:supportdazbery@gmail.com" style="color:var(--text-main); font-weight:600;">supportdazbery@gmail.com</a>.</p>
+      </div>
     </div>
 
-    <!-- 13 Real Genuine Reviews -->
-    <h2 class="section-title" id="reviews">Customer Reviews (13)</h2>
-    <div class="reviews-grid" id="reviewsGrid">
-      
-      <!-- Malayalam Reviews -->
-      <div class="review-item">
-        <div class="review-header"><span class="review-user">Sneha (Kochi)</span><span class="verified-badge">✔ Verified</span></div>
-        <div class="stars">★★★★★</div>
-        <div class="review-text">പുതിയ brand ആയതുകൊണ്ട് ആദ്യം ചെറിയ പേടിയുണ്ടായിരുന്നു, പക്ഷെ product nalla quality undu. Hair fall nalla pole kuranju!</div>
+    <!-- CUSTOMER LOGIN / DASHBOARD PAGE -->
+    <div id="loginPage" class="page-section">
+      <div class="auth-card" id="loginCard">
+        <h2>Customer Login</h2>
+        <p>Enter your mobile number or email to view past orders and tracking.</p>
+        <form onsubmit="handleLogin(event)">
+          <div class="form-group" style="margin-bottom: 12px;"><input type="text" placeholder="Mobile Number or Email" required></div>
+          <button type="submit" class="btn-apply" style="width: 100%; padding: 12px;">CONTINUE</button>
+        </form>
       </div>
 
-      <div class="review-item">
-        <div class="review-header"><span class="review-user">Favas (Kozhikode)</span><span class="verified-badge">✔ Verified</span></div>
-        <div class="stars">★★★★★</div>
-        <div class="review-text">Super product. Nalla natural smell aanu, sticky alla. Office pokunnathinu munpu spray cheythu pokam.</div>
+      <div class="auth-card" id="dashboardCard" style="display: none; text-align: left;">
+        <h2 style="margin-bottom: 12px; color: #2d5a27;">My Account Dashboard</h2>
+        <p style="margin-bottom: 16px;">Logged in successfully. Here is your recent order history:</p>
+        <div style="background: #f7f7f7; padding: 14px; border-radius: 8px; margin-bottom: 16px;">
+          <div style="font-weight: 700; font-size: 13px;">Order ID: #DZ8942</div>
+          <div style="font-size: 12px; color: var(--text-muted); margin: 4px 0;">Item: Rosemary & Rice Water Hair Growth Spray (100ml)</div>
+          <div style="font-size: 12px; font-weight: 600; color: #16a34a;">Status: Dispatched & In Transit</div>
+        </div>
+        <button onclick="handleLogout()" class="btn-apply" style="background: #dc2626; width: 100%;">LOGOUT</button>
       </div>
-
-      <div class="review-item">
-        <div class="review-header"><span class="review-user">Anagha (Kannur)</span><span class="verified-badge">✔ Verified</span></div>
-        <div class="stars">★★★★☆</div>
-        <div class="review-text">DAZBERY50 code use cheythu discount-il kitti. Packagingokke nalla safe aayirunnu. Very happy.</div>
-      </div>
-
-      <!-- English Reviews -->
-      <div class="review-item">
-        <div class="review-header"><span class="review-user">Rahul (Bangalore)</span><span class="verified-badge">✔ Verified</span></div>
-        <div class="stars">★★★★★</div>
-        <div class="review-text">Was skeptical as it's a new brand, but quality is genuinely good. Scalp feels very fresh after application.</div>
-      </div>
-
-      <div class="review-item">
-        <div class="review-header"><span class="review-user">Priya (Chennai)</span><span class="verified-badge">✔ Verified</span></div>
-        <div class="stars">★★★★★</div>
-        <div class="review-text">Delivery took 4 days. The spray nozzle is great and it absorbs instantly without any oily residue.</div>
-      </div>
-
-      <div class="review-item">
-        <div class="review-header"><span class="review-user">Kiran (Hyderabad)</span><span class="verified-badge">✔ Verified</span></div>
-        <div class="stars">★★★★★</div>
-        <div class="review-text">Best rosemary spray I've used so far. No irritation and natural herbal scent. Totally worth it.</div>
-      </div>
-
-      <div class="review-item">
-        <div class="review-header"><span class="review-user">Meera (Mumbai)</span><span class="verified-badge">✔ Verified</span></div>
-        <div class="stars">★★★★★</div>
-        <div class="review-text">Using it every night before sleep. Scalp itchiness reduced completely within two weeks.</div>
-      </div>
-
-      <div class="review-item">
-        <div class="review-header"><span class="review-user">Arun (Pune)</span><span class="verified-badge">✔ Verified</span></div>
-        <div class="stars">★★★★☆</div>
-        <div class="review-text">Simple and effective. 100ml bottle easily lasts a month. Reasonable price too.</div>
-      </div>
-
-      <div class="review-item">
-        <div class="review-header"><span class="review-user">Divya (Coimbatore)</span><span class="verified-badge">✔ Verified</span></div>
-        <div class="stars">★★★★★</div>
-        <div class="review-text">Customer support was helpful when I tracked my order. Genuine brand and nice results.</div>
-      </div>
-
-      <div class="review-item">
-        <div class="review-header"><span class="review-user">Vikram (Jaipur)</span><span class="verified-badge">✔ Verified</span></div>
-        <div class="stars">★★★★★</div>
-        <div class="review-text">Lightweight formula. Doesn't weigh down hair at all. Highly recommend for daily care.</div>
-      </div>
-
-      <!-- Hindi Reviews -->
-      <div class="review-item">
-        <div class="review-header"><span class="review-user">Amit Sharma (Delhi)</span><span class="verified-badge">✔ Verified</span></div>
-        <div class="stars">★★★★★</div>
-        <div class="review-text">Shuru me thoda doubt tha naya brand dekh kar, par product kaafi acha hai. Hairfall kam ho gaya hai.</div>
-      </div>
-
-      <div class="review-item">
-        <div class="review-header"><span class="review-user">Neha Gupta (Lucknow)</span><span class="verified-badge">✔ Verified</span></div>
-        <div class="stars">★★★★★</div>
-        <div class="review-text">Bahot accha spray hai! Natural smell hai aur bilkul chipchipa nahi hai. Definitely try karna chahiye.</div>
-      </div>
-
-      <div class="review-item">
-        <div class="review-header"><span class="review-user">Rohit Verma (Indore)</span><span class="verified-badge">✔ Verified</span></div>
-        <div class="stars">★★★★☆</div>
-        <div class="review-text">Packaging safe aayi thi aur delivery bhi time pe ho gayi. Quality ekdum premium hai.</div>
-      </div>
-
-    </div>
-
-    <!-- Verified User Review Submission Box -->
-    <div class="add-review-box">
-      <h3>Write a Verified Review</h3>
-      <p>Only verified customers who purchased this item can submit feedback using their Order ID.</p>
-      <form onsubmit="submitUserReview(event)">
-        <div class="form-group" style="margin-bottom:10px;"><input type="text" id="rName" placeholder="Your Name & City" required></div>
-        <div class="form-group" style="margin-bottom:10px;"><input type="text" id="rOrder" placeholder="Enter Order ID (e.g., DZ9421)" required></div>
-        <div class="form-group" style="margin-bottom:10px;"><textarea id="rText" placeholder="Write your feedback..." rows="2" required></textarea></div>
-        <button type="submit" class="btn-apply" style="width:100%;">Submit Review</button>
-      </form>
-    </div>
-
-    <!-- Support Notice -->
-    <div id="support" style="margin-top: 40px; background:var(--surface); border:1px solid var(--border-color); padding:20px; border-radius:var(--radius);">
-      <h3 style="font-size:15px; font-weight:700; margin-bottom:6px;">Support & Policies</h3>
-      <p style="font-size:12px; color:var(--text-muted);">For delivery help or damage replacement claims (unboxing video mandatory within 24 hours), contact us at <a href="mailto:supportdazbery@gmail.com" style="color:var(--text-main); font-weight:600;">supportdazbery@gmail.com</a>.</p>
     </div>
 
   </div>
@@ -385,6 +425,16 @@
   </footer>
 
   <script>
+    function switchPage(page) {
+      document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
+      if(page === 'shop') {
+        document.getElementById('shopPage').classList.add('active');
+      } else if(page === 'login') {
+        document.getElementById('loginPage').classList.add('active');
+      }
+      window.scrollTo(0, 0);
+    }
+
     function applyCoupon() {
       const code = document.getElementById('couponInput').value.trim().toUpperCase();
       const msg = document.getElementById('couponMsg');
@@ -409,6 +459,18 @@
 
     function addToCartMsg() {
       alert('Product added to cart successfully!');
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      document.getElementById('loginCard').style.display = 'none';
+      document.getElementById('dashboardCard').style.display = 'block';
+      alert('Login successful!');
+    }
+
+    function handleLogout() {
+      document.getElementById('dashboardCard').style.display = 'none';
+      document.getElementById('loginCard').style.display = 'block';
     }
 
     function submitUserReview(e) {
