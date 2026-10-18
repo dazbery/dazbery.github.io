@@ -45,8 +45,20 @@
     }
     .logo { font-size: 20px; font-weight: 700; letter-spacing: 3px; color: var(--text-main); text-transform: uppercase; cursor: pointer; }
     .nav-links { display: flex; align-items: center; gap: 20px; }
-    nav a { text-decoration: none; color: var(--text-muted); font-weight: 500; font-size: 13px; cursor: pointer; }
+    nav a { text-decoration: none; color: var(--text-muted); font-weight: 500; font-size: 13px; cursor: pointer; position: relative; }
     nav a:hover { color: var(--text-main); }
+    
+    .cart-badge {
+      background: var(--text-main);
+      color: var(--surface);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 50%;
+      position: absolute;
+      top: -8px;
+      right: -12px;
+    }
 
     /* Page Views Control */
     .page-section { display: none; }
@@ -114,8 +126,15 @@
       border-radius: 8px;
     }
     .price-offer { font-size: 26px; font-weight: 700; color: var(--text-main); }
-    .price-original { font-size: 16px; text-decoration: line-through; color: var(--text-muted); display: none; }
+    .price-original { font-size: 16px; text-decoration: line-through; color: var(--text-muted); }
     .prepaid-tag { background: #e5e5e5; color: #111; font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 4px; }
+
+    /* Quantity Selector on Product Page */
+    .qty-selector { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .qty-selector span { font-size: 13px; font-weight: 600; color: var(--text-muted); }
+    .qty-box-controls { display: flex; align-items: center; border: 1px solid var(--border-color); border-radius: 6px; background: #fafafa; }
+    .qty-btn { background: none; border: none; padding: 8px 14px; cursor: pointer; font-weight: 700; font-size: 14px; }
+    .qty-num { padding: 0 8px; font-weight: 600; font-size: 13px; }
 
     /* Coupon Container */
     .coupon-container { display: flex; gap: 8px; margin-bottom: 16px; }
@@ -185,6 +204,29 @@
     }
     .btn-buy:hover { background: #2a2a2a; }
 
+    /* Cart Drawer / Page Style */
+    .cart-card {
+      background: var(--surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 24px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .cart-item-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .cart-summary {
+      margin-top: 20px;
+      background: #f7f7f7;
+      padding: 16px;
+      border-radius: 8px;
+    }
+
     /* Login & Account Styles */
     .auth-card {
       max-width: 420px;
@@ -236,7 +278,7 @@
     <div class="logo" onclick="switchPage('shop')">DAZBERY</div>
     <nav class="nav-links">
       <a onclick="switchPage('shop')">Shop</a>
-      <a onclick="switchPage('shop')#reviews">Reviews</a>
+      <a onclick="switchPage('cart')" style="font-weight: 700;">Cart <span id="cartBadge" class="cart-badge">0</span></a>
       <a onclick="switchPage('login')" id="navAccountText">Account / Login</a>
     </nav>
   </header>
@@ -256,17 +298,27 @@
           <p class="subtitle">100ml | Pure Botanical Scalp Mist</p>
 
           <div class="price-box">
-            <span class="price-offer" id="displayPrice">₹599</span>
+            <span class="price-offer" id="displayPrice">₹299</span>
             <span class="price-original" id="strikePrice">₹599</span>
-            <span class="prepaid-tag">Prepaid Only</span>
+            <span class="prepaid-tag">50% OFF (DAZBERY50 Applied)</span>
+          </div>
+
+          <!-- Quantity Selector -->
+          <div class="qty-selector">
+            <span>Quantity:</span>
+            <div class="qty-box-controls">
+              <button type="button" class="qty-btn" onclick="updateQty(-1)">-</button>
+              <span class="qty-num" id="productQty">1</span>
+              <button type="button" class="qty-btn" onclick="updateQty(1)">+</button>
+            </div>
           </div>
 
           <!-- Coupon Section -->
           <div class="coupon-container">
-            <input type="text" id="couponInput" placeholder="Enter Coupon Code">
-            <button type="button" class="btn-apply" onclick="applyCoupon()">APPLY</button>
+            <input type="text" id="couponInput" value="DAZBERY50" readonly style="color: #2d5a27; font-weight: 700;">
+            <button type="button" class="btn-apply" style="background:#2d5a27;">APPLIED</button>
           </div>
-          <div class="coupon-msg" id="couponMsg"></div>
+          <div class="coupon-msg" id="couponMsg" style="display:block; color:#2d5a27; font-size:12px; margin-bottom:12px;">✓ 50% Auto-Applied on all quantities!</div>
 
           <!-- Checkout Form with Auto-filled Address if Logged In -->
           <form class="order-form" id="orderForm" onsubmit="handleOrder(event)">
@@ -275,8 +327,8 @@
             <div class="form-group"><textarea id="checkoutAddress" placeholder="Delivery Address with PIN code" rows="2" required></textarea></div>
             
             <div class="btn-group">
-              <button type="button" class="btn-cart" onclick="addToCartMsg()">Add to Cart</button>
-              <button type="submit" class="btn-buy" id="submitBtn">Buy Now</button>
+              <button type="button" class="btn-cart" onclick="addToCart()">Add to Cart</button>
+              <button type="submit" class="btn-buy" id="submitBtn">BUY NOW — ₹299 (PREPAID)</button>
             </div>
           </form>
         </div>
@@ -388,6 +440,23 @@
       </div>
     </div>
 
+    <!-- CART PAGE -->
+    <div id="cartPage" class="page-section">
+      <div class="cart-card">
+        <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 16px;">Your Shopping Cart</h2>
+        <div id="cartItemsContainer">
+          <!-- Cart items will render here -->
+        </div>
+        <div class="cart-summary">
+          <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 15px; margin-bottom: 14px;">
+            <span>Total Amount (50% OFF):</span>
+            <span id="cartTotalPrice">₹299</span>
+          </div>
+          <button onclick="switchPage('shop')" class="btn-apply" style="width: 100%; padding: 12px; font-size: 13px;">PROCEED TO CHECKOUT</button>
+        </div>
+      </div>
+    </div>
+
     <!-- CUSTOMER SIGNUP / PROFILE & DASHBOARD PAGE -->
     <div id="loginPage" class="page-section">
       
@@ -436,14 +505,28 @@
   </footer>
 
   <script>
-    // Global user profile storage variable
     let userProfile = null;
+    let currentQty = 1;
+    let cartCount = 0;
+
+    function updateQty(change) {
+      currentQty += change;
+      if (currentQty < 1) currentQty = 1;
+      
+      document.getElementById('productQty').innerText = currentQty;
+      
+      const offerPrice = currentQty * 299;
+      const originalPrice = currentQty * 599;
+      
+      document.getElementById('displayPrice').innerText = '₹' + offerPrice;
+      document.getElementById('strikePrice').innerText = '₹' + originalPrice;
+      document.getElementById('submitBtn').innerText = `BUY NOW — ₹${offerPrice} (PREPAID)`;
+    }
 
     function switchPage(page) {
       document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
       if(page === 'shop') {
         document.getElementById('shopPage').classList.add('active');
-        // If user is logged in, auto-fill checkout form
         if(userProfile) {
           document.getElementById('checkoutName').value = userProfile.name;
           document.getElementById('checkoutPhone').value = userProfile.phone;
@@ -451,34 +534,38 @@
         }
       } else if(page === 'login') {
         document.getElementById('loginPage').classList.add('active');
+      } else if(page === 'cart') {
+        document.getElementById('cartPage').classList.add('active');
+        renderCart();
       }
       window.scrollTo(0, 0);
     }
 
-    function applyCoupon() {
-      const code = document.getElementById('couponInput').value.trim().toUpperCase();
-      const msg = document.getElementById('couponMsg');
-      const price = document.getElementById('displayPrice');
-      const strike = document.getElementById('strikePrice');
-      const submitBtn = document.getElementById('submitBtn');
-
-      if (code === 'DAZBERY50') {
-        price.innerText = '₹299';
-        strike.innerText = '₹599';
-        strike.style.display = 'inline';
-        submitBtn.innerText = 'BUY NOW — ₹299 (PREPAID)';
-        msg.innerText = '✓ Code DAZBERY50 applied (50% OFF).';
-        msg.style.color = '#2d5a27';
-        msg.style.display = 'block';
-      } else {
-        msg.innerText = 'Invalid code. Use DAZBERY50';
-        msg.style.color = '#777777';
-        msg.style.display = 'block';
-      }
+    function addToCart() {
+      cartCount += currentQty;
+      document.getElementById('cartBadge').innerText = cartCount;
+      alert(`${currentQty} item(s) added to cart successfully!`);
     }
 
-    function addToCartMsg() {
-      alert('Product added to cart successfully!');
+    function renderCart() {
+      const container = document.getElementById('cartItemsContainer');
+      const totalPrice = currentQty * 299;
+      
+      if(cartCount === 0) {
+        container.innerHTML = `<p style="font-size:13px; color:var(--text-muted); text-align:center; padding: 20px;">Your cart is currently empty.</p>`;
+        document.getElementById('cartTotalPrice').innerText = '₹0';
+      } else {
+        container.innerHTML = `
+          <div class="cart-item-row">
+            <div>
+              <div style="font-weight: 700; font-size: 13px;">Rosemary & Rice Water Hair Growth Spray (100ml)</div>
+              <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Qty: ${currentQty} | 50% OFF Applied</div>
+            </div>
+            <div style="font-weight: 700; font-size: 14px;">₹${totalPrice}</div>
+          </div>
+        `;
+        document.getElementById('cartTotalPrice').innerText = '₹' + totalPrice;
+      }
     }
 
     function handleSignup(e) {
@@ -507,7 +594,6 @@
       document.getElementById('loginCard').style.display = 'block';
       document.getElementById('navAccountText').innerText = 'Account / Login';
       
-      // Clear checkout form
       document.getElementById('checkoutName').value = '';
       document.getElementById('checkoutPhone').value = '';
       document.getElementById('checkoutAddress').value = '';
@@ -544,7 +630,8 @@
 
     function handleOrder(e) {
       e.preventDefault();
-      alert('Redirecting to secure prepaid payment gateway...');
+      const totalPrice = currentQty * 299;
+      alert(`Redirecting to secure prepaid payment gateway for ₹${totalPrice} (${currentQty} item)...`);
     }
   </script>
 </body>
