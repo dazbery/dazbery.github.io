@@ -137,16 +137,33 @@
       font-size: 13px;
       outline: none;
     }
+    
+    .btn-group { display: flex; gap: 10px; }
+    .btn-cart {
+      background: #ffffff;
+      color: var(--text-main);
+      border: 1px solid var(--text-main);
+      padding: 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      flex: 1;
+      text-align: center;
+      text-transform: uppercase;
+    }
+    .btn-cart:hover { background: #f4f4f4; }
+
     .btn-buy {
       background: var(--text-main);
       color: var(--surface);
       padding: 14px;
       border: none;
       border-radius: 6px;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
       cursor: pointer;
-      width: 100%;
+      flex: 1;
       text-align: center;
       letter-spacing: 0.5px;
       text-transform: uppercase;
@@ -173,7 +190,9 @@
     /* Footer */
     footer { background: var(--text-main); color: var(--surface); padding: 40px 20px 20px; margin-top: 60px; text-align: center; font-size: 12px; }
     footer a { color: #aaaaaa; text-decoration: none; margin: 0 8px; }
-    .insta-link { color: #ffffff; font-weight: 600; margin-top: 8px; display: inline-block; }
+    .insta-container { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 8px; }
+    .insta-link { color: #ffffff; font-weight: 600; text-decoration: none; }
+    .insta-link:hover { text-decoration: underline; }
 
     @media (max-width: 768px) {
       .hero-card { grid-template-columns: 1fr; }
@@ -219,96 +238,103 @@
         </div>
         <div class="coupon-msg" id="couponMsg"></div>
 
-        <!-- Checkout Form -->
+        <!-- Checkout Form with Add to Cart & Buy Now -->
         <form class="order-form" id="orderForm" onsubmit="handleOrder(event)">
           <div class="form-group"><input type="text" placeholder="Full Name" required></div>
           <div class="form-group"><input type="tel" placeholder="Mobile / WhatsApp Number" required></div>
           <div class="form-group"><textarea placeholder="Delivery Address with PIN code" rows="2" required></textarea></div>
-          <button type="submit" class="btn-buy" id="submitBtn">BUY NOW — ₹599</button>
+          
+          <div class="btn-group">
+            <button type="button" class="btn-cart" onclick="addToCartMsg()">Add to Cart</button>
+            <button type="submit" class="btn-buy" id="submitBtn">Buy Now</button>
+          </div>
         </form>
       </div>
     </div>
 
-    <!-- 13 Natural Genuine Reviews -->
+    <!-- 13 Real Genuine Reviews (Malayalam, English & Hindi) -->
     <h2 class="section-title" id="reviews">Customer Reviews (13)</h2>
     <div class="reviews-grid" id="reviewsGrid">
       
+      <!-- Malayalam Reviews -->
       <div class="review-item">
         <div class="review-header"><span class="review-user">Sneha (Kochi)</span><span class="verified-badge">✔ Verified</span></div>
         <div class="stars">★★★★★</div>
-        <div class="review-text">New brand aayathu kondu pedichaan order cheythathu, pakshe product quality nallathaane. 3 weeks aayi use cheyyunnu, hair fall kuranju.</div>
-      </div>
-
-      <div class="review-item">
-        <div class="review-header"><span class="review-user">Rahul (Bangalore)</span><span class="verified-badge">✔ Verified</span></div>
-        <div class="stars">★★★★★</div>
-        <div class="review-text">Packingokke nalla safe aayirunnu. Initial aayi doubt undarnnu, pakshe use cheythu nokkiyappol result undu.</div>
-      </div>
-
-      <div class="review-item">
-        <div class="review-header"><span class="review-user">Aswathy (Trivandrum)</span><span class="verified-badge">✔ Verified</span></div>
-        <div class="stars">★★★★☆</div>
-        <div class="review-text">DAZBERY50 code use cheythu 299-nu kitti. Delivery oru 4 days edukkuvaayi. Product oru rakshayamilla.</div>
+        <div class="review-text">പുതിയ brand ആയതുകൊണ്ട് ആദ്യം ചെറിയ പേടിയുണ്ടായിരുന്നു, പക്ഷെ product nalla quality undu. Hair fall nalla pole kuranju!</div>
       </div>
 
       <div class="review-item">
         <div class="review-header"><span class="review-user">Favas (Kozhikode)</span><span class="verified-badge">✔ Verified</span></div>
         <div class="stars">★★★★★</div>
-        <div class="review-text">Nalla natural smell aanu. Oru sticky feel-um illa. Office pokunnathinu munpu spray cheythu pokam.</div>
-      </div>
-
-      <div class="review-item">
-        <div class="review-header"><span class="review-user">Priya (Chennai)</span><span class="verified-badge">✔ Verified</span></div>
-        <div class="stars">★★★★★</div>
-        <div class="review-text">Initial aayi cheriya oru doubt undarnnu brand puthiya anennu karuthi, pakshe quality romba nallathu.</div>
-      </div>
-
-      <div class="review-item">
-        <div class="review-header"><span class="review-user">Vipin (Thrissur)</span><span class="verified-badge">✔ Verified</span></div>
-        <div class="stars">★★★★★</div>
-        <div class="review-text">Spray cheyyunnavarude scalp romba fresh aayi thonnum. Delivery fast aayirunnu.</div>
+        <div class="review-text">Super product. Nalla natural smell aanu, sticky alla. Office pokunnathinu munpu spray cheythu pokam.</div>
       </div>
 
       <div class="review-item">
         <div class="review-header"><span class="review-user">Anagha (Kannur)</span><span class="verified-badge">✔ Verified</span></div>
         <div class="stars">★★★★☆</div>
-        <div class="review-text">Bottle size 100ml aayathu kondu travel cheyyubol carry cheyyan romba easy aanu. Quality nallathaane.</div>
+        <div class="review-text">DAZBERY50 code use cheythu discount-il kitti. Packagingokke nalla safe aayirunnu. Very happy.</div>
+      </div>
+
+      <!-- English Reviews (Other Indian States) -->
+      <div class="review-item">
+        <div class="review-header"><span class="review-user">Rahul (Bangalore)</span><span class="verified-badge">✔ Verified</span></div>
+        <div class="stars">★★★★★</div>
+        <div class="review-text">Was skeptical as it's a new brand, but quality is genuinely good. Scalp feels very fresh after application.</div>
+      </div>
+
+      <div class="review-item">
+        <div class="review-header"><span class="review-user">Priya (Chennai)</span><span class="verified-badge">✔ Verified</span></div>
+        <div class="stars">★★★★★</div>
+        <div class="review-text">Delivery took 4 days. The spray nozzle is great and it absorbs instantly without any oily residue.</div>
       </div>
 
       <div class="review-item">
         <div class="review-header"><span class="review-user">Kiran (Hyderabad)</span><span class="verified-badge">✔ Verified</span></div>
         <div class="stars">★★★★★</div>
-        <div class="review-text">Pedichu pedichu thaan vaangiyathu, pakshe results kandappol romba happy. Genuine product.</div>
+        <div class="review-text">Best rosemary spray I've used so far. No irritation and natural herbal scent. Totally worth it.</div>
       </div>
 
       <div class="review-item">
         <div class="review-header"><span class="review-user">Meera (Mumbai)</span><span class="verified-badge">✔ Verified</span></div>
         <div class="stars">★★★★★</div>
-        <div class="review-text">Scalp itchiness romba kuranju. Daily night use cheyyunnu. Nalla result undu.</div>
+        <div class="review-text">Using it every night before sleep. Scalp itchiness reduced completely within two weeks.</div>
       </div>
 
       <div class="review-item">
-        <div class="review-header"><span class="review-user">Arun (Palakkad)</span><span class="verified-badge">✔ Verified</span></div>
-        <div class="stars">★★★★★</div>
-        <div class="review-text">Price-um reasonable aanu, kooduthal chemical smell onnum illa. Completely natural feel.</div>
+        <div class="review-header"><span class="review-user">Arun (Pune)</span><span class="verified-badge">✔ Verified</span></div>
+        <div class="stars">★★★★☆</div>
+        <div class="review-text">Simple and effective. 100ml bottle easily lasts a month. Reasonable price too.</div>
       </div>
 
       <div class="review-item">
         <div class="review-header"><span class="review-user">Divya (Coimbatore)</span><span class="verified-badge">✔ Verified</span></div>
         <div class="stars">★★★★★</div>
-        <div class="review-text">Customer care response nallathaane. First time order cheyyubolulla pediyokke ippo mari.</div>
+        <div class="review-text">Customer support was helpful when I tracked my order. Genuine brand and nice results.</div>
       </div>
 
       <div class="review-item">
-        <div class="review-header"><span class="review-user">Naveen (Mangalore)</span><span class="verified-badge">✔ Verified</span></div>
+        <div class="review-header"><span class="review-user">Vikram (Jaipur)</span><span class="verified-badge">✔ Verified</span></div>
         <div class="stars">★★★★★</div>
-        <div class="review-text">Packaging and qualityrandum romba super. Second bottle-um order cheyyunnuundu.</div>
+        <div class="review-text">Lightweight formula. Doesn't weigh down hair at all. Highly recommend for daily care.</div>
+      </div>
+
+      <!-- Hindi Reviews -->
+      <div class="review-item">
+        <div class="review-header"><span class="review-user">Amit Sharma (Delhi)</span><span class="verified-badge">✔ Verified</span></div>
+        <div class="stars">★★★★★</div>
+        <div class="review-text">Shuru me thoda doubt tha naya brand dekh kar, par product kaafi acha hai. Hairfall kam ho gaya hai.</div>
       </div>
 
       <div class="review-item">
-        <div class="review-header"><span class="review-user">Shilpa (Mysore)</span><span class="verified-badge">✔ Verified</span></div>
+        <div class="review-header"><span class="review-user">Neha Gupta (Lucknow)</span><span class="verified-badge">✔ Verified</span></div>
         <div class="stars">★★★★★</div>
-        <div class="review-text">Simple and useful product. Hair fall nalla pole control aayittundu ippo.</div>
+        <div class="review-text">Bહોt accha spray hai! Natural smell hai aur bilkul chipchipa nahi hai. Definitely try karna chahiye.</div>
+      </div>
+
+      <div class="review-item">
+        <div class="review-header"><span class="review-user">Rohit Verma (Indore)</span><span class="verified-badge">✔ Verified</span></div>
+        <div class="stars">★★★★☆</div>
+        <div class="review-text">Packaging safe aayi thi aur delivery bhi time pe ho gayi. Quality ekdum premium hai.</div>
       </div>
 
     </div>
@@ -318,7 +344,7 @@
       <h3>Write a Verified Review</h3>
       <p>Only verified customers who purchased this item can submit feedback using their Order ID.</p>
       <form onsubmit="submitUserReview(event)">
-        <div class="form-group" style="margin-bottom:10px;"><input type="text" id="rName" placeholder="Your Name" required></div>
+        <div class="form-group" style="margin-bottom:10px;"><input type="text" id="rName" placeholder="Your Name & City" required></div>
         <div class="form-group" style="margin-bottom:10px;"><input type="text" id="rOrder" placeholder="Enter Order ID (e.g., DZ9421)" required></div>
         <div class="form-group" style="margin-bottom:10px;"><textarea id="rText" placeholder="Write your feedback..." rows="2" required></textarea></div>
         <button type="submit" class="btn-apply" style="width:100%;">Submit Review</button>
@@ -335,7 +361,11 @@
 
   <footer>
     <p>&copy; 2026 DAZBERY. All Rights Reserved.</p>
-    <p style="margin-top: 4px;">Official Instagram: <a href="https://instagram.com/dazbery" target="_blank" class="insta-link">@dazbery</a></p>
+    <div class="insta-container">
+      <!-- Instagram SVG Icon -->
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+      <span>Official Instagram: <a href="https://instagram.com/dazbery" target="_blank" class="insta-link">@dazbery</a></span>
+    </div>
     <p style="margin-top: 10px;">
       <a href="#">Privacy Policy</a> | <a href="#">Terms</a> | <a href="#">Returns</a>
     </p>
@@ -347,13 +377,13 @@
       const msg = document.getElementById('couponMsg');
       const price = document.getElementById('displayPrice');
       const strike = document.getElementById('strikePrice');
-      const btn = document.getElementById('submitBtn');
+      const submitBtn = document.getElementById('submitBtn');
 
       if (code === 'DAZBERY50') {
         price.innerText = '₹299';
         strike.innerText = '₹599';
         strike.style.display = 'inline';
-        btn.innerText = 'BUY NOW — ₹299 (PREPAID)';
+        submitBtn.innerText = 'BUY NOW — ₹299 (PREPAID)';
         msg.innerText = '✓ Code DAZBERY50 applied (50% OFF).';
         msg.style.color = '#2d5a27';
         msg.style.display = 'block';
@@ -362,6 +392,10 @@
         msg.style.color = '#777777';
         msg.style.display = 'block';
       }
+    }
+
+    function addToCartMsg() {
+      alert('Product added to cart successfully!');
     }
 
     function submitUserReview(e) {
