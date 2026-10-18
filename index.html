@@ -198,4 +198,311 @@
     .review-text { font-size: 13px; color: var(--text-muted); }
 
     /* Footer */
-    footer { background: var(--text-main); color: var(--surface); padding
+    footer { background: var(--text-main); color: var(--surface); padding: 48px 20px 24px; margin-top: 80px; text-align: center; font-size: 12px; }
+    footer a { color: #888888; text-decoration: none; margin: 0 12px; transition: 0.2s; }
+    footer a:hover { color: var(--surface); }
+    .support-mail-link { color: var(--surface); text-decoration: underline; font-weight: 500; }
+
+    /* Floating WhatsApp */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--text-main);
+      color: var(--surface);
+      padding: 12px 20px;
+      border-radius: 30px;
+      font-weight: 500;
+      font-size: 13px;
+      text-decoration: none;
+      border: 1px solid #333;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+      z-index: 99;
+    }
+
+    @media (max-width: 768px) {
+      .hero-grid { grid-template-columns: 1fr; padding: 20px; }
+      header { padding: 16px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="announcement-bar">COMPLIMENTARY SHIPPING ON ALL PREPAID ORDERS</div>
+
+  <header>
+    <div class="logo">DAZBERY</div>
+    <nav>
+      <a href="#product">Shop</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <!-- Hero Product Section -->
+    <div class="hero-grid" id="product">
+      <div class="product-gallery">
+        <span class="coupon-banner-tag">CODE: DAZBERY50</span>
+        <!-- Replace the image link below with your product image URL -->
+        <img src="https://images.unsplash.com/photo-1608248597262-838d2f5a013d?auto=format&fit=crop&w=800&q=80" alt="DAZBERY Rosemary Hair Growth Spray" class="product-main-img">
+      </div>
+
+      <div class="product-details">
+        <div class="brand-category">HAIRCARE | ESSENTIALS</div>
+        <h1>Rosemary Hair Growth Spray</h1>
+        <p class="subtitle">100ml | Formulated with Pure Rosemary Leaf Extract & Rice Water</p>
+
+        <div class="price-box">
+          <span class="price-offer" id="displayPrice">₹599</span>
+          <span class="price-original" id="strikePrice">₹599</span>
+          <span class="prepaid-only-tag">Prepaid Orders Only</span>
+        </div>
+
+        <!-- Coupon Section -->
+        <div class="coupon-container">
+          <input type="text" id="couponInput" placeholder="Enter Coupon Code">
+          <button type="button" class="btn-apply-coupon" onclick="applyCoupon()">APPLY</button>
+        </div>
+        <div class="coupon-msg" id="couponMsg"></div>
+
+        <!-- Checkout Form -->
+        <form class="order-form" id="orderForm">
+          <div class="form-group">
+            <input type="text" placeholder="Full Name" required>
+          </div>
+          <div class="form-group">
+            <input type="tel" placeholder="Mobile / WhatsApp Number" required>
+          </div>
+          <div class="form-group">
+            <textarea placeholder="Delivery Address with PIN code" rows="2" required></textarea>
+          </div>
+          <button type="submit" class="btn-buy" id="submitBtn">BUY NOW — ₹599</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Benefits -->
+    <h2 class="section-title">Formulation Highlights</h2>
+    <div class="grid-3">
+      <div class="card">
+        <h3>Root Fortification</h3>
+        <p>Strengthens hair follicles at the scalp level to visibly reduce hair fall and daily shedding.</p>
+      </div>
+      <div class="card">
+        <h3>Scalp Revitalizing</h3>
+        <p>Concentrated botanical extract helps stimulate circulation and support healthy hair density.</p>
+      </div>
+      <div class="card">
+        <h3>Weightless Finish</h3>
+        <p>A refined water-based mist designed for daily application without leaving residue.</p>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <h2 class="section-title" id="faq">Frequently Asked Questions</h2>
+    <div class="card" style="margin-bottom: 12px;">
+      <h3>How long does standard delivery take?</h3>
+      <p>Orders are dispatched within 24 hours and delivered across India within 3 to 7 business days.</p>
+    </div>
+    <div class="card" style="margin-bottom: 12px;">
+      <h3>Why is Cash on Delivery (COD) unavailable?</h3>
+      <p>To ensure efficient fulfillment and maintain minimal pricing, we operate strictly via secure Prepaid transactions.</p>
+    </div>
+    <div class="card">
+      <h3>Need assistance with your order?</h3>
+      <p>Reach out directly to our customer care team at <a href="mailto:supportdazbery@gmail.com" class="support-mail-link">supportdazbery@gmail.com</a>.</p>
+    </div>
+
+    <!-- 15 Natural Customer Reviews Section -->
+    <h2 class="section-title" id="reviews">Client Feedback (15)</h2>
+    <div class="reviews-grid">
+      
+      <div class="review-item">
+        <div class="review-header">
+          <span class="review-user">Rohan Nair (Kochi)</span>
+          <span class="verified-badge">Verified Buyer</span>
+        </div>
+        <div class="stars">★★★★★</div>
+        <div class="review-text">Using it for 3 weeks now. Smell is very refreshing and not sticky at all like hair oil. Seeing less hair on my comb nowadays.</div>
+      </div>
+
+      <div class="review-item">
+        <div class="review-header">
+          <span class="review-user">Priya Sharma (Bangalore)</span>
+          <span class="verified-badge">Verified Buyer</span>
+        </div>
+        <div class="stars">★★★★★</div>
+        <div class="review-text">Delivery took 4 days to Bangalore. Spray nozzle works fine. Good product for daily scalp care.</div>
+      </div>
+
+      <div class="review-item">
+        <div class="review-header">
+          <span class="review-user">Anoop V. (Kozhikode)</span>
+          <span class="verified-badge">Verified Buyer</span>
+        </div>
+        <div class="stars">★★★★☆</div>
+        <div class="review-text">Applied coupon code DAZBERY50 and got it for 299. Worth the price. Simple packaging but good quality spray.</div>
+      </div>
+
+      <div class="review-item">
+        <div class="review-header">
+          <span class="review-user">Sneha Patel (Ahmedabad)</span>
+          <span class="verified-badge">Verified Buyer</span>
+        </div>
+        <div class="stars">★★★★★</div>
+        <div class="review-text">I spray this daily before going to sleep. Scalp feels clean and baby hairs are starting to show near hairline.</div>
+      </div>
+
+      <div class="review-item">
+        <div class="review-header">
+          <span class="review-user">Fasil M. (Trivandrum)</span>
+          <span class="verified-badge">Verified Buyer</span>
+        </div>
+        <div class="stars">★★★★★</div>
+        <div class="review-text">Nice product. Smell is natural herbal type. Fast delivery through courier.</div>
+      </div>
+
+      <div class="review-item">
+        <div class="review-header">
+          <span class="review-user">Anjali Menon (Thrissur)</span>
+          <span class="verified-badge">Verified Buyer</span>
+        </div>
+        <div class="stars">★★★★★</div>
+        <div class="review-text">Much better than homemade rosemary water which spoils fast. This bottle is easy to carry while traveling.</div>
+      </div>
+
+      <div class="review-item">
+        <div class="review-header">
+          <span class="review-user">Vikram Singh (Jaipur)</span>
+          <span class="verified-badge">Verified Buyer</span>
+        </div>
+        <div class="stars">★★★★☆</div>
+        <div class="review-text">Got delivered in 5 days. Spray is very watery and absorbs instantly. Happy with the purchase.</div>
+      </div>
+
+      <div class="review-item">
+        <div class="review-header">
+          <span class="review-user">Deepika K. (Chennai)</span>
+          <span class="verified-badge">Verified Buyer</span>
+        </div>
+        <div class="stars">★★★★★</div>
+        <div class="review-text">My friend recommended DAZBERY. Using twice a day, hair texture feels smooth and scalp itchiness reduced.</div>
+      </div>
+
+      <div class="review-item">
+        <div class="review-header">
+          <span class="review-user">Arjun Reddy (Hyderabad)</span>
+          <span class="verified-badge">Verified Buyer</span>
+        </div>
+        <div class="stars">★★★★★</div>
+        <div class="review-text">Gpay payment was quick. Bottle packaging was safe with bubble wrap. Good herbal spray.</div>
+      </div>
+
+      <div class="review-item">
+        <div class="review-header">
+          <span class="review-user">Kavya Suresh (Kannur)</span>
+          <span class="verified-badge">Verified Buyer</span>
+        </div>
+        <div class="stars">★★★★★</div>
+        <div class="review-text">It doesn't make hair greasy so I can spray even before going to office. 100ml bottle lasts around a month.</div>
+      </div>
+
+      <div class="review-item">
+        <div class="review-header">
+          <span class="review-user">Siddharth Das (Kolkata)</span>
+          <span class="verified-badge">Verified Buyer</span>
+        </div>
+        <div class="stars">★★★★☆</div>
+        <div class="review-text">Decent hair spray. Works well if used consistently every night.</div>
+      </div>
+
+      <div class="review-item">
+        <div class="review-header">
+          <span class="review-user">Meera Thomas (Kottayam)</span>
+          <span class="verified-badge">Verified Buyer</span>
+        </div>
+        <div class="stars">★★★★★</div>
+        <div class="review-text">Authentic rosemary scent. Hair fall is much less compared to last month. Will order second bottle soon.</div>
+      </div>
+
+      <div class="review-item">
+        <div class="review-header">
+          <span class="review-user">Kartik R. (Pune)</span>
+          <span class="verified-badge">Verified Buyer</span>
+        </div>
+        <div class="stars">★★★★★</div>
+        <div class="review-text">Applied the DAZBERY50 code and got 50% discount. Delivery was fast and tracking details were emailed promptly.</div>
+      </div>
+
+      <div class="review-item">
+        <div class="review-header">
+          <span class="review-user">Divya Iyer (Mumbai)</span>
+          <span class="verified-badge">Verified Buyer</span>
+        </div>
+        <div class="stars">★★★★★</div>
+        <div class="review-text">Mild and safe on scalp. No irritation at all. Very easy to incorporate into daily skincare/haircare routine.</div>
+      </div>
+
+      <div class="review-item">
+        <div class="review-header">
+          <span class="review-user">Vishnu Prasad (Palakkad)</span>
+          <span class="verified-badge">Verified Buyer</span>
+        </div>
+        <div class="stars">★★★★★</div>
+        <div class="review-text">Good product for hair fall control. Simple, effective, and reasonable price.</div>
+      </div>
+
+    </div>
+
+    <!-- Replacement Guidelines Notice -->
+    <div class="policy-notice-card">
+      <h4>Shipping & Replacement Guidelines</h4>
+      <p>All items undergo quality control before dispatch. In the event of transit damage, please record a continuous, uncut unboxing video starting from opening the sealed outer packaging, and submit it to <a href="mailto:supportdazbery@gmail.com" class="support-mail-link">supportdazbery@gmail.com</a> within 24 hours of receipt to request a replacement.</p>
+    </div>
+
+  </div>
+
+  <a href="https://wa.me/" class="whatsapp-float" target="_blank">Support on WhatsApp</a>
+
+  <footer>
+    <p>&copy; 2026 DAZBERY. All Rights Reserved.</p>
+    <p style="margin-top: 6px;">Customer Support: <a href="mailto:supportdazbery@gmail.com" class="support-mail-link">supportdazbery@gmail.com</a></p>
+    <p style="margin-top: 14px;">
+      <a href="#">Privacy Policy</a> | 
+      <a href="#">Terms & Conditions</a> | 
+      <a href="#">Return & Replacement Policy</a>
+    </p>
+  </footer>
+
+  <script>
+    function applyCoupon() {
+      const codeInput = document.getElementById('couponInput').value.trim().toUpperCase();
+      const msgBox = document.getElementById('couponMsg');
+      const displayPrice = document.getElementById('displayPrice');
+      const strikePrice = document.getElementById('strikePrice');
+      const submitBtn = document.getElementById('submitBtn');
+
+      if (codeInput === 'DAZBERY50') {
+        displayPrice.innerText = '₹299';
+        strikePrice.innerText = '₹599';
+        strikePrice.style.display = 'inline';
+        submitBtn.innerText = 'BUY NOW — ₹299 (PREPAID)';
+        
+        msgBox.innerText = '✓ Coupon DAZBERY50 applied. 50% discount reflected.';
+        msgBox.style.color = '#121212';
+        msgBox.style.display = 'block';
+      } else {
+        msgBox.innerText = 'Invalid coupon code. Try DAZBERY50';
+        msgBox.style.color = '#888888';
+        msgBox.style.display = 'block';
+      }
+    }
+
+    document.getElementById('orderForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Order Form Submitted! Connecting to Payment Gateway...');
+    });
+  </script>
+</body>
+</html>
