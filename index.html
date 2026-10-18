@@ -57,16 +57,26 @@
       border-radius: var(--radius);
       border: 1px solid var(--border-color);
       padding: 24px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+      display: flex;
+      flex-direction: row;
       gap: 32px;
+      align-items: flex-start;
     }
 
-    .product-gallery { position: relative; background: #f9f9f9; border-radius: 8px; padding: 16px; text-align: center; }
+    .product-gallery { 
+      position: relative; 
+      background: #f9f9f9; 
+      border-radius: 8px; 
+      padding: 16px; 
+      text-align: center; 
+      flex: 1;
+      max-width: 450px;
+    }
+
     .product-main-img { 
       width: 100%; 
       height: auto; 
-      max-height: 450px; 
+      max-height: 420px; 
       object-fit: contain; 
       display: block; 
       margin: 0 auto; 
@@ -86,6 +96,9 @@
     }
 
     /* Product Details */
+    .product-details {
+      flex: 1;
+    }
     .product-details h1 { font-size: 24px; font-weight: 700; color: var(--text-main); margin-bottom: 6px; }
     .subtitle { color: var(--text-muted); font-size: 13px; margin-bottom: 16px; }
 
@@ -195,7 +208,8 @@
     .insta-link:hover { text-decoration: underline; }
 
     @media (max-width: 768px) {
-      .hero-grid { grid-template-columns: 1fr; }
+      .hero-card { flex-direction: column; }
+      .product-gallery { width: 100%; max-width: 100%; }
     }
   </style>
 </head>
@@ -218,7 +232,6 @@
     <div class="hero-card" id="product">
       <div class="product-gallery">
         <span class="badge-tag">BEST SELLER</span>
-        <!-- Product Image with spray.PNG extension -->
         <img src="spray.PNG" alt="DAZBERY Rosemary & Rice Water Hair Growth Spray" class="product-main-img">
       </div>
 
