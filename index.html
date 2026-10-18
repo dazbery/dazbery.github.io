@@ -31,6 +31,28 @@
       letter-spacing: 0.5px;
     }
 
+    /* Toast Notification */
+    #toastNotification {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-100px);
+      background: var(--text-main);
+      color: var(--surface);
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-size: 12px;
+      font-weight: 600;
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: transform 0.3s ease;
+      opacity: 0;
+    }
+    #toastNotification.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
     /* Header */
     header {
       background: var(--surface);
@@ -129,14 +151,14 @@
     .price-original { font-size: 16px; text-decoration: line-through; color: var(--text-muted); }
     .prepaid-tag { background: #e5e5e5; color: #111; font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 4px; }
 
-    /* Quantity Selector on Product Page */
+    /* Quantity Selector */
     .qty-selector { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
     .qty-selector span { font-size: 13px; font-weight: 600; color: var(--text-muted); }
     .qty-box-controls { display: flex; align-items: center; border: 1px solid var(--border-color); border-radius: 6px; background: #fafafa; }
     .qty-btn { background: none; border: none; padding: 8px 14px; cursor: pointer; font-weight: 700; font-size: 14px; }
     .qty-num { padding: 0 8px; font-weight: 600; font-size: 13px; }
 
-    /* Coupon Container */
+    /* Coupon Section */
     .coupon-container { display: flex; gap: 8px; margin-bottom: 16px; }
     .coupon-container input {
       flex: 1;
@@ -159,7 +181,6 @@
       cursor: pointer;
       font-size: 12px;
     }
-    .coupon-msg { font-size: 12px; margin-bottom: 12px; font-weight: 500; display: none; }
 
     /* Checkout Form */
     .order-form { display: flex; flex-direction: column; gap: 10px; }
@@ -204,7 +225,7 @@
     }
     .btn-buy:hover { background: #2a2a2a; }
 
-    /* Cart Drawer / Page Style */
+    /* Cart Page */
     .cart-card {
       background: var(--surface);
       border: 1px solid var(--border-color);
@@ -220,6 +241,17 @@
       padding: 14px 0;
       border-bottom: 1px solid var(--border-color);
     }
+    .btn-remove {
+      background: none;
+      border: none;
+      color: #dc2626;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 4px;
+      display: inline-block;
+    }
+    .btn-remove:hover { text-decoration: underline; }
     .cart-summary {
       margin-top: 20px;
       background: #f7f7f7;
@@ -272,6 +304,9 @@
 </head>
 <body>
 
+  <!-- Toast Notification -->
+  <div id="toastNotification"></div>
+
   <div class="announcement-bar">COMPLIMENTARY SHIPPING ON ALL PREPAID ORDERS</div>
 
   <header>
@@ -318,7 +353,7 @@
             <input type="text" id="couponInput" value="DAZBERY50" readonly style="color: #2d5a27; font-weight: 700;">
             <button type="button" class="btn-apply" style="background:#2d5a27;">APPLIED</button>
           </div>
-          <div class="coupon-msg" id="couponMsg" style="display:block; color:#2d5a27; font-size:12px; margin-bottom:12px;">✓ 50% Auto-Applied on all quantities!</div>
+          <div class="coupon-msg" style="display:block; color:#2d5a27; font-size:12px; margin-bottom:12px;">✓ 50% Auto-Applied on all quantities!</div>
 
           <!-- Checkout Form with Auto-filled Address if Logged In -->
           <form class="order-form" id="orderForm" onsubmit="handleOrder(event)">
@@ -447,7 +482,7 @@
         <div id="cartItemsContainer">
           <!-- Cart items will render here -->
         </div>
-        <div class="cart-summary">
+        <div class="cart-summary" id="cartSummaryBox" style="display: none;">
           <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 15px; margin-bottom: 14px;">
             <span>Total Amount (50% OFF):</span>
             <span id="cartTotalPrice">₹299</span>
@@ -509,6 +544,15 @@
     let currentQty = 1;
     let cartCount = 0;
 
+    function showToast(message) {
+      const toast = document.getElementById('toastNotification');
+      toast.innerText = message;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2500);
+    }
+
     function updateQty(change) {
       currentQty += change;
       if (currentQty < 1) currentQty = 1;
@@ -544,26 +588,36 @@
     function addToCart() {
       cartCount += currentQty;
       document.getElementById('cartBadge').innerText = cartCount;
-      alert(`${currentQty} item(s) added to cart successfully!`);
+      showToast(`✓ Added ${currentQty} item(s) to cart`);
+    }
+
+    function removeFromCart() {
+      cartCount = 0;
+      document.getElementById('cartBadge').innerText = cartCount;
+      renderCart();
+      showToast('✓ Product removed from cart');
     }
 
     function renderCart() {
       const container = document.getElementById('cartItemsContainer');
+      const summaryBox = document.getElementById('cartSummaryBox');
       const totalPrice = currentQty * 299;
       
       if(cartCount === 0) {
         container.innerHTML = `<p style="font-size:13px; color:var(--text-muted); text-align:center; padding: 20px;">Your cart is currently empty.</p>`;
-        document.getElementById('cartTotalPrice').innerText = '₹0';
+        summaryBox.style.display = 'none';
       } else {
         container.innerHTML = `
           <div class="cart-item-row">
             <div>
               <div style="font-weight: 700; font-size: 13px;">Rosemary & Rice Water Hair Growth Spray (100ml)</div>
-              <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Qty: ${currentQty} | 50% OFF Applied</div>
+              <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Qty: ${currentQty} | 50% OFF Applied</div>
+              <button class="btn-remove" onclick="removeFromCart()">Remove from Cart</button>
             </div>
             <div style="font-weight: 700; font-size: 14px;">₹${totalPrice}</div>
           </div>
         `;
+        summaryBox.style.display = 'block';
         document.getElementById('cartTotalPrice').innerText = '₹' + totalPrice;
       }
     }
@@ -584,7 +638,7 @@
       document.getElementById('dashboardCard').style.display = 'block';
       document.getElementById('navAccountText').innerText = 'My Account';
 
-      alert('Profile created successfully! Your address has been saved for fast checkout.');
+      showToast('✓ Profile created successfully!');
       switchPage('shop');
     }
 
@@ -598,7 +652,7 @@
       document.getElementById('checkoutPhone').value = '';
       document.getElementById('checkoutAddress').value = '';
       
-      alert('Logged out successfully.');
+      showToast('✓ Logged out successfully');
     }
 
     function submitUserReview(e) {
@@ -622,7 +676,7 @@
       `;
       grid.prepend(newDiv);
 
-      alert('Thank you! Your verified review has been published successfully.');
+      showToast('✓ Verified review submitted successfully!');
       document.getElementById('rName').value = '';
       document.getElementById('rOrder').value = '';
       document.getElementById('rText').value = '';
