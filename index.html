@@ -4,9 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DAZBERY | Rosemary & Rice Water Hair Growth Spray</title>
+  
+  <!-- Supabase JS Library -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
   <style>
     :root {
       --bg-main: #fcfcfc;
@@ -20,7 +25,6 @@
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
     body { background-color: var(--bg-main); color: var(--text-main); line-height: 1.6; }
 
-    /* Top Announcement Bar */
     .announcement-bar {
       background: var(--text-main);
       color: var(--surface);
@@ -31,7 +35,6 @@
       letter-spacing: 0.5px;
     }
 
-    /* Toast Notification */
     #toastNotification {
       position: fixed;
       top: 20px;
@@ -53,7 +56,6 @@
       opacity: 1;
     }
 
-    /* Header */
     header {
       background: var(--surface);
       padding: 16px 24px;
@@ -82,14 +84,10 @@
       right: -12px;
     }
 
-    /* Page Views Control */
     .page-section { display: none; }
     .page-section.active { display: block; }
-
-    /* Container */
     .container { max-width: 1000px; margin: 0 auto; padding: 32px 16px; }
 
-    /* Hero Section */
     .hero-card {
       background: var(--surface);
       border-radius: var(--radius);
@@ -133,7 +131,6 @@
       letter-spacing: 1px;
     }
 
-    /* Product Details */
     .product-details { flex: 1; }
     .product-details h1 { font-size: 24px; font-weight: 700; color: var(--text-main); margin-bottom: 6px; }
     .subtitle { color: var(--text-muted); font-size: 13px; margin-bottom: 16px; }
@@ -151,14 +148,12 @@
     .price-original { font-size: 16px; text-decoration: line-through; color: var(--text-muted); display: none; }
     .prepaid-tag { background: #e5e5e5; color: #111; font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 4px; }
 
-    /* Quantity Selector */
     .qty-selector { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
     .qty-selector span { font-size: 13px; font-weight: 600; color: var(--text-muted); }
     .qty-box-controls { display: flex; align-items: center; border: 1px solid var(--border-color); border-radius: 6px; background: #fafafa; }
     .qty-btn { background: none; border: none; padding: 8px 14px; cursor: pointer; font-weight: 700; font-size: 14px; }
     .qty-num { padding: 0 8px; font-weight: 600; font-size: 13px; }
 
-    /* Coupon Section */
     .coupon-container { display: flex; gap: 8px; margin-bottom: 16px; }
     .coupon-container input {
       flex: 1;
@@ -183,7 +178,6 @@
     }
     .coupon-msg { font-size: 12px; margin-bottom: 12px; font-weight: 500; display: none; }
 
-    /* Checkout Form */
     .order-form { display: flex; flex-direction: column; gap: 10px; }
     .form-group input, .form-group textarea {
       width: 100%;
@@ -226,7 +220,6 @@
     }
     .btn-buy:hover { background: #2a2a2a; }
 
-    /* Cart Page */
     .cart-card {
       background: var(--surface);
       border: 1px solid var(--border-color);
@@ -260,7 +253,6 @@
       border-radius: 8px;
     }
 
-    /* Login & Account Styles */
     .auth-card {
       max-width: 420px;
       margin: 20px auto;
@@ -273,10 +265,26 @@
     .auth-card h2 { font-size: 20px; font-weight: 700; margin-bottom: 6px; color: var(--text-main); }
     .auth-card p { font-size: 12px; color: var(--text-muted); margin-bottom: 20px; }
 
-    /* Sections */
+    .google-btn {
+      width: 100%;
+      background: #ffffff;
+      color: #333333;
+      border: 1px solid var(--border-color);
+      padding: 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: background 0.2s;
+    }
+    .google-btn:hover { background: #f8f8f8; }
+
     .section-title { font-size: 18px; font-weight: 700; margin: 40px 0 16px; }
     
-    /* Reviews List */
     .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
     .review-item { background: var(--surface); padding: 16px; border-radius: 8px; border: 1px solid var(--border-color); }
     .review-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
@@ -285,12 +293,10 @@
     .stars { color: #d4af37; font-size: 11px; margin-bottom: 6px; }
     .review-text { font-size: 12px; color: var(--text-muted); }
 
-    /* Add Review Form Box */
     .add-review-box { background: var(--surface); border: 1px solid var(--border-color); padding: 20px; border-radius: var(--radius); margin-top: 30px; }
     .add-review-box h3 { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
     .add-review-box p { font-size: 12px; color: var(--text-muted); margin-bottom: 14px; }
 
-    /* Footer */
     footer { background: var(--text-main); color: var(--surface); padding: 40px 20px 20px; margin-top: 60px; text-align: center; font-size: 12px; }
     footer a { color: #aaaaaa; text-decoration: none; margin: 0 8px; }
     .insta-container { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 8px; }
@@ -305,9 +311,7 @@
 </head>
 <body>
 
-  <!-- Toast Notification -->
   <div id="toastNotification"></div>
-
   <div class="announcement-bar">COMPLIMENTARY SHIPPING ON ALL PREPAID ORDERS</div>
 
   <header>
@@ -339,7 +343,6 @@
             <span class="prepaid-tag">Prepaid Only</span>
           </div>
 
-          <!-- Quantity Selector -->
           <div class="qty-selector">
             <span>Quantity:</span>
             <div class="qty-box-controls">
@@ -349,14 +352,12 @@
             </div>
           </div>
 
-          <!-- Coupon Section -->
           <div class="coupon-container">
             <input type="text" id="couponInput" placeholder="Enter Creator Code (e.g. DAZBERY50)">
             <button type="button" class="btn-apply" onclick="applyCoupon()">APPLY</button>
           </div>
           <div class="coupon-msg" id="couponMsg"></div>
 
-          <!-- Checkout Form with Auto-filled Address if Logged In -->
           <form class="order-form" id="orderForm" onsubmit="handleOrder(event)">
             <div class="form-group"><input type="text" id="checkoutName" placeholder="Full Name" required></div>
             <div class="form-group"><input type="tel" id="checkoutPhone" placeholder="Mobile / WhatsApp Number" required></div>
@@ -370,11 +371,9 @@
         </div>
       </div>
 
-      <!-- 13 Real Genuine Reviews -->
       <h2 class="section-title" id="reviews">Customer Reviews (13)</h2>
       <div class="reviews-grid" id="reviewsGrid">
         
-        <!-- Malayalam Reviews -->
         <div class="review-item">
           <div class="review-header"><span class="review-user">Sneha (Kochi)</span><span class="verified-badge">✔ Verified</span></div>
           <div class="stars">★★★★★</div>
@@ -393,7 +392,6 @@
           <div class="review-text">DAZBERY50 code use cheythu discount-il kitti. Packagingokke nalla safe aayirunnu. Very happy.</div>
         </div>
 
-        <!-- English Reviews -->
         <div class="review-item">
           <div class="review-header"><span class="review-user">Rahul (Bangalore)</span><span class="verified-badge">✔ Verified</span></div>
           <div class="stars">★★★★★</div>
@@ -436,7 +434,6 @@
           <div class="review-text">Lightweight formula. Doesn't weigh down hair at all. Highly recommend for daily care.</div>
         </div>
 
-        <!-- Hindi Reviews -->
         <div class="review-item">
           <div class="review-header"><span class="review-user">Amit Sharma (Delhi)</span><span class="verified-badge">✔ Verified</span></div>
           <div class="stars">★★★★★</div>
@@ -469,7 +466,6 @@
         </form>
       </div>
 
-      <!-- Support Notice -->
       <div id="support" style="margin-top: 40px; background:var(--surface); border:1px solid var(--border-color); padding:20px; border-radius:var(--radius);">
         <h3 style="font-size:15px; font-weight:700; margin-bottom:6px;">Support & Policies</h3>
         <p style="font-size:12px; color:var(--text-muted);">For delivery help or damage replacement claims (unboxing video mandatory within 24 hours), contact us at <a href="mailto:supportdazbery@gmail.com" style="color:var(--text-main); font-weight:600;">supportdazbery@gmail.com</a>.</p>
@@ -480,9 +476,7 @@
     <div id="cartPage" class="page-section">
       <div class="cart-card">
         <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 16px;">Your Shopping Cart</h2>
-        <div id="cartItemsContainer">
-          <!-- Cart items will render here -->
-        </div>
+        <div id="cartItemsContainer"></div>
         <div class="cart-summary" id="cartSummaryBox" style="display: none;">
           <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 15px; margin-bottom: 14px;">
             <span>Total Amount:</span>
@@ -493,34 +487,32 @@
       </div>
     </div>
 
-    <!-- CUSTOMER SIGNUP / PROFILE & DASHBOARD PAGE -->
+    <!-- GOOGLE SIGN-IN / ACCOUNT PAGE -->
     <div id="loginPage" class="page-section">
       
-      <!-- Signup / Create Profile Card -->
+      <!-- Login / Auth Card -->
       <div class="auth-card" id="loginCard">
-        <h2>Create Account / Profile</h2>
-        <p>Sign up with your Gmail to save your delivery address for fast checkout.</p>
-        <form onsubmit="handleSignup(event)" style="display: flex; flex-direction: column; gap: 10px;">
-          <div class="form-group"><input type="email" id="sEmail" placeholder="Gmail Address" required></div>
-          <div class="form-group"><input type="text" id="sName" placeholder="Full Name" required></div>
-          <div class="form-group"><input type="tel" id="sPhone" placeholder="Mobile / WhatsApp Number" required></div>
-          <div class="form-group"><textarea id="sAddress" placeholder="Saved Delivery Address with PIN code" rows="2" required></textarea></div>
-          <button type="submit" class="btn-apply" style="width: 100%; padding: 12px; margin-top: 6px;">SAVE PROFILE & CONTINUE</button>
-        </form>
+        <h2>Customer Sign In</h2>
+        <p>Sign in quickly with your Google account to secure your profile and manage orders.</p>
+        
+        <button type="button" class="google-btn" onclick="loginWithGoogle()">
+          <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.18v3.15C3.17 21.32 7.23 24 12 24z"/><path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.61H1.18C.43 8.14 0 9.87 0 12s.43 3.86 1.18 5.39l4.09-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.23 0 3.17 2.68 1.18 6.61l4.09 3.15c.95-2.85 3.6-4.96 6.73-4.96z"/></svg>
+          Continue with Google
+        </button>
       </div>
 
-      <!-- Account Dashboard (Shown after Profile Creation) -->
+      <!-- Account Dashboard (Shown after Google Login) -->
       <div class="auth-card" id="dashboardCard" style="display: none; text-align: left;">
         <h2 style="margin-bottom: 8px; color: var(--text-main);">My Account Dashboard</h2>
         <p id="userEmailDisplay" style="font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 14px;"></p>
         
         <div style="background: #f7f7f7; padding: 12px; border-radius: 8px; font-size: 12px; margin-bottom: 16px;">
-          <div style="font-weight: 700; margin-bottom: 4px;">Saved Default Address:</div>
+          <div style="font-weight: 700; margin-bottom: 4px;">Saved Profile Info:</div>
           <div id="userAddressDisplay" style="color: var(--text-muted);"></div>
         </div>
 
         <div style="background: #fcfcfc; border: 1px solid var(--border-color); padding: 14px; border-radius: 8px; margin-bottom: 16px; text-align: center;">
-          <p style="font-size: 12px; color: var(--text-muted);">You have no past orders yet.</p>
+          <p style="font-size: 12px; color: var(--text-muted);" id="orderHistoryText">You have no past orders yet.</p>
         </div>
         <button onclick="handleLogout()" class="btn-apply" style="background: #dc2626; width: 100%;">LOGOUT</button>
       </div>
@@ -541,6 +533,11 @@
   </footer>
 
   <script>
+    // Supabase Configuration
+    const SUPABASE_URL = 'https://cccpqyfbwofkfydcacxo.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_j5jnvFhMmUHaRarHJ_s2LQ_m_TM8ecT';
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
     let userProfile = null;
     let currentQty = 1;
     let cartCount = 0;
@@ -558,7 +555,6 @@
     function updateQty(change) {
       currentQty += change;
       if (currentQty < 1) currentQty = 1;
-      
       document.getElementById('productQty').innerText = currentQty;
       updatePriceDisplay();
     }
@@ -609,9 +605,9 @@
       if(page === 'shop') {
         document.getElementById('shopPage').classList.add('active');
         if(userProfile) {
-          document.getElementById('checkoutName').value = userProfile.name;
-          document.getElementById('checkoutPhone').value = userProfile.phone;
-          document.getElementById('checkoutAddress').value = userProfile.address;
+          document.getElementById('checkoutName').value = userProfile.name || '';
+          document.getElementById('checkoutPhone').value = userProfile.phone || '';
+          document.getElementById('checkoutAddress').value = userProfile.address || '';
         }
       } else if(page === 'login') {
         document.getElementById('loginPage').classList.add('active');
@@ -659,27 +655,61 @@
       }
     }
 
-    function handleSignup(e) {
-      e.preventDefault();
-      userProfile = {
-        email: document.getElementById('sEmail').value,
-        name: document.getElementById('sName').value,
-        phone: document.getElementById('sPhone').value,
-        address: document.getElementById('sAddress').value
-      };
-
-      document.getElementById('userEmailDisplay').innerText = 'Account: ' + userProfile.email;
-      document.getElementById('userAddressDisplay').innerText = userProfile.name + ', ' + userProfile.phone + ' - ' + userProfile.address;
-      
-      document.getElementById('loginCard').style.display = 'none';
-      document.getElementById('dashboardCard').style.display = 'block';
-      document.getElementById('navAccountText').innerText = 'My Account';
-
-      showToast('✓ Profile created successfully!');
-      switchPage('shop');
+    // Google Sign-In with Supabase Auth
+    async function loginWithGoogle() {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: window.location.origin
+        }
+      });
+      if (error) {
+        showToast('❌ Login Error: ' + error.message);
+      }
     }
 
-    function handleLogout() {
+    // Check session on load and fetch user info / orders
+    async function checkUserSession() {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        const user = session.user;
+        userProfile = {
+          email: user.email,
+          name: user.user_metadata?.full_name || user.email.split('@')[0],
+          phone: '',
+          address: ''
+        };
+
+        document.getElementById('userEmailDisplay').innerText = 'Account: ' + userProfile.email;
+        document.getElementById('userAddressDisplay').innerText = userProfile.name;
+        
+        document.getElementById('loginCard').style.display = 'none';
+        document.getElementById('dashboardCard').style.display = 'block';
+        document.getElementById('navAccountText').innerText = 'My Account';
+
+        // Auto-fill checkout fields
+        document.getElementById('checkoutName').value = userProfile.name;
+
+        // Fetch user orders from Supabase database table
+        loadUserOrders(user.id);
+      }
+    }
+
+    async function loadUserOrders(userId) {
+      const { data: orders, error } = await supabase
+        .from('orders')
+        .select('*')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false });
+
+      if (!error && orders && orders.length > 0) {
+        const historyText = document.getElementById('orderHistoryText');
+        historyText.innerHTML = `<strong>Recent Orders:</strong><br>` + orders.map(o => `ID: ${o.id.substring(0,6)} | Qty: ${o.quantity} | ₹${o.total_price}`).join('<br>');
+      }
+    }
+
+    async function handleLogout() {
+      await supabase.auth.signOut();
       userProfile = null;
       document.getElementById('dashboardCard').style.display = 'none';
       document.getElementById('loginCard').style.display = 'block';
@@ -690,6 +720,68 @@
       document.getElementById('checkoutAddress').value = '';
       
       showToast('✓ Logged out successfully');
+      switchPage('shop');
+    }
+
+    // Product order submission and auto-adding review after order
+    async function handleOrder(e) {
+      e.preventDefault();
+      
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        alert('Please sign in with Google before placing an order.');
+        switchPage('login');
+        return;
+      }
+
+      const name = document.getElementById('checkoutName').value;
+      const phone = document.getElementById('checkoutPhone').value;
+      const address = document.getElementById('checkoutAddress').value;
+      const finalPrice = isDiscountApplied ? (currentQty * 299) : (currentQty * 599);
+
+      // Save order to Supabase table
+      const { data, error } = await supabase
+        .from('orders')
+        .insert([
+          {
+            user_id: session.user.id,
+            customer_name: name,
+            phone: phone,
+            address: address,
+            quantity: currentQty,
+            total_price: finalPrice
+          }
+        ])
+        .select();
+
+      if (error) {
+        alert('Error placing order: ' + error.message);
+      } else {
+        const generatedOrderId = 'DZ' + Math.floor(1000 + Math.random() * 9000);
+        showToast('✓ Order placed successfully!');
+        
+        // Automatic review addition prompt/simulation after placing order
+        setTimeout(() => {
+          const autoAddReview = confirm('Order placed successfully! Would you like to post a verified review for this purchase? (Order ID: ' + generatedOrderId + ')');
+          if (autoAddReview) {
+            const reviewText = prompt('Write your review comment:', 'Super product! Nalla results undu.');
+            if (reviewText) {
+              const grid = document.getElementById('reviewsGrid');
+              const newDiv = document.createElement('div');
+              newDiv.className = 'review-item';
+              newDiv.innerHTML = `
+                <div class="review-header"><span class="review-user">${name}</span><span class="verified-badge">✔ Verified Purchaser</span></div>
+                <div class="stars">★★★★★</div>
+                <div class="review-text">${reviewText}</div>
+              `;
+              grid.prepend(newDiv);
+              showToast('✓ Verified review added successfully!');
+            }
+          }
+        }, 500);
+
+        switchPage('shop');
+      }
     }
 
     function submitUserReview(e) {
@@ -719,11 +811,10 @@
       document.getElementById('rText').value = '';
     }
 
-    function handleOrder(e) {
-      e.preventDefault();
-      const finalPrice = isDiscountApplied ? (currentQty * 299) : (currentQty * 599);
-      alert(`Redirecting to secure prepaid payment gateway for ₹${finalPrice} (${currentQty} item)...`);
-    }
+    window.addEventListener('DOMContentLoaded', () => {
+      checkUserSession();
+      updatePriceDisplay();
+    });
   </script>
 </body>
 </html>
