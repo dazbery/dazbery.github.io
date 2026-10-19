@@ -513,9 +513,9 @@
         <!-- Phone OTP Form View -->
         <form id="phoneAuthForm" onsubmit="handleSendOtp(event)" style="display: flex; flex-direction: column; gap: 10px;">
           <div class="form-group"><input type="tel" id="sPhoneInput" placeholder="Mobile / WhatsApp Number (10 digits)" required></div>
+          <div id="recaptcha-container"></div>
           <div id="otpBox" style="display: none;" class="form-group">
             <input type="text" id="sOtpInput" placeholder="Enter 6-digit OTP code">
-            <p style="font-size: 10px; color: var(--text-muted); margin-top: 4px;">Demo OTP is set to: <strong>123456</strong></p>
           </div>
           <button type="submit" id="btnOtpAction" class="btn-apply" style="width: 100%; padding: 12px; margin-top: 6px;">SEND OTP CODE</button>
         </form>
@@ -561,12 +561,78 @@
     </p>
   </footer>
 
+  <!-- Firebase Scripts -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyB7wQLYFeNV-jQrgEutQhQpFnmXQf8EaA4",
+      authDomain: "dazbery-a17d6.firebaseapp.com",
+      projectId: "dazbery-a17d6",
+      storageBucket: "dazbery-a17d6.firebasestorage.app",
+      messagingSenderId: "540983587729",
+      appId: "1:540983587729:web:da914bad4f4e95a7c52030",
+      measurementId: "G-LGFWDKGKBM"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+      'size': 'invisible'
+    });
+
+    window.sendRealOtp = function(phoneNumber) {
+      const formattedPhone = "+91" + phoneNumber;
+      const appVerifier = window.recaptchaVerifier;
+
+      signInWithPhoneNumber(auth, formattedPhone, appVerifier)
+        .then((confirmationResult) => {
+          window.confirmationResult = confirmationResult;
+          document.getElementById('otpBox').style.display = 'block';
+          document.getElementById('btnOtpAction').innerText = 'VERIFY OTP & LOGIN';
+          window.otpSentState = true;
+          showToast('✓ Real OTP Sent to ' + phoneNumber);
+        }).catch((error) => {
+          console.error(error);
+          showToast('❌ Error sending OTP. Check Firebase auth settings.');
+        });
+    };
+
+    window.verifyRealOtp = function(otpCode) {
+      if(window.confirmationResult) {
+        window.confirmationResult.confirm(otpCode).then((result) => {
+          const user = result.user;
+          userProfile = {
+            email: user.phoneNumber + '@phone.dazbery',
+            name: 'Customer (' + user.phoneNumber.slice(-4) + ')',
+            phone: user.phoneNumber,
+            address: ''
+          };
+          
+          document.getElementById('userEmailDisplay').innerText = 'Logged in via Mobile: ' + user.phoneNumber;
+          document.getElementById('userAddressDisplay').innerText = 'Please complete your address on checkout page.';
+          
+          document.getElementById('loginCard').style.display = 'none';
+          document.getElementById('dashboardCard').style.display = 'block';
+          document.getElementById('navAccountText').innerText = 'My Account';
+
+          showToast('✓ Phone Verified & Logged in!');
+          switchPage('shop');
+        }).catch((error) => {
+          showToast('❌ Invalid OTP entered');
+        });
+      }
+    };
+  </script>
+
   <script>
     let userProfile = null;
     let currentQty = 1;
     let cartCount = 0;
     let isDiscountApplied = false;
-    let otpSentState = false;
+    window.otpSentState = false;
 
     function showToast(message) {
       const toast = document.getElementById('toastNotification');
@@ -663,37 +729,15 @@
       e.preventDefault();
       const phone = document.getElementById('sPhoneInput').value.trim();
       
-      if(!otpSentState) {
+      if(!window.otpSentState) {
         if(phone.length < 10) {
           showToast('❌ Enter valid 10-digit mobile number');
           return;
         }
-        otpSentState = true;
-        document.getElementById('otpBox').style.display = 'block';
-        document.getElementById('btnOtpAction').innerText = 'VERIFY OTP & LOGIN';
-        showToast('✓ OTP Sent to ' + phone);
+        window.sendRealOtp(phone);
       } else {
         const otpVal = document.getElementById('sOtpInput').value.trim();
-        if(otpVal === '123456' || otpVal.length === 6) {
-          userProfile = {
-            email: phone + '@phone.dazbery',
-            name: 'Customer (' + phone.slice(-4) + ')',
-            phone: phone,
-            address: ''
-          };
-          
-          document.getElementById('userEmailDisplay').innerText = 'Logged in via Mobile: ' + phone;
-          document.getElementById('userAddressDisplay').innerText = 'Please complete your address on checkout page.';
-          
-          document.getElementById('loginCard').style.display = 'none';
-          document.getElementById('dashboardCard').style.display = 'block';
-          document.getElementById('navAccountText').innerText = 'My Account';
-
-          showToast('✓ Logged in successfully!');
-          switchPage('shop');
-        } else {
-          showToast('❌ Incorrect OTP code');
-        }
+        window.verifyRealOtp(otpVal);
       }
     }
 
@@ -756,7 +800,7 @@
 
     function handleLogout() {
       userProfile = null;
-      otpSentState = false;
+      window.otpSentState = false;
       document.getElementById('dashboardCard').style.display = 'none';
       document.getElementById('loginCard').style.display = 'block';
       document.getElementById('navAccountText').innerText = 'Account / Login';
