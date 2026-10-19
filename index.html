@@ -3,120 +3,189 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dazbery - Rosemary & Rice Water Hair Growth Spray</title>
+  <title>Dazbery - Rosemary & Rice Water Hair Growth Spray (100ml)</title>
 
   <!-- Supabase JS Library -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --primary-color: #1a1a1a;
-      --accent-color: #2e6f40;
-      --bg-color: #f9f9f6;
+      --primary: #121826;
+      --accent: #2e6f40;
+      --accent-light: #e8f5e9;
+      --bg: #fafaf9;
       --card-bg: #ffffff;
-      --border-color: #e2e2e2;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --radius: 12px;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
     }
 
     body {
-      background-color: var(--bg-color);
-      color: var(--primary-color);
+      background-color: var(--bg);
+      color: var(--text-main);
       line-height: 1.6;
-      padding-bottom: 50px;
+      padding-bottom: 60px;
     }
 
+    /* Header */
     header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 18px 24px;
+      padding: 16px 24px;
       background: var(--card-bg);
-      border-bottom: 1px solid var(--border-color);
+      border-bottom: 1px solid var(--border);
       position: sticky;
       top: 0;
       z-index: 100;
     }
 
-    .brand-name {
-      font-size: 1.4rem;
+    .brand {
+      font-size: 1.3rem;
       font-weight: 700;
-      letter-spacing: 2px;
+      letter-spacing: 3px;
       text-transform: uppercase;
+      color: var(--primary);
     }
 
     .auth-btn {
-      background-color: var(--primary-color);
+      background-color: var(--primary);
       color: #fff;
       border: none;
-      padding: 8px 16px;
-      border-radius: 20px;
+      padding: 9px 18px;
+      border-radius: 30px;
       cursor: pointer;
-      font-weight: 500;
-      font-size: 0.9rem;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: all 0.2s ease;
     }
 
+    .auth-btn:hover {
+      opacity: 0.9;
+    }
+
+    /* Layout Containers */
     .container {
-      max-width: 600px;
-      margin: 20px auto;
-      padding: 0 16px;
+      max-width: 650px;
+      margin: 0 auto;
+      padding: 20px 16px;
     }
 
-    .product-card {
+    /* Hero Section */
+    .hero-card {
       background: var(--card-bg);
-      border-radius: 12px;
+      border-radius: var(--radius);
       padding: 24px;
-      border: 1px solid var(--border-color);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .badge-top {
+      display: inline-block;
+      background: #f1f5f9;
+      color: var(--text-muted);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .hero-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--primary);
+    }
+
+    .hero-subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
       margin-bottom: 20px;
     }
 
-    .product-title {
-      font-size: 1.5rem;
-      margin-bottom: 8px;
+    /* Price Card */
+    .price-container {
+      background: #f8fafc;
+      padding: 16px;
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      border: 1px dashed var(--border);
     }
 
-    .product-sub {
-      color: #666;
-      font-size: 0.95rem;
-      margin-bottom: 16px;
-    }
-
-    .price-box {
+    .price-left {
       display: flex;
       align-items: baseline;
-      gap: 12px;
-      margin-bottom: 20px;
+      gap: 10px;
     }
 
     .original-price {
       text-decoration: line-through;
-      color: #888;
+      color: var(--text-muted);
       font-size: 1.1rem;
     }
 
-    .final-price {
-      font-size: 1.8rem;
+    .sale-price {
+      font-size: 1.9rem;
       font-weight: 700;
-      color: var(--accent-color);
+      color: var(--accent);
     }
 
-    .coupon-badge {
-      background: #e8f5e9;
-      color: var(--accent-color);
-      padding: 4px 8px;
-      border-radius: 4px;
+    .promo-tag {
+      background: var(--accent-light);
+      color: var(--accent);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    /* Features Grid */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+      text-align: left;
+    }
+
+    .feature-item {
+      background: #f8fafc;
+      padding: 12px 14px;
+      border-radius: 8px;
       font-size: 0.85rem;
-      font-weight: 600;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Form Styles */
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      text-align: left;
     }
 
     .form-group {
-      margin-bottom: 14px;
+      margin-bottom: 16px;
+      text-align: left;
     }
 
     .form-group label {
@@ -124,42 +193,81 @@
       font-size: 0.85rem;
       font-weight: 600;
       margin-bottom: 6px;
-      color: #444;
+      color: var(--text-main);
     }
 
     .form-group input, .form-group textarea {
       width: 100%;
-      padding: 10px 12px;
-      border: 1px solid var(--border-color);
-      border-radius: 6px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
       font-size: 0.95rem;
+      background: #fff;
+    }
+
+    .form-group input:focus, .form-group textarea:focus {
+      outline: none;
+      border-color: var(--accent);
     }
 
     .buy-btn {
       width: 100%;
-      background-color: var(--accent-color);
+      background-color: var(--accent);
       color: white;
       border: none;
-      padding: 14px;
-      border-radius: 8px;
+      padding: 16px;
+      border-radius: var(--radius);
       font-size: 1.1rem;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
-      margin-top: 10px;
+      transition: background 0.2s;
     }
 
+    .buy-btn:hover {
+      background-color: #245732;
+    }
+
+    /* Content Cards (Benefits / Ingredients) */
+    .info-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 20px;
+      border: 1px solid var(--border);
+      margin-bottom: 20px;
+    }
+
+    .info-card ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    .info-card li {
+      padding: 8px 0;
+      border-bottom: 1px solid #f1f5f9;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .info-card li:last-child {
+      border-bottom: none;
+    }
+
+    /* Order History Container */
     .order-history {
-      margin-top: 30px;
       background: var(--card-bg);
       padding: 20px;
-      border-radius: 12px;
-      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
       display: none;
+      margin-top: 24px;
     }
 
     .order-item {
-      padding: 10px 0;
-      border-bottom: 1px solid #eee;
+      padding: 12px 0;
+      border-bottom: 1px solid #f1f5f9;
+      font-size: 0.9rem;
     }
 
     .order-item:last-child {
@@ -169,25 +277,44 @@
 </head>
 <body>
 
+  <!-- Header -->
   <header>
-    <div class="brand-name">DAZBERY</div>
+    <div class="brand">DAZBERY</div>
     <div id="auth-container">
       <button class="auth-btn" onclick="loginWithGoogle()">Sign in with Google</button>
     </div>
   </header>
 
+  <!-- Main Container -->
   <div class="container">
-    <div class="product-card">
-      <h1 class="product-title">Rosemary & Rice Water Hair Growth Spray (100ml)</h1>
-      <p class="product-sub">Nourishes scalp, reduces hair fall, and promotes natural hair regrowth.</p>
-      
-      <div class="price-box">
-        <span class="original-price">₹599</span>
-        <span class="final-price">₹299</span>
-        <span class="coupon-badge">50% OFF (DAZBERY50)</span>
+
+    <!-- Hero / Main Product Card -->
+    <div class="hero-card">
+      <span class="badge-top">🌿 100% Natural Formulation</span>
+      <h1 class="hero-title">Rosemary & Rice Water Hair Growth Spray (100ml)</h1>
+      <p class="hero-subtitle">Strengthens roots, controls hair fall, and triggers natural hair regrowth.</p>
+
+      <!-- Pricing -->
+      <div class="price-container">
+        <div class="price-left">
+          <span class="original-price">₹599</span>
+          <span class="sale-price">₹299</span>
+        </div>
+        <div class="promo-tag">50% OFF (DAZBERY50)</div>
       </div>
 
+      <!-- Quick Feature Highlights -->
+      <div class="features-grid">
+        <div class="feature-item">✔ Reduces Hair Fall</div>
+        <div class="feature-item">✔ Strengthens Follicles</div>
+        <div class="feature-item">✔ Non-Greasy Formula</div>
+        <div class="feature-item">✔ Suitable for All Hair Types</div>
+      </div>
+
+      <!-- Checkout Form -->
       <form id="checkout-form" onsubmit="handleOrderSubmit(event)">
+        <div class="section-title">Shipping & Order Details</div>
+
         <div class="form-group">
           <label for="customer_name">Full Name</label>
           <input type="text" id="customer_name" placeholder="John Doe" required>
@@ -217,11 +344,34 @@
       </form>
     </div>
 
+    <!-- Product Benefits Section -->
+    <div class="info-card">
+      <div class="section-title">Why Choose Dazbery Hair Spray?</div>
+      <ul>
+        <li>🌱 <strong>Rosemary Extract:</strong> Stimulates blood circulation to scalp for regrowth.</li>
+        <li>🌾 <strong>Fermented Rice Water:</strong> Rich in amino acids and vitamins for root strength.</li>
+        <li>💧 <strong>Deep Hydration:</strong> Keeps scalp moisturized without greasy residue.</li>
+        <li>✨ <strong>Chemical Free:</strong> No Parabens, Sulfates, or harmful additives.</li>
+      </ul>
+    </div>
+
+    <!-- How To Use Section -->
+    <div class="info-card">
+      <div class="section-title">How To Use</div>
+      <ul>
+        <li>1. Shake the bottle well before use.</li>
+        <li>2. Spray directly onto scalp and hair roots.</li>
+        <li>3. Gently massage with fingertips for 2 minutes.</li>
+        <li>4. Leave it on. Use twice daily for optimal results.</li>
+      </ul>
+    </div>
+
     <!-- User Order History -->
     <div id="order-history" class="order-history">
-      <h3>Your Recent Orders</h3>
+      <div class="section-title">Your Recent Orders</div>
       <div id="orders-list"></div>
     </div>
+
   </div>
 
   <script>
@@ -232,14 +382,14 @@
 
     let currentUser = null;
 
-    // Price Calculator
+    // Dynamic Price Calculator
     function updatePrice() {
       const qty = parseInt(document.getElementById('quantity').value) || 1;
       const total = qty * 299;
       document.getElementById('btn-price').innerText = total;
     }
 
-    // Google Login
+    // Google Login Function
     async function loginWithGoogle() {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
@@ -250,36 +400,36 @@
       if (error) alert('Login error: ' + error.message);
     }
 
-    // Logout
+    // Logout Function
     async function logout() {
       await supabase.auth.signOut();
       window.location.reload();
     }
 
-    // Check Login Session
+    // Check Login Session & Auto-fill Profile Data
     async function checkUserSession() {
       const { data: { session } } = await supabase.auth.getSession();
       
       if (session) {
         currentUser = session.user;
         
-        // Header Update
+        // Update Header UI
         document.getElementById('auth-container').innerHTML = `
-          <span style="font-size:0.85rem; margin-right:8px;">${currentUser.email}</span>
+          <span style="font-size:0.85rem; margin-right:8px; font-weight:500;">${currentUser.email}</span>
           <button class="auth-btn" onclick="logout()">Logout</button>
         `;
 
-        // Auto-fill Name from Google Account
+        // Auto-fill Name from Google Profile
         if (currentUser.user_metadata && currentUser.user_metadata.full_name) {
           document.getElementById('customer_name').value = currentUser.user_metadata.full_name;
         }
 
-        // Fetch Order History
+        // Fetch Previous Order History
         loadOrderHistory(currentUser.id);
       }
     }
 
-    // Save Order to Supabase
+    // Order Submission Handler
     async function handleOrderSubmit(e) {
       e.preventDefault();
 
@@ -318,7 +468,7 @@
       }
     }
 
-    // Load User's Past Orders
+    // Fetch and Display Order History
     async function loadOrderHistory(userId) {
       const { data: orders, error } = await supabase
         .from('orders')
@@ -335,7 +485,7 @@
           <div class="order-item">
             <strong>Order ID:</strong> ${o.id.substring(0, 8)}...<br>
             <strong>Quantity:</strong> ${o.quantity} bottle(s) | <strong>Total:</strong> ₹${o.total_price}<br>
-            <small style="color:#666;">Date: ${new Date(o.created_at).toLocaleDateString()}</small>
+            <small style="color:var(--text-muted);">Date: ${new Date(o.created_at).toLocaleDateString()}</small>
           </div>
         `).join('');
       }
