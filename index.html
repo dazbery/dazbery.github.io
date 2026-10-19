@@ -260,7 +260,7 @@
       border-radius: 8px;
     }
 
-    /* Login & Account Styles */
+    /* Auth Modal / Card Styles */
     .auth-card {
       max-width: 420px;
       margin: 20px auto;
@@ -272,6 +272,10 @@
     }
     .auth-card h2 { font-size: 20px; font-weight: 700; margin-bottom: 6px; color: var(--text-main); }
     .auth-card p { font-size: 12px; color: var(--text-muted); margin-bottom: 20px; }
+
+    .auth-tabs { display: flex; border-bottom: 1px solid var(--border-color); margin-bottom: 20px; }
+    .auth-tab { flex: 1; padding: 10px; font-size: 12px; font-weight: 600; cursor: pointer; color: var(--text-muted); border-bottom: 2px solid transparent; }
+    .auth-tab.active { color: var(--text-main); border-bottom: 2px solid var(--text-main); }
 
     /* Sections */
     .section-title { font-size: 18px; font-weight: 700; margin: 40px 0 16px; }
@@ -498,9 +502,26 @@
       
       <!-- Signup / Create Profile Card -->
       <div class="auth-card" id="loginCard">
-        <h2>Create Account / Profile</h2>
-        <p>Sign up with your Gmail to save your delivery address for fast checkout.</p>
-        <form onsubmit="handleSignup(event)" style="display: flex; flex-direction: column; gap: 10px;">
+        <h2>Account Login / Register</h2>
+        <p>Sign in using Mobile Phone OTP or Gmail address to save your delivery profile.</p>
+
+        <div class="auth-tabs">
+          <div class="auth-tab active" id="tabPhone" onclick="switchAuthTab('phone')">Mobile OTP</div>
+          <div class="auth-tab" id="tabGmail" onclick="switchAuthTab('gmail')">Gmail Account</div>
+        </div>
+
+        <!-- Phone OTP Form View -->
+        <form id="phoneAuthForm" onsubmit="handleSendOtp(event)" style="display: flex; flex-direction: column; gap: 10px;">
+          <div class="form-group"><input type="tel" id="sPhoneInput" placeholder="Mobile / WhatsApp Number (10 digits)" required></div>
+          <div id="otpBox" style="display: none;" class="form-group">
+            <input type="text" id="sOtpInput" placeholder="Enter 6-digit OTP code">
+            <p style="font-size: 10px; color: var(--text-muted); margin-top: 4px;">Demo OTP is set to: <strong>123456</strong></p>
+          </div>
+          <button type="submit" id="btnOtpAction" class="btn-apply" style="width: 100%; padding: 12px; margin-top: 6px;">SEND OTP CODE</button>
+        </form>
+
+        <!-- Gmail Sign-in Form View -->
+        <form id="gmailAuthForm" onsubmit="handleSignup(event)" style="display: none; flex-direction: column; gap: 10px;">
           <div class="form-group"><input type="email" id="sEmail" placeholder="Gmail Address" required></div>
           <div class="form-group"><input type="text" id="sName" placeholder="Full Name" required></div>
           <div class="form-group"><input type="tel" id="sPhone" placeholder="Mobile / WhatsApp Number" required></div>
@@ -545,6 +566,7 @@
     let currentQty = 1;
     let cartCount = 0;
     let isDiscountApplied = false;
+    let otpSentState = false;
 
     function showToast(message) {
       const toast = document.getElementById('toastNotification');
@@ -609,9 +631,9 @@
       if(page === 'shop') {
         document.getElementById('shopPage').classList.add('active');
         if(userProfile) {
-          document.getElementById('checkoutName').value = userProfile.name;
-          document.getElementById('checkoutPhone').value = userProfile.phone;
-          document.getElementById('checkoutAddress').value = userProfile.address;
+          document.getElementById('checkoutName').value = userProfile.name || '';
+          document.getElementById('checkoutPhone').value = userProfile.phone || '';
+          document.getElementById('checkoutAddress').value = userProfile.address || '';
         }
       } else if(page === 'login') {
         document.getElementById('loginPage').classList.add('active');
@@ -620,6 +642,59 @@
         renderCart();
       }
       window.scrollTo(0, 0);
+    }
+
+    function switchAuthTab(tab) {
+      document.getElementById('tabPhone').classList.remove('active');
+      document.getElementById('tabGmail').classList.remove('active');
+      
+      if(tab === 'phone') {
+        document.getElementById('tabPhone').classList.add('active');
+        document.getElementById('phoneAuthForm').style.display = 'flex';
+        document.getElementById('gmailAuthForm').style.display = 'none';
+      } else {
+        document.getElementById('tabGmail').classList.add('active');
+        document.getElementById('phoneAuthForm').style.display = 'none';
+        document.getElementById('gmailAuthForm').style.display = 'flex';
+      }
+    }
+
+    function handleSendOtp(e) {
+      e.preventDefault();
+      const phone = document.getElementById('sPhoneInput').value.trim();
+      
+      if(!otpSentState) {
+        if(phone.length < 10) {
+          showToast('❌ Enter valid 10-digit mobile number');
+          return;
+        }
+        otpSentState = true;
+        document.getElementById('otpBox').style.display = 'block';
+        document.getElementById('btnOtpAction').innerText = 'VERIFY OTP & LOGIN';
+        showToast('✓ OTP Sent to ' + phone);
+      } else {
+        const otpVal = document.getElementById('sOtpInput').value.trim();
+        if(otpVal === '123456' || otpVal.length === 6) {
+          userProfile = {
+            email: phone + '@phone.dazbery',
+            name: 'Customer (' + phone.slice(-4) + ')',
+            phone: phone,
+            address: ''
+          };
+          
+          document.getElementById('userEmailDisplay').innerText = 'Logged in via Mobile: ' + phone;
+          document.getElementById('userAddressDisplay').innerText = 'Please complete your address on checkout page.';
+          
+          document.getElementById('loginCard').style.display = 'none';
+          document.getElementById('dashboardCard').style.display = 'block';
+          document.getElementById('navAccountText').innerText = 'My Account';
+
+          showToast('✓ Logged in successfully!');
+          switchPage('shop');
+        } else {
+          showToast('❌ Incorrect OTP code');
+        }
+      }
     }
 
     function addToCart() {
@@ -681,6 +756,7 @@
 
     function handleLogout() {
       userProfile = null;
+      otpSentState = false;
       document.getElementById('dashboardCard').style.display = 'none';
       document.getElementById('loginCard').style.display = 'block';
       document.getElementById('navAccountText').innerText = 'Account / Login';
