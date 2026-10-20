@@ -492,7 +492,7 @@
       supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     }
 
-    let userProfile = null;
+    let currentUser = null;
     let currentQty = 1;
     let cartCount = 0;
     let isDiscountApplied = false;
@@ -618,26 +618,69 @@
       if (!supabaseClient) return;
       const { data: { session } } = await supabaseClient.auth.getSession();
       if (session) {
-        const user = session.user;
-        userProfile = {
-          id: user.id,
-          email: user.email,
-          name: user.user_metadata?.full_name || '',
-          phone: '',
-          address: ''
-        };
+        currentUser = session.user;
 
-        document.getElementById('userEmailDisplay').innerText = 'Account: ' + userProfile.email;
-        document.getElementById('profName').value = userProfile.name;
-        
+        document.getElementById('userEmailDisplay').innerText = 'Account: ' + currentUser.email;
         document.getElementById('loginCard').style.display = 'none';
         document.getElementById('dashboardCard').style.display = 'block';
         document.getElementById('navAccountText').innerText = 'My Account';
 
-        document.getElementById('checkoutName').value = userProfile.name;
+        // Load profile and orders from Supabase Database
+        await loadUserProfile(currentUser.id);
+        fetchUserOrders(currentUser.id);
+      }
+    }
 
-        // Fetch Order History for this user
-        fetchUserOrders(user.id);
+    async function loadUserProfile(userId) {
+      const { data, error } = await supabaseClient
+        .from('profiles')
+        .select('*')
+        .eq('id', userId)
+        .single();
+
+      if (data) {
+        document.getElementById('profName').value = data.full_name || '';
+        document.getElementById('profPhone').value = data.phone || '';
+        document.getElementById('profAddress').value = data.address || '';
+
+        // Auto fill checkout fields on product page
+        document.getElementById('checkoutName').value = data.full_name || '';
+        document.getElementById('checkoutPhone').value = data.phone || '';
+        document.getElementById('checkoutAddress').value = data.address || '';
+      } else {
+        // Fallback Google account name
+        document.getElementById('profName').value = currentUser.user_metadata?.full_name || '';
+        document.getElementById('checkoutName').value = currentUser.user_metadata?.full_name || '';
+      }
+    }
+
+    async function saveProfileDetails(e) {
+      e.preventDefault();
+      if(!currentUser) return;
+
+      const name = document.getElementById('profName').value;
+      const phone = document.getElementById('profPhone').value;
+      const address = document.getElementById('profAddress').value;
+
+      const { error } = await supabaseClient
+        .from('profiles')
+        .upsert({
+          id: currentUser.id,
+          full_name: name,
+          phone: phone,
+          address: address,
+          updated_at: new Date()
+        });
+
+      if (error) {
+        showToast('❌ Failed to save profile: ' + error.message);
+      } else {
+        document.getElementById('checkoutName').value = name;
+        document.getElementById('checkoutPhone').value = phone;
+        document.getElementById('checkoutAddress').value = address;
+
+        showToast('✓ Profile permanently saved to database!');
+        switchPage('shop');
       }
     }
 
@@ -666,25 +709,9 @@
       historyList.innerHTML = html;
     }
 
-    function saveProfileDetails(e) {
-      e.preventDefault();
-      if(userProfile) {
-        userProfile.name = document.getElementById('profName').value;
-        userProfile.phone = document.getElementById('profPhone').value;
-        userProfile.address = document.getElementById('profAddress').value;
-
-        document.getElementById('checkoutName').value = userProfile.name;
-        document.getElementById('checkoutPhone').value = userProfile.phone;
-        document.getElementById('checkoutAddress').value = userProfile.address;
-
-        showToast('✓ Profile saved! Form auto-filled.');
-        switchPage('shop');
-      }
-    }
-
     async function handleLogout() {
       if (supabaseClient) await supabaseClient.auth.signOut();
-      userProfile = null;
+      currentUser = null;
       document.getElementById('dashboardCard').style.display = 'none';
       document.getElementById('loginCard').style.display = 'block';
       document.getElementById('navAccountText').innerText = 'Account / Login';
