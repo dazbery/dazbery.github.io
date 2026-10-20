@@ -340,7 +340,7 @@
   <div class="container">
 
     <!-- SHOP / PRODUCT PAGE -->
-    <div id="shopPage" class="page-section active">
+    <div id="shopPage" class="page-section">
       <div class="hero-card" id="product">
         <div class="product-gallery">
           <span class="badge-tag">BEST SELLER</span>
@@ -375,7 +375,10 @@
           <form class="order-form" id="orderForm" onsubmit="handleOrder(event)">
             <div class="form-group"><input type="text" id="checkoutName" placeholder="Full Name" required></div>
             <div class="form-group"><input type="tel" id="checkoutPhone" placeholder="Mobile / WhatsApp Number" required></div>
-            <div class="form-group"><textarea id="checkoutAddress" placeholder="Delivery Address with PIN code" rows="2" required></textarea></div>
+            <div class="form-group"><textarea id="checkoutAddress" placeholder="House/Flat No, Street Name" rows="2" required></textarea></div>
+            <div class="form-group"><input type="text" id="checkoutPin" placeholder="6-Digit PIN Code" maxlength="6" oninput="fetchLocationByPin(this.value)" required></div>
+            <div class="form-group"><input type="text" id="checkoutCity" placeholder="City / District" required></div>
+            <div class="form-group"><input type="text" id="checkoutState" placeholder="State" required></div>
             
             <div class="btn-group">
               <button type="button" class="btn-cart" onclick="addToCart()">Add to Cart</button>
@@ -437,7 +440,7 @@
     </div>
 
     <!-- GOOGLE SIGN-IN & PROFILE PAGE -->
-    <div id="loginPage" class="page-section">
+    <div id="loginPage" class="page-section active">
       
       <div class="auth-card" id="loginCard">
         <h2>Customer Sign In</h2>
@@ -456,7 +459,10 @@
         <form onsubmit="saveProfileDetails(event)" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px;">
           <div class="form-group"><input type="text" id="profName" placeholder="Full Name" required></div>
           <div class="form-group"><input type="tel" id="profPhone" placeholder="Mobile / WhatsApp Number" required></div>
-          <div class="form-group"><textarea id="profAddress" placeholder="Saved Delivery Address with PIN code" rows="2" required></textarea></div>
+          <div class="form-group"><textarea id="profAddress" placeholder="House/Flat No, Street Name" rows="2" required></textarea></div>
+          <div class="form-group"><input type="text" id="profPin" placeholder="6-Digit PIN Code" maxlength="6" oninput="fetchProfileLocation(this.value)" required></div>
+          <div class="form-group"><input type="text" id="profCity" placeholder="City / District" required></div>
+          <div class="form-group"><input type="text" id="profState" placeholder="State" required></div>
           <button type="submit" class="btn-apply" style="width: 100%;">SAVE PROFILE DETAILS</button>
         </form>
 
@@ -631,6 +637,38 @@
       }
     }
 
+    async function fetchProfileLocation(pin) {
+      if (pin.length === 6) {
+        try {
+          let response = await fetch(`https://api.postalpincode.in/pincode/${pin}`);
+          let data = await response.json();
+          if (data[0].Status === "Success") {
+            let details = data[0].PostOffice[0];
+            document.getElementById('profCity').value = details.District;
+            document.getElementById('profState').value = details.State;
+          }
+        } catch (e) {
+          console.log("PIN fetch error");
+        }
+      }
+    }
+
+    async function fetchLocationByPin(pin) {
+      if (pin.length === 6) {
+        try {
+          let response = await fetch(`https://api.postalpincode.in/pincode/${pin}`);
+          let data = await response.json();
+          if (data[0].Status === "Success") {
+            let details = data[0].PostOffice[0];
+            document.getElementById('checkoutCity').value = details.District;
+            document.getElementById('checkoutState').value = details.State;
+          }
+        } catch (e) {
+          console.log("PIN fetch error");
+        }
+      }
+    }
+
     async function loadUserProfile(userId) {
       const { data, error } = await supabaseClient
         .from('profiles')
@@ -642,11 +680,17 @@
         document.getElementById('profName').value = data.full_name || '';
         document.getElementById('profPhone').value = data.phone || '';
         document.getElementById('profAddress').value = data.address || '';
+        document.getElementById('profPin').value = data.pin || '';
+        document.getElementById('profCity').value = data.city || '';
+        document.getElementById('profState').value = data.state || '';
 
         // Auto fill checkout fields on product page
         document.getElementById('checkoutName').value = data.full_name || '';
         document.getElementById('checkoutPhone').value = data.phone || '';
         document.getElementById('checkoutAddress').value = data.address || '';
+        document.getElementById('checkoutPin').value = data.pin || '';
+        document.getElementById('checkoutCity').value = data.city || '';
+        document.getElementById('checkoutState').value = data.state || '';
       } else {
         // Fallback Google account name
         document.getElementById('profName').value = currentUser.user_metadata?.full_name || '';
@@ -661,6 +705,9 @@
       const name = document.getElementById('profName').value;
       const phone = document.getElementById('profPhone').value;
       const address = document.getElementById('profAddress').value;
+      const pin = document.getElementById('profPin').value;
+      const city = document.getElementById('profCity').value;
+      const state = document.getElementById('profState').value;
 
       const { error } = await supabaseClient
         .from('profiles')
@@ -669,6 +716,9 @@
           full_name: name,
           phone: phone,
           address: address,
+          pin: pin,
+          city: city,
+          state: state,
           updated_at: new Date()
         });
 
@@ -678,9 +728,12 @@
         document.getElementById('checkoutName').value = name;
         document.getElementById('checkoutPhone').value = phone;
         document.getElementById('checkoutAddress').value = address;
+        document.getElementById('checkoutPin').value = pin;
+        document.getElementById('checkoutCity').value = city;
+        document.getElementById('checkoutState').value = state;
 
-        showToast('✓ Profile permanently saved to database!');
-        switchPage('shop');
+        showToast('✓ Profile saved successfully! Redirecting to Shop...');
+        setTimeout(() => { switchPage('shop'); }, 1000);
       }
     }
 
@@ -702,7 +755,7 @@
         html += `
           <div class="order-history-item">
             <strong>Qty:</strong> ${order.quantity} | <strong>Total:</strong> ₹${order.total_price}<br>
-            <strong>Address:</strong> ${order.address}
+            <strong>Address:</strong> ${order.address}, ${order.city} - ${order.pin}
           </div>
         `;
       });
@@ -719,8 +772,12 @@
       document.getElementById('checkoutName').value = '';
       document.getElementById('checkoutPhone').value = '';
       document.getElementById('checkoutAddress').value = '';
+      document.getElementById('checkoutPin').value = '';
+      document.getElementById('checkoutCity').value = '';
+      document.getElementById('checkoutState').value = '';
       
       showToast('✓ Logged out successfully');
+      switchPage('login');
     }
 
     async function handleOrder(e) {
@@ -728,6 +785,9 @@
       const name = document.getElementById('checkoutName').value;
       const phone = document.getElementById('checkoutPhone').value;
       const address = document.getElementById('checkoutAddress').value;
+      const pin = document.getElementById('checkoutPin').value;
+      const city = document.getElementById('checkoutCity').value;
+      const state = document.getElementById('checkoutState').value;
       const finalPrice = isDiscountApplied ? (currentQty * 299) : (currentQty * 599);
 
       if (supabaseClient) {
@@ -738,7 +798,7 @@
             user_id: session ? session.user.id : null,
             customer_name: name,
             phone: phone,
-            address: address,
+            address: address + ', ' + city + ' - ' + pin + ', ' + state,
             quantity: currentQty,
             total_price: finalPrice
           }
@@ -747,27 +807,6 @@
 
       showToast('✓ Order Placed Successfully!');
       alert(`Order Confirmed for ₹${finalPrice}! Order details saved.`);
-    }
-
-    function submitUserReview(e) {
-      e.preventDefault();
-      const name = document.getElementById('rName').value;
-      const text = document.getElementById('rText').value;
-
-      const grid = document.getElementById('reviewsGrid');
-      const newDiv = document.createElement('div');
-      newDiv.className = 'review-item';
-      newDiv.innerHTML = `
-        <div class="review-header"><span class="review-user">${name}</span><span class="verified-badge">✔ Verified</span></div>
-        <div class="stars">★★★★★</div>
-        <div class="review-text">${text}</div>
-      `;
-      grid.prepend(newDiv);
-
-      showToast('✓ Review submitted!');
-      document.getElementById('rName').value = '';
-      document.getElementById('rOrder').value = '';
-      document.getElementById('rText').value = '';
     }
 
     window.addEventListener('DOMContentLoaded', () => {
