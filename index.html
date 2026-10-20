@@ -588,7 +588,9 @@
       }
       const { error } = await supabaseClient.auth.signInWithOAuth({
         provider: 'google',
-        options: { redirectTo: 'https://dazbery.com' }
+        options: { 
+          redirectTo: window.location.origin + '/' 
+        }
       });
       if (error) showToast('❌ Login Error: ' + error.message);
     }
