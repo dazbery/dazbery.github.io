@@ -254,7 +254,7 @@
     }
 
     .auth-card {
-      max-width: 420px;
+      max-width: 480px;
       margin: 20px auto;
       background: var(--surface);
       padding: 30px;
@@ -282,6 +282,20 @@
       transition: background 0.2s;
     }
     .google-btn:hover { background: #f8f8f8; }
+
+    .order-history-box {
+      margin-top: 20px;
+      text-align: left;
+      border-top: 1px solid var(--border-color);
+      padding-top: 16px;
+    }
+    .order-history-item {
+      background: #f9f9f9;
+      padding: 10px;
+      border-radius: 6px;
+      margin-bottom: 8px;
+      font-size: 12px;
+    }
 
     .section-title { font-size: 18px; font-weight: 700; margin: 40px 0 16px; }
     
@@ -446,7 +460,12 @@
           <button type="submit" class="btn-apply" style="width: 100%;">SAVE PROFILE DETAILS</button>
         </form>
 
-        <button onclick="handleLogout()" class="btn-apply" style="background: #dc2626; width: 100%;">LOGOUT</button>
+        <div class="order-history-box">
+          <h3 style="font-size: 14px; font-weight: 700; margin-bottom: 8px;">Your Order History</h3>
+          <div id="orderHistoryList"><p style="font-size: 12px; color: var(--text-muted);">Loading past orders...</p></div>
+        </div>
+
+        <button onclick="handleLogout()" class="btn-apply" style="background: #dc2626; width: 100%; margin-top: 16px;">LOGOUT</button>
       </div>
 
     </div>
@@ -616,7 +635,35 @@
         document.getElementById('navAccountText').innerText = 'My Account';
 
         document.getElementById('checkoutName').value = userProfile.name;
+
+        // Fetch Order History for this user
+        fetchUserOrders(user.id);
       }
+    }
+
+    async function fetchUserOrders(userId) {
+      const historyList = document.getElementById('orderHistoryList');
+      const { data, error } = await supabaseClient
+        .from('orders')
+        .select('*')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false });
+
+      if (error || !data || data.length === 0) {
+        historyList.innerHTML = `<p style="font-size: 12px; color: var(--text-muted);">No past orders found.</p>`;
+        return;
+      }
+
+      let html = '';
+      data.forEach(order => {
+        html += `
+          <div class="order-history-item">
+            <strong>Qty:</strong> ${order.quantity} | <strong>Total:</strong> ₹${order.total_price}<br>
+            <strong>Address:</strong> ${order.address}
+          </div>
+        `;
+      });
+      historyList.innerHTML = html;
     }
 
     function saveProfileDetails(e) {
