@@ -1,814 +1,877 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>DAZBERY | 3D Haircare Store</title>
-<meta name="theme-color" content="#f7e9ed">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<style>
-:root{--pink:#f2d5df;--pink2:#f9edf1;--ink:#292126;--muted:#766a70;--line:#eadde2;--white:#fff;--green:#516b57}
-*{box-sizing:border-box}
-html,body{margin:0;min-height:100%;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:#fff}
-button,input,textarea,select{font:inherit}
-button{cursor:pointer}
-.topbar{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px}
-.brand{font-weight:850;letter-spacing:4px;font-size:18px}
-.tagline{font-size:10px;color:var(--muted);letter-spacing:1.5px;margin-top:3px}
-.top-actions{display:flex;gap:8px;align-items:center}
-.btn{border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 14px;font-size:12px;font-weight:750;color:var(--ink)}
-.btn.dark{background:var(--ink);color:#fff;border-color:var(--ink)}
-.btn.pink{background:var(--pink2);border-color:#e8c6d3}
-.btn:disabled{opacity:.45;cursor:not-allowed}
-.hero{padding:26px 16px 18px;background:linear-gradient(140deg,#fff 0%,#f9edf1 60%,#f4dce5 100%)}
-.eyebrow{font-size:10px;letter-spacing:2px;font-weight:800;color:#936a7a}
-.hero h1{font-size:clamp(27px,6vw,48px);line-height:1.05;letter-spacing:-1.5px;margin:10px 0}
-.hero p{color:var(--muted);font-size:13px;line-height:1.6;max-width:540px;margin:0 0 15px}
-.hero-buttons{display:flex;gap:8px;flex-wrap:wrap}
-.store-wrap{padding:14px 12px 22px;max-width:1100px;margin:auto}
-.store-heading{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:6px 4px 12px}
-.store-heading h2{font-size:17px;margin:0}
-.store-heading p{font-size:11px;color:var(--muted);margin:4px 0 0}
-#sceneWrap{height:min(58vh,510px);min-height:320px;border-radius:18px;overflow:hidden;background:#e9e0e2;position:relative;border:1px solid #e4d5dc;box-shadow:0 10px 30px #4a263014}
-#scene{width:100%;height:100%;display:block;touch-action:none}
-.scene-label{position:absolute;left:12px;top:12px;background:#ffffffdb;border:1px solid #ffffffa8;border-radius:12px;padding:9px 11px;font-size:11px;backdrop-filter:blur(8px);max-width:70%}
-.scene-label strong{display:block;font-size:12px}
-.scene-label span{color:var(--muted)}
-.scene-help{position:absolute;right:10px;top:10px;background:#ffffffd9;border-radius:10px;padding:7px 9px;font-size:10px;color:#51464b}
-.joystick{position:absolute;left:14px;bottom:16px;width:94px;height:94px;border-radius:50%;background:#ffffff78;border:1px solid #ffffffd9;display:grid;place-items:center;touch-action:none;user-select:none}
-.joy-knob{width:39px;height:39px;border-radius:50%;background:#fff;border:1px solid #d9c4ce;box-shadow:0 2px 8px #0001;position:absolute;left:27px;top:27px}
-.look-hint{position:absolute;right:12px;bottom:17px;background:#ffffffc9;padding:8px 10px;border-radius:10px;font-size:10px}
-.products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:16px}
-.product{border:1px solid var(--line);border-radius:15px;padding:12px;background:white;min-width:0}
-.prod-visual{height:128px;border-radius:11px;background:linear-gradient(145deg,#fcf5f7,#f2e2e8);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
-.bottle{width:52px;height:85px;border-radius:8px 8px 11px 11px;background:linear-gradient(90deg,#e8c8d4,#f8e8ee 48%,#dfb8c7);border:1px solid #d7b2c1;box-shadow:8px 8px 12px #6b3e4c12;position:relative}
-.bottle:before{content:"";position:absolute;width:22px;height:16px;top:-15px;left:14px;border-radius:4px 4px 1px 1px;background:#c6b9bc;border:1px solid #b9a9ae}
-.bottle:after{content:"DAZBERY";position:absolute;top:32px;left:0;right:0;text-align:center;font-size:6px;font-weight:900;letter-spacing:1px;color:#5d414b}
-.bottle.spray{height:91px;width:46px;background:linear-gradient(90deg,#c9d5c4,#edf1e8 50%,#b8c7b3)}
-.bottle.serum{height:75px;width:38px;background:linear-gradient(90deg,#e4c9a8,#fff0d9 50%,#d8b58d)}
-.bottle.conditioner{background:linear-gradient(90deg,#f1d8df,#fff0f4 50%,#e7c2d0)}
-.prod-name{font-size:12px;font-weight:800;line-height:1.35;margin:10px 0 4px}
-.prod-sub{font-size:10px;color:var(--muted);min-height:25px}
-.price-row{display:flex;justify-content:space-between;align-items:center;gap:6px;margin-top:9px}
-.price{font-size:14px;font-weight:850}
-.small-btn{border:0;border-radius:999px;background:var(--ink);color:#fff;padding:9px 11px;font-size:10px;font-weight:800}
-.section{padding:22px 16px;border-top:1px solid var(--line)}
-.section-inner{max-width:850px;margin:auto}
-.section h2{font-size:20px;margin:0 0 12px}
-.panel{border:1px solid var(--line);border-radius:16px;padding:16px;background:#fff;margin:10px 0}
-.muted{color:var(--muted);font-size:12px;line-height:1.6}
-.cart-line{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:12px}
-.cart-line:last-child{border-bottom:0}
-.qty{display:flex;gap:8px;align-items:center}
-.qty button{width:27px;height:27px;border-radius:50%;border:1px solid var(--line);background:#fff}
-.field{display:block;width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;margin:7px 0 12px;background:#fff;font-size:13px}
-.field-label{font-size:11px;font-weight:800}
-.total{font-size:20px;font-weight:900}
-.pay-options{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
-.pay-option{border:1px solid var(--line);border-radius:10px;padding:11px;font-size:12px;display:flex;gap:8px;align-items:center}
-.pay-option:has(input:checked){background:var(--pink2);border-color:#d5a9ba}
-footer{text-align:center;background:#fbf6f8;padding:24px 16px;color:var(--muted);font-size:11px;line-height:1.7}
-.modal-backdrop{display:none;position:fixed;inset:0;background:#21161bc2;z-index:50;align-items:flex-end;justify-content:center;padding:12px}
-.modal-backdrop.show{display:flex}
-.modal{background:#fff;border-radius:20px 20px 14px 14px;padding:20px;width:min(100%,520px);max-height:88vh;overflow:auto}
-.modal-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
-.modal h3{margin:0;font-size:19px}
-.close{border:0;background:#f7edf1;border-radius:50%;width:34px;height:34px;font-size:18px}
-.toast{position:fixed;z-index:80;left:50%;bottom:22px;transform:translate(-50%,120px);opacity:0;transition:.25s;background:#282027;color:#fff;padding:12px 16px;border-radius:999px;font-size:12px;max-width:90%;text-align:center}
-.toast.show{transform:translate(-50%,0);opacity:1}
-@media(min-width:700px){
-.hero{padding:42px max(24px,calc((100vw - 1000px)/2))}
-.store-wrap{padding:20px 24px 34px}
-.products{grid-template-columns:repeat(4,minmax(0,1fr))}
-.prod-visual{height:150px}
-.section{padding:32px 24px}
-.modal-backdrop{align-items:center}
-.modal{border-radius:20px}
-.topbar{padding:14px 28px}
-}
-</style>
-</head>
-<body>
-<header class="topbar">
- <div>
-  <div class="brand">DAZBERY</div>
-  <div class="tagline">HAIRCARE • NATURALLY YOURS</div>
- </div>
- <div class="top-actions">
-  <button class="btn" id="signinBtn">Sign in</button>
-  <button class="btn dark" id="cartBtn">Bag <span id="cartCount">0</span></button>
- </div>
-</header>
-
-<section class="hero">
- <div class="eyebrow">WELCOME TO THE DAZBERY STORE</div>
- <h1>Healthy hair.<br>Happier you.</h1>
- <p>Explore our haircare collection inside a little 3D DAZBERY boutique. Look around, browse the shelf, and add your favourites to your bag.</p>
- <div class="hero-buttons">
-  <button class="btn dark" onclick="document.getElementById('store').scrollIntoView({behavior:'smooth'})">Enter the 3D store ↘</button>
-  <button class="btn" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">Shop products</button>
- </div>
-</section>
-
-<main>
-<section class="store-wrap" id="store">
- <div class="store-heading">
-  <div>
-   <h2>Explore the store</h2>
-   <p>Drag to look around • Use the joystick to move</p>
-  </div>
-  <button class="btn" id="resetView">Reset view</button>
- </div>
-
- <div id="sceneWrap">
-  <canvas id="scene" aria-label="Interactive 3D DAZBERY store"></canvas>
-  <div class="scene-label">
-   <strong>DAZBERY Haircare Boutique</strong>
-   <span>Tap a product on the shelf to shop</span>
-  </div>
-  <div class="scene-help">360° LOOK</div>
-  <div class="joystick" id="joystick"><div class="joy-knob" id="joyKnob"></div></div>
-  <div class="look-hint">Swipe to look around</div>
- </div>
-
- <div class="products" id="products"></div>
-</section>
-
-<section class="section" id="checkout">
- <div class="section-inner">
-  <h2>Your shopping bag</h2>
-  <p class="muted">Review your items before checkout.</p>
-  <div class="panel" id="cartPanel"></div>
-
-  <div class="panel">
-   <h2 style="font-size:16px">Checkout details</h2>
-
-   <label class="field-label" for="customerName">Full name</label>
-   <input class="field" id="customerName" autocomplete="name" placeholder="Enter your full name">
-
-   <label class="field-label" for="customerPhone">Mobile number</label>
-   <input class="field" id="customerPhone" inputmode="tel" autocomplete="tel" placeholder="10-digit mobile number">
-
-   <label class="field-label" for="customerAddress">Delivery address</label>
-   <textarea class="field" id="customerAddress" rows="3" autocomplete="street-address" placeholder="House / street / town / PIN code"></textarea>
-
-   <label class="field-label" for="coupon">Scratch-card offer code (optional)</label>
-   <input class="field" id="coupon" placeholder="Try DAZBERY50">
-   <button class="btn pink" id="applyCoupon">Apply offer</button>
-
-   <p class="muted" id="couponMessage">Demo offer: DAZBERY50 shows a sample 50% discount. Do not use this as a real promotion until server-side validation is added.</p>
-
-   <div style="display:flex;justify-content:space-between;align-items:center;margin:14px 0">
-    <span class="muted">Estimated total</span>
-    <span class="total" id="total">₹0</span>
-   </div>
-
-   <div class="field-label" style="margin:14px 0 8px">Payment preference</div>
-   <div class="pay-options">
-    <label class="pay-option"><input type="radio" name="payment" value="UPI / GPay" checked> UPI / GPay</label>
-    <label class="pay-option"><input type="radio" name="payment" value="PhonePe"> PhonePe</label>
-    <label class="pay-option"><input type="radio" name="payment" value="Paytm"> Paytm</label>
-    <label class="pay-option"><input type="radio" name="payment" value="Card"> Debit / Credit card</label>
-    <label class="pay-option"><input type="radio" name="payment" value="Cash on delivery"> Cash on delivery</label>
-   </div>
-
-   <p class="muted" style="margin:10px 0">Payment is a demo selection only. No money will be charged. A verified payment gateway must be connected before accepting real online payments.</p>
-
-   <button class="btn dark" style="width:100%;padding:14px" id="placeOrder">Place demo order</button>
-  </div>
-
-  <h2 style="margin-top:24px">My orders</h2>
-  <div class="panel" id="ordersPanel">
-   <p class="muted">Your demo orders will appear here on this device.</p>
-  </div>
- </div>
-</section>
-</main>
-
-<footer>
- <strong>DAZBERY</strong><br>
- Haircare made with care.<br>
- <span>Store prototype • Prices and checkout are illustrative until connected to your live inventory and payment provider.</span>
-</footer>
-
-<div class="modal-backdrop" id="signinModal">
- <div class="modal">
-  <div class="modal-head">
-   <h3>Sign in to DAZBERY</h3>
-   <button class="close" data-close="signinModal">×</button>
-  </div>
-  <p class="muted">Use Google to sign in. This uses the Supabase project settings from your existing website.</p>
-  <button class="btn dark" style="width:100%;margin-top:12px" id="googleBtn">Continue with Google</button>
-  <p class="muted" id="authStatus"></p>
- </div>
-</div>
-
-<div class="modal-backdrop" id="scratchModal">
- <div class="modal">
-  <div class="modal-head">
-   <h3>Your surprise offer</h3>
-   <button class="close" data-close="scratchModal">×</button>
-  </div>
-  <p class="muted">Tap the card to reveal the demo offer.</p>
-  <button id="scratchCard" style="width:100%;height:140px;margin-top:12px;border:0;border-radius:15px;background:linear-gradient(135deg,#d7b0c0,#f8e7ee);font-weight:900;font-size:20px;color:#4a303b">SCRATCH TO REVEAL ✦</button>
-  <p class="muted" id="scratchResult"></p>
- </div>
-</div>
-
-<div class="toast" id="toast"></div>
-
-<script type="module">
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
-
-const PRODUCTS=[
- {id:'shampoo',name:'Rosemary & Rice Water Shampoo',size:'200 ml',price:499,type:'shampoo',desc:'Gentle everyday hair cleansing'},
- {id:'conditioner',name:'Rosemary & Rice Water Conditioner',size:'150 g',price:449,type:'conditioner',desc:'Softness and smooth-feeling hair'},
- {id:'serum',name:'Hair Growth Serum',size:'30 ml',price:599,type:'serum',desc:'Targeted scalp-care routine'},
- {id:'spray',name:'Rosemary & Rice Water Hair Growth Spray',size:'100 ml',price:599,type:'spray',desc:'Lightweight leave-in scalp care'}
-];
-
-const SUPABASE_URL='https://cccpqyfbwofkfydcacxo.supabase.co';
-const SUPABASE_ANON_KEY='sb_publishable_j5jnvFhMmUHaRarHJ_s2LQ_m_TM8ecT';
-
-let supabaseClient=null;
-let session=null;
-let cart={},discount=0,couponApplied=false;
-
-try{
- if(window.supabase?.createClient){
-  supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
-  supabaseClient.auth.getSession().then(({data})=>{
-   session=data.session;
-   updateSignIn();
-  }).catch(()=>{});
-  supabaseClient.auth.onAuthStateChange((_event,s)=>{
-   session=s;
-   updateSignIn();
-  });
- }
-}catch(e){
- console.warn('Supabase auth setup:',e);
-}
-
-const money=n=>'₹'+Math.round(n).toLocaleString('en-IN');
-const $=id=>document.getElementById(id);
-
-function toast(msg){
- const el=$('toast');
- el.textContent=msg;
- el.classList.add('show');
- clearTimeout(window._toastTimer);
- window._toastTimer=setTimeout(()=>el.classList.remove('show'),2500);
-}
-
-function getSubtotal(){
- return PRODUCTS.reduce((sum,p)=>sum+p.price*(cart[p.id]||0),0);
-}
-
-function getTotal(){
- return Math.max(0,getSubtotal()*(1-discount));
-}
-
-function updateCount(){
- $('cartCount').textContent=Object.values(cart).reduce((a,b)=>a+b,0);
-}
-
-function renderProducts(){
- $('products').innerHTML=PRODUCTS.map(p=>`
- <article class="product">
-  <div class="prod-visual"><div class="bottle ${p.type}"></div></div>
-  <div class="prod-name">${p.name}</div>
-  <div class="prod-sub">${p.size} · ${p.desc}</div>
-  <div class="price-row">
-   <span class="price">${money(p.price)}</span>
-   <button class="small-btn" data-add="${p.id}">ADD +</button>
-  </div>
- </article>`).join('');
-
- $('products').querySelectorAll('[data-add]').forEach(b=>{
-  b.addEventListener('click',()=>addToCart(b.dataset.add));
- });
-}
-
-function addToCart(id){
- cart[id]=(cart[id]||0)+1;
- updateCount();
- renderCart();
- toast('Added to your bag');
-}
-
-function renderCart(){
- const entries=PRODUCTS.filter(p=>cart[p.id]);
-
- if(!entries.length){
-  $('cartPanel').innerHTML='<p class="muted">Your bag is empty. Add a product from the shelf to get started.</p>';
- }else{
-  $('cartPanel').innerHTML=entries.map(p=>`
-   <div class="cart-line">
-    <div>
-     <strong>${p.name}</strong>
-     <div class="muted">${p.size} · ${money(p.price)} each</div>
-    </div>
-    <div class="qty">
-     <button data-minus="${p.id}" aria-label="Decrease quantity">−</button>
-     <strong>${cart[p.id]}</strong>
-     <button data-plus="${p.id}" aria-label="Increase quantity">+</button>
-    </div>
-   </div>`).join('')+`
-   <div style="display:flex;justify-content:space-between;margin-top:12px">
-    <span class="muted">Subtotal</span><strong>${money(getSubtotal())}</strong>
-   </div>`;
- }
-
- $('cartPanel').querySelectorAll('[data-minus]').forEach(b=>{
-  b.onclick=()=>{
-   const id=b.dataset.minus;
-   cart[id]--;
-   if(cart[id]<=0)delete cart[id];
-   updateCount();
-   renderCart();
-  };
- });
-
- $('cartPanel').querySelectorAll('[data-plus]').forEach(b=>{
-  b.onclick=()=>addToCart(b.dataset.plus);
- });
-
- $('total').textContent=money(getTotal());
- updateCount();
-}
-
-function updateSignIn(){
- $('signinBtn').textContent=session?.user?'Account':'Sign in';
- $('authStatus').textContent=session?.user
-  ?`Signed in as ${session.user.email||'Google user'}`
-  :'';
-}
-
-$('cartBtn').onclick=()=>$('checkout').scrollIntoView({behavior:'smooth'});
-
-$('signinBtn').onclick=()=>{
- $('signinModal').classList.add('show');
-};
-
-document.querySelectorAll('[data-close]').forEach(b=>{
- b.onclick=()=>$(b.dataset.close).classList.remove('show');
-});
-
-$('googleBtn').onclick=async()=>{
- if(!supabaseClient){
-  toast('Sign-in service could not load');
-  return;
- }
- try{
-  const {error}=await supabaseClient.auth.signInWithOAuth({
-   provider:'google',
-   options:{redirectTo:window.location.origin+window.location.pathname}
-  });
-  if(error)throw error;
- }catch(e){
-  $('authStatus').textContent=e.message||'Could not start Google sign-in.';
- }
-};
-
-$('applyCoupon').onclick=()=>{
- const code=$('coupon').value.trim().toUpperCase();
- if(code==='DAZBERY50'){
-  discount=.5;
-  couponApplied=true;
-  $('couponMessage').textContent='Demo code applied: 50% sample discount. Server-side validation is required for a real store.';
-  toast('Demo offer applied');
- }else{
-  discount=0;
-  couponApplied=false;
-  $('couponMessage').textContent='Code not recognised. Try DAZBERY50 for the demo.';
-  toast('Offer code not recognised');
- }
- renderCart();
-};
-
-$('scratchCard').onclick=()=>{
- $('scratchCard').textContent='DAZBERY50 · 50% OFF';
- discount=.5;
- couponApplied=true;
- $('coupon').value='DAZBERY50';
- $('scratchResult').textContent='Demo offer revealed and applied to this prototype checkout.';
- renderCart();
-};
-
-$('placeOrder').onclick=()=>{
- if(!Object.keys(cart).length){
-  toast('Please add a product first');
-  return;
- }
-
- const name=$('customerName').value.trim();
- const phone=$('customerPhone').value.trim();
- const address=$('customerAddress').value.trim();
-
- if(!name||!phone||!address){
-  toast('Please enter your name, mobile and address');
-  return;
- }
-
- if(!/^[0-9+\-\s]{10,15}$/.test(phone)){
-  toast('Please check your mobile number');
-  return;
- }
-
- const payment=document.querySelector('input[name="payment"]:checked')?.value||'UPI / GPay';
-
- const order={
-  id:'DZ-'+Date.now().toString().slice(-8),
-  date:new Date().toLocaleString('en-IN'),
-  items:PRODUCTS.filter(p=>cart[p.id]).map(p=>({
-   name:p.name,qty:cart[p.id],price:p.price
-  })),
-  total:getTotal(),
-  payment,
-  status:'Demo order · payment not processed',
-  name,phone,address
- };
-
- const old=JSON.parse(localStorage.getItem('dazbery_demo_orders')||'[]');
- old.unshift(order);
- localStorage.setItem('dazbery_demo_orders',JSON.stringify(old.slice(0,10)));
-
- renderOrders();
- cart={};
- discount=0;
- couponApplied=false;
- $('coupon').value='';
- $('couponMessage').textContent='Demo offer: DAZBERY50 shows a sample 50% discount.';
- renderCart();
- toast('Demo order saved on this device');
- $('ordersPanel').scrollIntoView({behavior:'smooth',block:'center'});
-};
-
-function renderOrders(){
- const orders=JSON.parse(localStorage.getItem('dazbery_demo_orders')||'[]');
-
- $('ordersPanel').innerHTML=orders.length
- ?orders.map(o=>`
-  <div class="cart-line">
-   <div>
-    <strong>${o.id}</strong>
-    <div class="muted">
-     ${o.date}<br>
-     ${o.items.map(i=>`${i.name} × ${i.qty}`).join('<br>')}<br>
-     ${o.payment} · ${o.status}
-    </div>
-   </div>
-   <strong>${money(o.total)}</strong>
-  </div>`).join('')
- :'<p class="muted">Your demo orders will appear here on this device.</p>';
-}
-
-renderProducts();
-renderCart();
-renderOrders();
-    /* 3D DAZBERY boutique */
-const canvas=$('scene');
-const wrap=$('sceneWrap');
-
-let renderer,scene,camera,storeGroup;
-let lookYaw=0,lookPitch=.06;
-let moveX=0,moveZ=0,playerX=0,playerZ=3.8;
-const clickable=[];
-
-function material(color,roughness=.8){
- return new THREE.MeshStandardMaterial({color,roughness});
-}
-
-function box(w,h,d,color,x,y,z,group=storeGroup){
- const m=new THREE.Mesh(
-  new THREE.BoxGeometry(w,h,d),
-  material(color)
- );
- m.position.set(x,y,z);
- group.add(m);
- return m;
-}
-
-function labelTexture(lines){
- const c=document.createElement('canvas');
- c.width=512;
- c.height=512;
- const ctx=c.getContext('2d');
-
- ctx.fillStyle='#fff8fa';
- ctx.fillRect(0,0,512,512);
-
- ctx.fillStyle='#4a303b';
- ctx.textAlign='center';
- ctx.font='bold 38px Arial';
- ctx.fillText('DAZBERY',256,210);
-
- ctx.font='24px Arial';
- lines.forEach((t,i)=>{
-  ctx.fillText(t,256,260+i*35);
- });
-
- return new THREE.CanvasTexture(c);
-}
-
-function makeProduct(p,x,y,z,scale=1){
- const g=new THREE.Group();
- g.position.set(x,y,z);
- g.scale.setScalar(scale);
- storeGroup.add(g);
-
- const colors={
-  shampoo:0xe8c4d1,
-  conditioner:0xf0d4df,
-  serum:0xd8b78e,
-  spray:0xc9d6c2
- };
-
- const col=colors[p.type];
-
- const body=new THREE.Mesh(
-  new THREE.CylinderGeometry(
-   p.type==='serum'?.20:.28,
-   p.type==='serum'?.22:.3,
-   p.type==='serum'?.78:1.1,
-   24
-  ),
-  material(col,.35)
- );
- body.position.y=.58;
- g.add(body);
-
- const cap=new THREE.Mesh(
-  new THREE.CylinderGeometry(.13,.15,.2,20),
-  material(p.type==='spray'?0xeee8e7:0xb8a9ad,.35)
- );
- cap.position.y=1.24;
- g.add(cap);
-
- const front=new THREE.Mesh(
-  new THREE.PlaneGeometry(.48,.5),
-  new THREE.MeshBasicMaterial({
-   map:labelTexture([
-    p.name.replace('Rosemary & Rice Water ','').replace(' Hair Growth',''),
-    p.size
-   ])
-  })
- );
- front.position.set(0,.62,.285);
- g.add(front);
-
- [body,cap,front].forEach(obj=>{
-  obj.userData.productId=p.id;
-  clickable.push(obj);
- });
-
- return g;
-}
-
-function init3D(){
- try{
-  renderer=new THREE.WebGLRenderer({
-   canvas,
-   antialias:true,
-   alpha:false
-  });
-
-  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
-  renderer.setSize(wrap.clientWidth,wrap.clientHeight);
-  renderer.outputColorSpace=THREE.SRGBColorSpace;
-  renderer.shadowMap.enabled=true;
-
-  scene=new THREE.Scene();
-  scene.background=new THREE.Color('#e8dfe2');
-  scene.fog=new THREE.Fog('#e8dfe2',12,27);
-
-  camera=new THREE.PerspectiveCamera(
-   65,
-   wrap.clientWidth/wrap.clientHeight,
-   .1,
-   100
-  );
-
-  scene.add(
-   new THREE.HemisphereLight(0xfff4f8,0x82737b,2)
-  );
-
-  const light=new THREE.DirectionalLight(0xffffff,2.5);
-  light.position.set(3,8,5);
-  light.castShadow=true;
-  scene.add(light);
-
-  storeGroup=new THREE.Group();
-  scene.add(storeGroup);
-
-  /* Floor and walls */
-  box(12,.25,14,0xd6c8cd,0,-.18,0);
-  box(12,4,.25,0xf8edf1,0,1.8,-6.8);
-  box(.25,4,14,0xf4e4ea,-6,1.8,0);
-  box(.25,4,14,0xf4e4ea,6,1.8,0);
-
-  /* DAZBERY wall sign */
-  box(3.4,1.05,.12,0xf0d7e1,0,3.1,-6.55);
-
-  /* Display shelves */
-  for(const x of [-3.8,0,3.8]){
-   box(2.8,2.6,.25,0xd4bdc6,x,1.35,-5.9);
-
-   for(const y of [.55,1.45,2.35]){
-    box(2.6,.10,.65,0xb99da8,x,y,-5.42);
-   }
-  }
-
-  /* Haircare products */
-  const slots=[
-   [-4.65,.62,-5,'shampoo'],
-   [-3.8,.62,-5,'conditioner'],
-   [-2.95,.62,-5,'spray'],
-   [-.85,.62,-5,'serum'],
-   [0,.62,-5,'spray'],
-   [.85,.62,-5,'shampoo'],
-   [2.95,.62,-5,'conditioner'],
-   [3.8,.62,-5,'serum'],
-   [4.65,.62,-5,'spray']
-  ];
-
-  slots.forEach(([x,y,z,id])=>{
-   const p=PRODUCTS.find(v=>v.id===id);
-   makeProduct(p,x,y,z,.63);
-  });
-
-  /* Billing counter */
-  box(2.3,1,.85,0xd4aebd,3.7,.5,1.1);
-  box(2.35,.12,.9,0xf8edf1,3.7,1.06,1.1);
-  box(.8,.08,.5,0x443a40,3.7,1.17,.95);
-
-  /* Entrance mat */
-  box(2.4,.04,1.5,0xe6c8d5,0,.0,4.9);
-
-  /* Decorative greenery */
-  for(let i=0;i<3;i++){
-   const stem=new THREE.Mesh(
-    new THREE.ConeGeometry(.14,.7,8),
-    material(0x7c997b)
-   );
-   stem.position.set(-4.9+i*.22,.5,2.2);
-   stem.rotation.z=(i-1)*.25;
-   storeGroup.add(stem);
-  }
-
-  camera.position.set(playerX,1.65,playerZ);
-
-  /* Tap a shelf product to add it */
-  const raycaster=new THREE.Raycaster();
-  const pointer=new THREE.Vector2();
-
-  canvas.addEventListener('pointerdown',e=>{
-   canvas.setPointerCapture?.(e.pointerId);
-   canvas._dragX=e.clientX;
-   canvas._dragY=e.clientY;
-   canvas._moved=false;
-  });
-
-  canvas.addEventListener('pointermove',e=>{
-   if(canvas.hasPointerCapture?.(e.pointerId)){
-    const dx=e.clientX-canvas._dragX;
-    const dy=e.clientY-canvas._dragY;
-
-    if(Math.abs(dx)+Math.abs(dy)>3){
-     canvas._moved=true;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>DAZBERY | 3D Luxury Boutique Game Experience</title>
+
+  <!-- Three.js 3D Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <!-- Supabase JS Library -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-cream: #FDFBF7;
+      --pink-soft: #f4d0d8;
+      --pink-medium: #e8a5b8;
+      --pink-deep: #B86B7D;
+      --rose-gold: #D4A373;
+      --text-main: #2A2421;
+      --text-muted: #7A6F6B;
+      --surface: #FFFFFF;
+      --border-light: rgba(232, 165, 184, 0.3);
+      --shadow-soft: 0 10px 30px rgba(184, 107, 125, 0.12);
     }
 
-    lookYaw-=dx*.006;
-    lookPitch=Math.max(
-     -.35,
-     Math.min(.35,lookPitch+dy*.003)
-    );
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; user-select: none; -webkit-tap-highlight-color: transparent; }
+    body, html { width: 100%; height: 100%; overflow: hidden; background-color: #111; color: var(--text-main); }
 
-    canvas._dragX=e.clientX;
-    canvas._dragY=e.clientY;
-   }
-  });
+    /* 3D Canvas Background */
+    #canvas-container { width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 1; }
 
-  canvas.addEventListener('pointerup',e=>{
-   if(canvas._moved)return;
+    /* Game HUD overlay */
+    #hud-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none; }
 
-   const r=canvas.getBoundingClientRect();
+    /* Header Nav */
+    header {
+      pointer-events: auto;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-light);
+    }
 
-   pointer.x=((e.clientX-r.left)/r.width)*2-1;
-   pointer.y=-((e.clientY-r.top)/r.height)*2+1;
+    .brand-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: var(--text-main);
+    }
 
-   raycaster.setFromCamera(pointer,camera);
+    .trolley-pill {
+      background: var(--text-main);
+      color: #FFF;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
 
-   const hit=raycaster.intersectObjects(clickable,false)[0];
+    .trolley-badge { background: var(--pink-deep); padding: 2px 7px; border-radius: 50%; font-size: 10px; }
 
-   if(hit?.object.userData.productId){
-    addToCart(hit.object.userData.productId);
-    $('checkout').scrollIntoView({behavior:'smooth'});
-   }
-  });
+    /* Touch Controls */
+    #joystick-zone {
+      position: absolute;
+      bottom: 30px;
+      left: 30px;
+      width: 110px;
+      height: 110px;
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(8px);
+      border: 2px solid rgba(255, 255, 255, 0.5);
+      border-radius: 50%;
+      pointer-events: auto;
+      touch-action: none;
+    }
 
-  /* Reset camera */
-  $('resetView').onclick=()=>{
-   lookYaw=0;
-   lookPitch=.06;
-   playerX=0;
-   playerZ=3.8;
-  };
+    #joystick-knob {
+      width: 45px;
+      height: 45px;
+      background: var(--pink-deep);
+      border-radius: 50%;
+      position: absolute;
+      top: 32px;
+      left: 32px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
 
-  /* Mobile joystick */
-  const joy=$('joystick');
-  const knob=$('joyKnob');
-  let joyActive=false;
+    .look-hint {
+      position: absolute;
+      bottom: 35px;
+      right: 30px;
+      background: rgba(0,0,0,0.5);
+      color: #FFF;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 11px;
+      letter-spacing: 1px;
+    }
 
-  function joyMove(e){
-   const r=joy.getBoundingClientRect();
-   const cx=r.left+r.width/2;
-   const cy=r.top+r.height/2;
+    /* Action Trigger Button */
+    #action-btn {
+      position: absolute;
+      bottom: 90px;
+      right: 30px;
+      background: linear-gradient(135deg, var(--pink-deep) 0%, #9E5263 100%);
+      color: #FFF;
+      border: none;
+      padding: 14px 24px;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 13px;
+      box-shadow: 0 10px 25px rgba(184, 107, 125, 0.4);
+      pointer-events: auto;
+      display: none;
+      cursor: pointer;
+      animation: pulse 1.5s infinite alternate;
+    }
 
-   let dx=e.clientX-cx;
-   let dy=e.clientY-cy;
+    @keyframes pulse { 0% { transform: scale(1); } 100% { transform: scale(1.06); } }
 
-   const len=Math.hypot(dx,dy);
-   const max=27;
+    /* Modals / Overlays */
+    .modal-overlay {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      pointer-events: auto;
+    }
 
-   if(len>max){
-    dx=dx/len*max;
-    dy=dy/len*max;
-   }
+    .modal-card {
+      background: #FFF;
+      border-radius: 24px;
+      width: 100%;
+      max-width: 460px;
+      padding: 28px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+      position: relative;
+      animation: modalSlide 0.3s ease-out;
+    }
 
-   knob.style.transform=`translate(${dx}px,${dy}px)`;
-   moveX=dx/max;
-   moveZ=dy/max;
-  }
+    @keyframes modalSlide { 0% { transform: translateY(30px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
 
-  joy.addEventListener('pointerdown',e=>{
-   joyActive=true;
-   joy.setPointerCapture(e.pointerId);
-   joyMove(e);
-  });
+    .modal-close {
+      position: absolute; top: 16px; right: 20px;
+      background: none; border: none; font-size: 22px; cursor: pointer; color: #888;
+    }
 
-  joy.addEventListener('pointermove',e=>{
-   if(joyActive)joyMove(e);
-  });
+    .btn-primary {
+      width: 100%;
+      background: var(--pink-deep);
+      color: #FFF;
+      border: none;
+      padding: 14px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      margin-top: 14px;
+      box-shadow: 0 8px 20px rgba(184, 107, 125, 0.3);
+    }
 
-  function joyEnd(){
-   joyActive=false;
-   moveX=0;
-   moveZ=0;
-   knob.style.transform='translate(0,0)';
-  }
+    .qty-picker {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin: 16px 0;
+    }
 
-  joy.addEventListener('pointerup',joyEnd);
-  joy.addEventListener('pointercancel',joyEnd);
+    .qty-btn {
+      width: 36px; height: 36px;
+      border-radius: 50%; border: none;
+      background: var(--pink-soft);
+      font-weight: 700; font-size: 16px; cursor: pointer;
+    }
 
-  /* Game animation */
-  function animate(){
-   requestAnimationFrame(animate);
+    /* POS Checkout Screen inside Modal */
+    .checkout-modal { max-width: 750px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 
-   const forward=new THREE.Vector3(
-    -Math.sin(lookYaw),0,-Math.cos(lookYaw)
-   );
+    .scratch-card-box {
+      background: var(--bg-cream);
+      border: 2px dashed var(--pink-medium);
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+      margin: 12px 0;
+    }
 
-   const right=new THREE.Vector3(
-    Math.cos(lookYaw),0,-Math.sin(lookYaw)
-   );
+    .scratch-surface {
+      height: 48px;
+      background: #BBB;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      margin-top: 6px;
+    }
 
-   playerX+=(right.x*moveX+forward.x*(-moveZ))*.045;
-   playerZ+=(right.z*moveX+forward.z*(-moveZ))*.045;
+    .scratch-cover {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(135deg, #CCC 0%, #999 100%);
+      display: flex; align-items: center; justify-content: center; font-size: 11px; color: #333;
+    }
 
-   playerX=Math.max(-4.9,Math.min(4.9,playerX));
-   playerZ=Math.max(-5.5,Math.min(5.4,playerZ));
+    .pos-screen {
+      background: #111;
+      color: #00FF66;
+      font-family: monospace;
+      padding: 14px;
+      border-radius: 10px;
+      font-size: 12px;
+      margin-bottom: 12px;
+    }
 
-   camera.position.set(playerX,1.65,playerZ);
-   camera.rotation.order='YXZ';
-   camera.rotation.y=lookYaw;
-   camera.rotation.x=lookPitch;
+    .form-input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      margin-bottom: 8px;
+      font-size: 12px;
+      outline: none;
+    }
 
-   renderer.render(scene,camera);
-  }
+    .pos-pay-modes { display: flex; gap: 8px; margin-bottom: 12px; }
+    .pay-btn {
+      flex: 1; background: #333; color: #FFF; border: none; padding: 8px; border-radius: 6px;
+      font-size: 11px; font-weight: 700; cursor: pointer; text-align: center;
+    }
+    .pay-btn.active { background: var(--pink-deep); }
 
-  animate();
+    /* Thermal Bill Paper animation */
+    .thermal-receipt {
+      background: #FFF;
+      color: #000;
+      font-family: 'Courier New', monospace;
+      padding: 16px;
+      border-top: 3px dashed #888;
+      border-bottom: 3px dashed #888;
+      font-size: 11px;
+      display: none;
+      animation: printReceipt 1s ease-out forwards;
+    }
 
-  window.addEventListener('resize',()=>{
-   if(!renderer)return;
+    @keyframes printReceipt { 0% { max-height: 0; opacity: 0; } 100% { max-height: 400px; opacity: 1; } }
 
-   renderer.setSize(wrap.clientWidth,wrap.clientHeight);
-   camera.aspect=wrap.clientWidth/wrap.clientHeight;
-   camera.updateProjectionMatrix();
-  });
+    /* Toast */
+    #toast {
+      position: absolute;
+      top: 70px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-20px);
+      background: var(--text-main);
+      color: #FFF;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 200;
+    }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
- }catch(err){
-  console.error(err);
+    @media (max-width: 768px) {
+      .checkout-modal { grid-template-columns: 1fr; max-height: 85vh; overflow-y: auto; }
+    }
+  </style>
+</head>
+<body>
 
-  wrap.insertAdjacentHTML(
-   'beforeend',
-   '<div style="position:absolute;inset:auto 12px 12px;background:#fff;padding:10px;border-radius:10px;font-size:12px">3D view could not start in this browser. You can still shop using the product cards below.</div>'
-  );
- }
-}
+  <!-- 3D Canvas Viewport -->
+  <div id="canvas-container"></div>
 
-init3D();
-</script>
+  <!-- Game HUD Overlay -->
+  <div id="hud-overlay">
+    <header>
+      <div class="brand-logo">DAZBERY</div>
+      <div class="trolley-pill" onclick="openCheckoutModal()">
+        <span>🛒 Trolley</span>
+        <span class="trolley-badge" id="trolleyCount">0</span>
+      </div>
+    </header>
+
+    <div id="toast"></div>
+
+    <!-- Joystick Move Control -->
+    <div id="joystick-zone">
+      <div id="joystick-knob"></div>
+    </div>
+
+    <div class="look-hint">🖐️ Swipe screen for 360° View</div>
+
+    <!-- Action Button when near a Shelf or Counter -->
+    <button id="action-btn" onclick="handleActionTrigger()">Inspect Shelf</button>
+  </div>
+
+  <!-- MODAL 1: PRODUCT INSPECT ON SHELF -->
+  <div class="modal-overlay" id="inspectModal">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal('inspectModal')">×</button>
+      <div style="text-align:center;">
+        <div style="height:120px; display:flex; align-items:center; justify-content:center; margin-bottom:10px;">
+          <img id="inspectImg" src="spray.PNG" style="max-height:100px; object-fit:contain;" onerror="this.src='https://via.placeholder.com/120/f4d0d8/2A2421?text=DAZBERY'">
+        </div>
+        <h3 id="inspectTitle" style="font-size:18px;">Product Title</h3>
+        <p id="inspectCategory" style="font-size:12px; color:var(--text-muted); margin-top:2px;">Skin Care</p>
+        <p id="inspectPrice" style="font-size:20px; font-weight:800; color:var(--pink-deep); margin-top:8px;">₹599</p>
+
+        <div class="qty-picker">
+          <button class="qty-btn" onclick="updateQty(-1)">-</button>
+          <span id="inspectQty" style="font-size:16px; font-weight:700;">1</span>
+          <button class="qty-btn" onclick="updateQty(1)">+</button>
+        </div>
+
+        <button class="btn-primary" onclick="addInspectedToTrolley()">+ Drop into Trolley</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: BILLING COUNTER & POS PAYMENT -->
+  <div class="modal-overlay" id="checkoutModal">
+    <div class="modal-card checkout-modal">
+      <button class="modal-close" onclick="closeModal('checkoutModal')">×</button>
+      
+      <!-- Left: Customer Delivery Details -->
+      <div>
+        <h3 style="font-family:'Playfair Display', serif; font-size:20px; margin-bottom:12px;">Billing Counter</h3>
+        <form id="checkoutForm" onsubmit="completePOSPayment(event)">
+          <input type="text" class="form-input" id="cName" placeholder="Full Name" required>
+          <input type="tel" class="form-input" id="cPhone" placeholder="Mobile / WhatsApp Number" required>
+          <textarea class="form-input" id="cAddress" placeholder="House/Flat No, Street" rows="2" required></textarea>
+          <input type="text" class="form-input" id="cPin" placeholder="6-Digit PIN Code" maxlength="6" oninput="fetchLocation(this.value)" required>
+          <div style="display:flex; gap:6px;">
+            <input type="text" class="form-input" id="cCity" placeholder="City" required>
+            <input type="text" class="form-input" id="cState" placeholder="State" required>
+          </div>
+
+          <!-- Scratch Card -->
+          <div class="scratch-card-box">
+            <div style="font-size:11px; font-weight:700;">Scratch Coupon Card</div>
+            <div class="scratch-surface" onclick="revealScratchCoupon()">
+              <div id="couponRevealedText" style="color:var(--pink-deep); display:none;">DAZBERY50 (50% OFF)</div>
+              <div class="scratch-cover" id="scratchCover">TAP TO SCRATCH</div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-primary">COMPLETE PAYMENT</button>
+        </form>
+      </div>
+
+      <!-- Right: POS Machine & Paper Receipt -->
+      <div>
+        <h3 style="font-size:14px; margin-bottom:8px;">POS Payment Terminal</h3>
+        <div class="pos-screen">
+          DAZBERY POS TERMINAL<br>
+          --------------------<br>
+          ITEMS QTY : <span id="posQty">0</span><br>
+          SUBTOTAL  : ₹<span id="posSubtotal">0</span><br>
+          DISCOUNT  : ₹<span id="posDiscount">0</span><br>
+          --------------------<br>
+          TOTAL PAY : ₹<span id="posTotal">0</span>
+        </div>
+
+        <div style="font-size:11px; font-weight:700; margin-bottom:6px;">PAYMENT METHOD:</div>
+        <div class="pos-pay-modes">
+          <div class="pay-btn active" onclick="setPayMode('UPI')">📲 GPay / UPI</div>
+          <div class="pay-btn" onclick="setPayMode('CARD')">💳 Card Swipe</div>
+        </div>
+
+        <!-- Thermal Printed Bill -->
+        <div class="thermal-receipt" id="receiptPaper">
+          <div style="text-align:center; font-weight:bold;">DAZBERY BOUTIQUE</div>
+          <div style="text-align:center; font-size:9px; margin-bottom:8px;">CHERUVATHUR, KERALA</div>
+          <div style="display:flex; justify-content:space-between;"><span>DATE:</span><span id="rDate">2026-10-25</span></div>
+          <hr style="border-top:1px dashed #000; margin:6px 0;">
+          <div id="receiptItems"></div>
+          <hr style="border-top:1px dashed #000; margin:6px 0;">
+          <div style="display:flex; justify-content:space-between; font-weight:bold;"><span>PAID:</span><span id="rTotal">₹0</span></div>
+          <div style="text-align:center; margin-top:8px; font-size:9px;">*** THANK YOU ***</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL 3: USER ACCOUNT & SUPABASE LOGIN -->
+  <div class="modal-overlay" id="accountModal">
+    <div class="modal-card" style="text-align:center;">
+      <button class="modal-close" onclick="closeModal('accountModal')">×</button>
+      
+      <div id="loginBox">
+        <h3 style="font-family:'Playfair Display', serif; font-size:20px;">Customer Sign In</h3>
+        <p style="font-size:12px; color:var(--text-muted); margin-top:4px;">Sign in with Google to save delivery details</p>
+        <button class="btn-primary" style="background:#FFF; color:#333; border:1px solid #DDD; margin-top:16px;" onclick="loginGoogle()">
+          Continue with Google
+        </button>
+      </div>
+
+      <div id="profileBox" style="display:none; text-align:left;">
+        <h3 style="font-size:16px;">My Account</h3>
+        <p id="userEmail" style="font-size:12px; color:var(--text-muted); margin-bottom:12px;"></p>
+        <div id="orderHistoryList" style="font-size:12px; margin-bottom:16px;"></div>
+        <button class="btn-primary" style="background:#dc2626;" onclick="logout()">Logout</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // SUPABASE INTEGRATION
+    const SUPABASE_URL = 'https://cccpqyfbwofkfydcacxo.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_j5jnvFhMmUHaRarHJ_s2LQ_m_TM8ecT';
+    let supabaseClient = null;
+    if (window.supabase) supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    let trolley = [];
+    let isCouponScratched = false;
+    let selectedInspectProduct = null;
+    let inspectQuantity = 1;
+    let currentUser = null;
+
+    // Toast Notification
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.innerText = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2200);
+    }
+
+    // Modal Manager
+    function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+    // -----------------------------------------------------
+    // THREE.JS 3D GAME ENGINE
+    // -----------------------------------------------------
+    let scene, camera, renderer;
+    let playerPos = { x: 0, z: 12 };
+    let playerAngle = 0;
+    let trolleyMesh;
+    let activeZone = null;
+
+    // Joystick Touch Controls
+    let joystickActive = false;
+    let joystickVector = { x: 0, y: 0 };
+
+    const PRODUCTS_DATA = {
+      skinShelf: {
+        title: "Skin Care Shelf",
+        category: "Skin Care Section",
+        items: [
+          { name: "SPF 50 Sunscreen", price: 549, img: "https://via.placeholder.com/120/f4d0d8/2A2421?text=Sunscreen" },
+          { name: "Gentle Face Cleanser", price: 399, img: "https://via.placeholder.com/120/f4d0d8/2A2421?text=Face+Wash" },
+          { name: "Hydrating Face Serum", price: 699, img: "https://via.placeholder.com/120/f4d0d8/2A2421?text=Serum" }
+        ]
+      },
+      hairShelf: {
+        title: "Hair Care Shelf",
+        category: "Hair Care Section",
+        items: [
+          { name: "Rosemary Hair Growth Spray", price: 599, img: "spray.PNG" },
+          { name: "Growth Shampoo & Conditioner", price: 499, img: "https://via.placeholder.com/120/f4d0d8/2A2421?text=Shampoo" }
+        ]
+      },
+      billingCounter: {
+        title: "Billing Counter",
+        isCounter: true
+      }
+    };
+
+    function init3DGame() {
+      const container = document.getElementById('canvas-container');
+      
+      // Scene
+      scene = new THREE.Scene();
+      scene.background = new THREE.Color(0xFDFBF7);
+      scene.fog = new THREE.FogExp2(0xFDFBF7, 0.03);
+
+      // Camera
+      camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.set(playerPos.x, 2.2, playerPos.z);
+
+      // Renderer
+      renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.shadowMap.enabled = true;
+      container.appendChild(renderer.domElement);
+
+      // Lights
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+      scene.add(ambientLight);
+
+      const dirLight = new THREE.DirectionalLight(0xfff0e6, 0.6);
+      dirLight.position.set(10, 20, 10);
+      scene.add(dirLight);
+
+      // Floor
+      const floorGeo = new THREE.PlaneGeometry(30, 40);
+      const floorMat = new THREE.MeshStandardMaterial({ color: 0xF5EBE6, roughness: 0.3 });
+      const floor = new THREE.Mesh(floorGeo, floorMat);
+      floor.rotation.x = -Math.PI / 2;
+      scene.add(floor);
+
+      // Walls
+      const wallMat = new THREE.MeshStandardMaterial({ color: 0xFFFFFF });
+      
+      // Back Wall with DAZBERY Signboard
+      const backWallGeo = new THREE.BoxGeometry(30, 8, 0.5);
+      const backWall = new THREE.Mesh(backWallGeo, wallMat);
+      backWall.position.set(0, 4, -15);
+      scene.add(backWall);
+
+      // DAZBERY Signboard Mesh
+      const signGeo = new THREE.BoxGeometry(8, 2, 0.2);
+      const signMat = new THREE.MeshStandardMaterial({ color: 0x2A2421 });
+      const signboard = new THREE.Mesh(signGeo, signMat);
+      signboard.position.set(0, 6, -14.8);
+      scene.add(signboard);
+
+      // Shelves Creation
+      createShelf(-6, -5, "Skin Care Shelf", 0xE8A5B8);
+      createShelf(6, -5, "Hair Care Shelf", 0xB86B7D);
+
+      // Billing Counter Creation
+      createCounter(0, 4);
+
+      // Player 3D Trolley Mesh
+      create3DTrolley();
+
+      // Controls setup
+      setupJoystick();
+      setup360TouchLook();
+
+      window.addEventListener('resize', onWindowResize);
+      animate();
+    }
+
+    function createShelf(x, z, labelText, colorHex) {
+      const shelfGroup = new THREE.Group();
+
+      const woodMat = new THREE.MeshStandardMaterial({ color: colorHex });
+      for (let i = 0; i < 3; i++) {
+        const boardGeo = new THREE.BoxGeometry(4, 0.15, 1.2);
+        const board = new THREE.Mesh(boardGeo, woodMat);
+        board.position.set(0, 1 + (i * 1.2), 0);
+        shelfGroup.add(board);
+      }
+
+      shelfGroup.position.set(x, 0, z);
+      scene.add(shelfGroup);
+    }
+
+    function createCounter(x, z) {
+      const counterGeo = new THREE.BoxGeometry(5, 1.2, 2);
+      const counterMat = new THREE.MeshStandardMaterial({ color: 0x2A2421 });
+      const counter = new THREE.Mesh(counterGeo, counterMat);
+      counter.position.set(x, 0.6, z);
+      scene.add(counter);
+    }
+
+    function create3DTrolley() {
+      trolleyMesh = new THREE.Group();
+
+      const basketGeo = new THREE.BoxGeometry(1.2, 0.8, 1.5);
+      const basketMat = new THREE.MeshStandardMaterial({ color: 0xD4A373, wireframe: true });
+      const basket = new THREE.Mesh(basketGeo, basketMat);
+      basket.position.y = 0.8;
+      trolleyMesh.add(basket);
+
+      scene.add(trolleyMesh);
+    }
+
+    // Touch Joystick Logic
+    function setupJoystick() {
+      const zone = document.getElementById('joystick-zone');
+      const knob = document.getElementById('joystick-knob');
+
+      const handleMove = (e) => {
+        if (!joystickActive) return;
+        const touch = e.touches ? e.touches[0] : e;
+        const rect = zone.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+
+        let deltaX = touch.clientX - centerX;
+        let deltaY = touch.clientY - centerY;
+        const dist = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+        const maxRadius = 35;
+
+        if (dist > maxRadius) {
+          deltaX = (deltaX / dist) * maxRadius;
+          deltaY = (deltaY / dist) * maxRadius;
+        }
+
+        knob.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+        joystickVector.x = deltaX / maxRadius;
+        joystickVector.y = deltaY / maxRadius;
+      };
+
+      zone.addEventListener('touchstart', () => { joystickActive = true; });
+      window.addEventListener('touchmove', handleMove);
+      window.addEventListener('touchend', () => {
+        joystickActive = false;
+        knob.style.transform = `translate(0px, 0px)`;
+        joystickVector = { x: 0, y: 0 };
+      });
+    }
+
+    // 360 Degree Touch Camera Look
+    let touchStartX = 0;
+    function setup360TouchLook() {
+      window.addEventListener('touchstart', (e) => {
+        if (e.touches[0].clientX > window.innerWidth / 2) {
+          touchStartX = e.touches[0].clientX;
+        }
+      });
+
+      window.addEventListener('touchmove', (e) => {
+        if (e.touches[0].clientX > window.innerWidth / 2) {
+          const deltaX = e.touches[0].clientX - touchStartX;
+          playerAngle -= deltaX * 0.005;
+          touchStartX = e.touches[0].clientX;
+        }
+      });
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      // Player Movement Logic
+      if (Math.abs(joystickVector.x) > 0.1 || Math.abs(joystickVector.y) > 0.1) {
+        const speed = 0.12;
+        playerPos.x -= Math.sin(playerAngle) * joystickVector.y * speed;
+        playerPos.z -= Math.cos(playerAngle) * joystickVector.y * speed;
+
+        playerPos.x += Math.cos(playerAngle) * joystickVector.x * speed;
+        playerPos.z -= Math.sin(playerAngle) * joystickVector.x * speed;
+      }
+
+      // Camera Position & Rotation
+      camera.position.x = playerPos.x;
+      camera.position.z = playerPos.z;
+      camera.rotation.y = playerAngle;
+
+      // Trolley positioned in front of Player Camera
+      if (trolleyMesh) {
+        trolleyMesh.position.x = playerPos.x - Math.sin(playerAngle) * 2;
+        trolleyMesh.position.z = playerPos.z - Math.cos(playerAngle) * 2;
+        trolleyMesh.rotation.y = playerAngle;
+      }
+
+      // Distance Detection to Shelves & Billing Counter
+      checkProximityZones();
+
+      renderer.render(scene, camera);
+    }
+
+    function checkProximityZones() {
+      const actBtn = document.getElementById('action-btn');
+
+      // Distance to Skin Care Shelf
+      const distSkin = Math.hypot(playerPos.x - (-6), playerPos.z - (-5));
+      // Distance to Hair Care Shelf
+      const distHair = Math.hypot(playerPos.x - 6, playerPos.z - (-5));
+      // Distance to Billing Counter
+      const distCounter = Math.hypot(playerPos.x - 0, playerPos.z - 4);
+
+      if (distSkin < 3) {
+        activeZone = 'skinShelf';
+        actBtn.style.display = 'block';
+        actBtn.innerText = '✨ Inspect Skin Care Shelf';
+      } else if (distHair < 3) {
+        activeZone = 'hairShelf';
+        actBtn.style.display = 'block';
+        actBtn.innerText = '💇‍♀️ Inspect Hair Care Shelf';
+      } else if (distCounter < 3) {
+        activeZone = 'billingCounter';
+        actBtn.style.display = 'block';
+        actBtn.innerText = '🧾 Go to Billing Counter';
+      } else {
+        activeZone = null;
+        actBtn.style.display = 'none';
+      }
+    }
+
+    function handleActionTrigger() {
+      if (!activeZone) return;
+
+      if (activeZone === 'billingCounter') {
+        openCheckoutModal();
+      } else {
+        const shelfData = PRODUCTS_DATA[activeZone];
+        selectedInspectProduct = shelfData.items[0];
+        inspectQuantity = 1;
+
+        document.getElementById('inspectTitle').innerText = selectedInspectProduct.name;
+        document.getElementById('inspectCategory').innerText = shelfData.category;
+        document.getElementById('inspectPrice').innerText = '₹' + selectedInspectProduct.price;
+        document.getElementById('inspectQty').innerText = inspectQuantity;
+        document.getElementById('inspectImg').src = selectedInspectProduct.img;
+
+        openModal('inspectModal');
+      }
+    }
+
+    function updateQty(val) {
+      inspectQuantity += val;
+      if (inspectQuantity < 1) inspectQuantity = 1;
+      document.getElementById('inspectQty').innerText = inspectQuantity;
+    }
+
+    function addInspectedToTrolley() {
+      if (!selectedInspectProduct) return;
+      trolley.push({
+        name: selectedInspectProduct.name,
+        price: selectedInspectProduct.price,
+        qty: inspectQuantity
+      });
+
+      updateTrolleyUI();
+      closeModal('inspectModal');
+      showToast(`✓ Dropped ${inspectQuantity}x ${selectedInspectProduct.name} into Trolley`);
+    }
+
+    function updateTrolleyUI() {
+      const totalItems = trolley.reduce((s, i) => s + i.qty, 0);
+      document.getElementById('trolleyCount').innerText = totalItems;
+      renderPOSScreen();
+    }
+
+    function openCheckoutModal() {
+      if (trolley.length === 0) {
+        showToast('❌ Your trolley is empty! Pick items from shelves.');
+        return;
+      }
+      renderPOSScreen();
+      openModal('checkoutModal');
+    }
+
+    function renderPOSScreen() {
+      const totalItems = trolley.reduce((s, i) => s + i.qty, 0);
+      const subtotal = trolley.reduce((s, i) => s + (i.price * i.qty), 0);
+      const discount = isCouponScratched ? Math.round(subtotal * 0.5) : 0;
+      const finalPay = subtotal - discount;
+
+      document.getElementById('posQty').innerText = totalItems;
+      document.getElementById('posSubtotal').innerText = subtotal;
+      document.getElementById('posDiscount').innerText = discount;
+      document.getElementById('posTotal').innerText = finalPay;
+    }
+
+    function revealScratchCoupon() {
+      if (isCouponScratched) return;
+      isCouponScratched = true;
+      document.getElementById('scratchCover').style.display = 'none';
+      document.getElementById('couponRevealedText').style.display = 'block';
+      showToast('🎉 50% Discount Applied to Order!');
+      renderPOSScreen();
+    }
+
+    function setPayMode(mode) {
+      document.querySelectorAll('.pay-btn').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+    }
+
+    async function fetchLocation(pin) {
+      if (pin.length === 6) {
+        try {
+          const res = await fetch(`https://api.postalpincode.in/pincode/${pin}`);
+          const d = await res.json();
+          if (d[0].Status === "Success") {
+            document.getElementById('cCity').value = d[0].PostOffice[0].District;
+            document.getElementById('cState').value = d[0].PostOffice[0].State;
+          }
+        } catch(e){}
+      }
+    }
+
+    async function completePOSPayment(e) {
+      e.preventDefault();
+      const finalTotal = document.getElementById('posTotal').innerText;
+
+      // Print Thermal Receipt
+      const receipt = document.getElementById('receiptPaper');
+      document.getElementById('rDate').innerText = new Date().toISOString().split('T')[0];
+      
+      let itemsHtml = '';
+      trolley.forEach(i => {
+        itemsHtml += `<div style="display:flex; justify-content:space-between;"><span>${i.qty}x ${i.name.substring(0,16)}</span><span>₹${i.price * i.qty}</span></div>`;
+      });
+      document.getElementById('receiptItems').innerHTML = itemsHtml;
+      document.getElementById('rTotal').innerText = '₹' + finalTotal;
+
+      receipt.style.display = 'block';
+      showToast('🖨️ Payment Successful! Printing Receipt...');
+
+      // Save Order into Supabase
+      if (currentUser && supabaseClient) {
+        await supabaseClient.from('orders').insert({
+          user_id: currentUser.id,
+          total_price: parseInt(finalTotal),
+          quantity: trolley.reduce((s, i) => s + i.qty, 0),
+          address: document.getElementById('cAddress').value,
+          city: document.getElementById('cCity').value,
+          pin: document.getElementById('cPin').value
+        });
+      }
+    }
+
+    async function loginGoogle() {
+      if (!supabaseClient) return;
+      await supabaseClient.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.origin } });
+    }
+
+    async function logout() {
+      if (supabaseClient) await supabaseClient.auth.signOut();
+      currentUser = null;
+      document.getElementById('loginBox').style.display = 'block';
+      document.getElementById('profileBox').style.display = 'none';
+      showToast('Logged out');
+    }
+
+    function onWindowResize() {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    window.onload = async () => {
+      init3DGame();
+
+      if (supabaseClient) {
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        if (session) {
+          currentUser = session.user;
+          document.getElementById('loginBox').style.display = 'none';
+          document.getElementById('profileBox').style.display = 'block';
+          document.getElementById('userEmail').innerText = currentUser.email;
+
+          let { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', currentUser.id).single();
+          if (profile) {
+            document.getElementById('cName').value = profile.full_name || '';
+            document.getElementById('cPhone').value = profile.phone || '';
+            document.getElementById('cAddress').value = profile.address || '';
+            document.getElementById('cPin').value = profile.pin || '';
+            document.getElementById('cCity').value = profile.city || '';
+            document.getElementById('cState').value = profile.state || '';
+          }
+        }
+      }
+    };
+  </script>
 </body>
 </html>
