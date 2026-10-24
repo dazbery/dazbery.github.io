@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DAZBERY | Luxury Boutique Experience</title>
+  <title>DAZBERY | Interactive Boutique Experience</title>
 
   <!-- Supabase JS Library -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -151,7 +151,7 @@
     .btn-enter:hover { transform: scale(1.05); }
 
     /* 2. GAME WALKTHROUGH SHOPPING AISLE */
-    .store-container { max-width: 1000px; margin: 0 auto; padding: 20px 16px 120px; }
+    .store-container { max-width: 900px; margin: 0 auto; padding: 20px 16px 120px; }
     
     .aisle-header {
       font-family: 'Playfair Display', serif;
@@ -193,6 +193,24 @@
     .product-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
     .product-price { font-size: 16px; font-weight: 700; color: var(--pink-deep); margin-bottom: 10px; }
 
+    .qty-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .qty-btn {
+      background: #f4d0d8;
+      border: none;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .qty-num { font-weight: 700; font-size: 13px; }
+
     .btn-add-trolley {
       background: #FFF;
       border: 1.5px solid var(--pink-deep);
@@ -207,7 +225,7 @@
     }
     .btn-add-trolley:hover { background: var(--pink-deep); color: #FFF; }
 
-    /* Trolley Bottom Bar */
+    /* Trolley Bar */
     .trolley-bar {
       position: fixed;
       bottom: 20px;
@@ -239,7 +257,7 @@
 
     /* 3. CHECKOUT & POS COUNTER */
     .counter-card {
-      max-width: 800px;
+      max-width: 850px;
       margin: 20px auto;
       background: #FFF;
       border-radius: 20px;
@@ -364,19 +382,36 @@
           <div class="product-img"><img src="https://via.placeholder.com/120/f4d0d8/2A2421?text=Sunscreen" alt="Sunscreen"></div>
           <div class="product-title">SPF 50 Sunscreen</div>
           <div class="product-price">₹549</div>
-          <button class="btn-add-trolley" onclick="addToTrolley('SPF 50 Sunscreen', 549)">+ Add to Trolley</button>
+          <div class="qty-controls">
+            <button class="qty-btn" onclick="changeQty('sun', -1)">-</button>
+            <span class="qty-num" id="qty-sun">1</span>
+            <button class="qty-btn" onclick="changeQty('sun', 1)">+</button>
+          </div>
+          <button class="btn-add-trolley" onclick="addToTrolley('SPF 50 Sunscreen', 549, 'sun')">+ Add to Trolley</button>
         </div>
+
         <div class="product-item">
           <div class="product-img"><img src="https://via.placeholder.com/120/f4d0d8/2A2421?text=Face+Wash" alt="Face Wash"></div>
-          <div class="product-title">Gentle Face Cleanser</div>
+          <div class="product-title">Gentle Face Wash</div>
           <div class="product-price">₹399</div>
-          <button class="btn-add-trolley" onclick="addToTrolley('Gentle Face Cleanser', 399)">+ Add to Trolley</button>
+          <div class="qty-controls">
+            <button class="qty-btn" onclick="changeQty('wash', -1)">-</button>
+            <span class="qty-num" id="qty-wash">1</span>
+            <button class="qty-btn" onclick="changeQty('wash', 1)">+</button>
+          </div>
+          <button class="btn-add-trolley" onclick="addToTrolley('Gentle Face Wash', 399, 'wash')">+ Add to Trolley</button>
         </div>
+
         <div class="product-item">
           <div class="product-img"><img src="https://via.placeholder.com/120/f4d0d8/2A2421?text=Serum" alt="Serum"></div>
-          <div class="product-title">Hydrating Face Serum</div>
+          <div class="product-title">Face Serum & Moisturizer</div>
           <div class="product-price">₹699</div>
-          <button class="btn-add-trolley" onclick="addToTrolley('Hydrating Face Serum', 699)">+ Add to Trolley</button>
+          <div class="qty-controls">
+            <button class="qty-btn" onclick="changeQty('serum', -1)">-</button>
+            <span class="qty-num" id="qty-serum">1</span>
+            <button class="qty-btn" onclick="changeQty('serum', 1)">+</button>
+          </div>
+          <button class="btn-add-trolley" onclick="addToTrolley('Face Serum & Moisturizer', 699, 'serum')">+ Add to Trolley</button>
         </div>
       </div>
 
@@ -386,13 +421,24 @@
           <div class="product-img"><img src="spray.PNG" alt="Hair Spray" onerror="this.src='https://via.placeholder.com/120/f4d0d8/2A2421?text=Hair+Spray'"></div>
           <div class="product-title">Rosemary Hair Growth Spray</div>
           <div class="product-price">₹599</div>
-          <button class="btn-add-trolley" onclick="addToTrolley('Rosemary Hair Growth Spray', 599)">+ Add to Trolley</button>
+          <div class="qty-controls">
+            <button class="qty-btn" onclick="changeQty('spray', -1)">-</button>
+            <span class="qty-num" id="qty-spray">1</span>
+            <button class="qty-btn" onclick="changeQty('spray', 1)">+</button>
+          </div>
+          <button class="btn-add-trolley" onclick="addToTrolley('Rosemary Hair Growth Spray', 599, 'spray')">+ Add to Trolley</button>
         </div>
+
         <div class="product-item">
           <div class="product-img"><img src="https://via.placeholder.com/120/f4d0d8/2A2421?text=Shampoo" alt="Shampoo"></div>
-          <div class="product-title">Growth Shampoo</div>
+          <div class="product-title">Growth Shampoo & Conditioner</div>
           <div class="product-price">₹499</div>
-          <button class="btn-add-trolley" onclick="addToTrolley('Growth Shampoo', 499)">+ Add to Trolley</button>
+          <div class="qty-controls">
+            <button class="qty-btn" onclick="changeQty('shampoo', -1)">-</button>
+            <span class="qty-num" id="qty-shampoo">1</span>
+            <button class="qty-btn" onclick="changeQty('shampoo', 1)">+</button>
+          </div>
+          <button class="btn-add-trolley" onclick="addToTrolley('Growth Shampoo & Conditioner', 499, 'shampoo')">+ Add to Trolley</button>
         </div>
       </div>
 
@@ -489,6 +535,7 @@
     let supabaseClient = null;
     if (window.supabase) supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+    let productQtys = { sun: 1, wash: 1, serum: 1, spray: 1, shampoo: 1 };
     let trolley = [];
     let isDiscount = false;
     let currentUser = null;
@@ -506,19 +553,28 @@
       window.scrollTo(0, 0);
     }
 
-    function addToTrolley(name, price) {
-      trolley.push({name, price});
+    function changeQty(key, val) {
+      productQtys[key] += val;
+      if (productQtys[key] < 1) productQtys[key] = 1;
+      document.getElementById('qty-' + key).innerText = productQtys[key];
+    }
+
+    function addToTrolley(name, price, key) {
+      const qty = productQtys[key];
+      trolley.push({name, price, qty});
       updateUI();
-      showToast(`✓ Added ${name} to trolley`);
+      showToast(`✓ Added ${qty}x ${name} to trolley`);
     }
 
     function updateUI() {
-      const total = trolley.reduce((s, i) => s + i.price, 0);
-      const final = isDiscount ? Math.round(total * 0.5) : total;
-      document.getElementById('trolleyCount').innerText = trolley.length;
-      document.getElementById('barCount').innerText = `${trolley.length} Items in Trolley`;
+      const totalItems = trolley.reduce((s, i) => s + i.qty, 0);
+      const subTotal = trolley.reduce((s, i) => s + (i.price * i.qty), 0);
+      const final = isDiscount ? Math.round(subTotal * 0.5) : subTotal;
+      
+      document.getElementById('trolleyCount').innerText = totalItems;
+      document.getElementById('barCount').innerText = `${totalItems} Items in Trolley`;
       document.getElementById('barTotal').innerText = `Total: ₹${final}`;
-      document.getElementById('posQty').innerText = trolley.length;
+      document.getElementById('posQty').innerText = totalItems;
       document.getElementById('posTotal').innerText = final;
     }
 
@@ -560,7 +616,7 @@
         await supabaseClient.from('orders').insert({
           user_id: currentUser.id,
           total_price: parseInt(total),
-          quantity: trolley.length,
+          quantity: trolley.reduce((s, i) => s + i.qty, 0),
           address: document.getElementById('cAddress').value,
           city: document.getElementById('cCity').value,
           pin: document.getElementById('cPin').value
@@ -590,7 +646,6 @@
           document.getElementById('dashboardCard').style.display = 'block';
           document.getElementById('userEmail').innerText = currentUser.email;
 
-          // Fetch profile data
           let { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', currentUser.id).single();
           if (profile) {
             document.getElementById('cName').value = profile.full_name || '';
