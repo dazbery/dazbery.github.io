@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DAZBERY | Luxury Interactive Boutique Store</title>
+  <title>DAZBERY | Luxury Boutique Experience</title>
 
   <!-- Supabase JS Library -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -21,18 +21,15 @@
       --text-main: #2A2421;
       --text-muted: #7A6F6B;
       --surface: #FFFFFF;
-      --glass: rgba(255, 255, 255, 0.85);
       --border-light: rgba(232, 165, 184, 0.3);
       --shadow-soft: 0 10px 30px rgba(184, 107, 125, 0.12);
-      --radius: 16px;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
     body { background-color: var(--bg-cream); color: var(--text-main); overflow-x: hidden; line-height: 1.5; }
 
-    /* Top Announcement Bar */
     .announcement-bar {
-      background: linear-gradient(90deg, #2A2421 0%, #4A3E39 100%);
+      background: #2A2421;
       color: #FFF;
       text-align: center;
       padding: 8px 16px;
@@ -40,13 +37,10 @@
       font-weight: 600;
       letter-spacing: 1.5px;
       text-transform: uppercase;
-      position: relative;
-      z-index: 1000;
     }
 
-    /* Header Navigation */
     header {
-      background: var(--glass);
+      background: rgba(255, 255, 255, 0.9);
       backdrop-filter: blur(12px);
       padding: 14px 28px;
       display: flex;
@@ -60,28 +54,14 @@
 
     .brand-logo {
       font-family: 'Playfair Display', serif;
-      font-size: 24px;
+      font-size: 22px;
       font-weight: 700;
-      letter-spacing: 4px;
+      letter-spacing: 3px;
       color: var(--text-main);
-      text-transform: uppercase;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 8px;
     }
 
-    .brand-logo span {
-      font-size: 10px;
-      letter-spacing: 1px;
-      background: var(--pink-soft);
-      color: var(--pink-deep);
-      padding: 2px 8px;
-      border-radius: 12px;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-
-    .nav-actions { display: flex; align-items: center; gap: 20px; }
+    .nav-actions { display: flex; align-items: center; gap: 16px; }
     .nav-btn {
       background: transparent;
       border: none;
@@ -96,7 +76,6 @@
       border-radius: 20px;
       transition: all 0.2s;
     }
-
     .nav-btn:hover { background: var(--pink-soft); }
 
     .trolley-badge {
@@ -108,7 +87,6 @@
       border-radius: 50%;
     }
 
-    /* Toast Notification */
     #toast {
       position: fixed;
       bottom: 24px;
@@ -122,438 +100,217 @@
       font-weight: 600;
       z-index: 2000;
       box-shadow: var(--shadow-soft);
-      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transition: transform 0.3s ease;
       opacity: 0;
     }
-
     #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
-    /* Page Container */
-    .view-section { display: none; opacity: 0; transition: opacity 0.4s ease; min-height: calc(100vh - 100px); }
+    .view-section { display: none; opacity: 0; transition: opacity 0.3s ease; min-height: calc(100vh - 100px); }
     .view-section.active { display: block; opacity: 1; }
 
-    /* 1. STORE FRONT ENTRANCE */
+    /* 1. STOREFRONT ENTRANCE */
     .storefront-hero {
-      position: relative;
-      height: 88vh;
-      background: linear-gradient(180deg, #F9EEF1 0%, #FDFBF7 100%);
+      height: 85vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
       padding: 20px;
-      overflow: hidden;
-    }
-
-    .store-facade {
-      background: #FFFFFF;
-      border: 2px solid var(--pink-soft);
-      padding: 40px 60px;
-      border-radius: 24px;
-      box-shadow: 0 20px 50px rgba(184, 107, 125, 0.15);
-      position: relative;
-      max-width: 650px;
-      width: 100%;
+      background: linear-gradient(180deg, #F9EEF1 0%, #FDFBF7 100%);
     }
 
     .store-signboard {
       background: #2A2421;
       color: var(--pink-soft);
-      padding: 16px 32px;
-      border-radius: 12px;
-      margin-bottom: 30px;
+      padding: 24px 48px;
+      border-radius: 16px;
+      margin-bottom: 24px;
       border: 2px solid var(--rose-gold);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.2);
     }
 
     .store-signboard h1 {
       font-family: 'Playfair Display', serif;
-      font-size: 36px;
+      font-size: 38px;
       letter-spacing: 6px;
     }
 
-    .store-signboard p {
-      font-size: 11px;
-      letter-spacing: 2px;
-      color: #DDD;
-      margin-top: 4px;
-    }
-
-    .glass-doors {
-      display: flex;
-      gap: 8px;
-      height: 220px;
-      margin: 0 auto 30px;
-      max-width: 320px;
-      position: relative;
-    }
-
-    .door {
-      flex: 1;
-      background: rgba(232, 165, 184, 0.15);
-      border: 2px solid var(--pink-medium);
-      border-radius: 8px;
-      backdrop-filter: blur(4px);
-      position: relative;
-      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .door-handle {
-      position: absolute;
-      top: 50%;
-      width: 6px;
-      height: 40px;
-      background: var(--rose-gold);
-      border-radius: 4px;
-    }
-
-    .left-door .door-handle { right: 8px; }
-    .right-door .door-handle { left: 8px; }
-
-    .door-opened .left-door { transform: translateX(-90%) rotateY(-20deg); }
-    .door-opened .right-door { transform: translateX(90%) rotateY(20deg); }
-
-    .btn-enter-store {
-      background: linear-gradient(135deg, var(--pink-deep) 0%, #9E5263 100%);
+    .btn-enter {
+      background: var(--pink-deep);
       color: #FFF;
       border: none;
       padding: 16px 36px;
       border-radius: 30px;
       font-size: 14px;
       font-weight: 700;
-      letter-spacing: 1.5px;
       cursor: pointer;
       box-shadow: 0 10px 25px rgba(184, 107, 125, 0.3);
-      transition: all 0.3s;
+      transition: transform 0.2s;
     }
+    .btn-enter:hover { transform: scale(1.05); }
 
-    .btn-enter-store:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(184, 107, 125, 0.4); }
-
-    /* 2. IN-STORE SHOPPING WALKTHROUGH */
-    .store-walkthrough-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 24px 16px 120px;
-    }
-
-    .aisle-navigator {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin-bottom: 24px;
-      position: sticky;
-      top: 70px;
-      z-index: 100;
-      background: var(--glass);
-      padding: 12px;
-      border-radius: 30px;
-      border: 1px solid var(--border-light);
-      backdrop-filter: blur(10px);
-    }
-
-    .aisle-tab {
-      background: #FFF;
-      border: 1px solid var(--border-light);
-      padding: 10px 20px;
-      border-radius: 20px;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-muted);
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .aisle-tab.active {
-      background: var(--pink-deep);
-      color: #FFF;
-      border-color: var(--pink-deep);
-      box-shadow: 0 4px 12px rgba(184, 107, 125, 0.25);
-    }
-
-    /* Shelf Layout */
-    .shelf-section {
-      background: #FFF;
-      border-radius: 20px;
-      padding: 28px;
-      margin-bottom: 36px;
-      border: 1px solid var(--border-light);
-      box-shadow: var(--shadow-soft);
-      position: relative;
-    }
-
-    .shelf-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-      border-bottom: 2px solid var(--pink-soft);
-      padding-bottom: 12px;
-    }
-
-    .shelf-header h2 {
+    /* 2. GAME WALKTHROUGH SHOPPING AISLE */
+    .store-container { max-width: 1000px; margin: 0 auto; padding: 20px 16px 120px; }
+    
+    .aisle-header {
       font-family: 'Playfair Display', serif;
       font-size: 22px;
-      color: var(--text-main);
+      margin: 30px 0 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--pink-soft);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    .shelf-rack {
+    .product-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 24px;
-      position: relative;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
     }
 
-    .shelf-board {
-      height: 12px;
-      background: linear-gradient(90deg, #E2C0C7 0%, #F5E3E7 50%, #E2C0C7 100%);
-      border-radius: 6px;
-      margin-top: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    }
-
-    /* Product Cards on Shelf */
-    .product-shelf-item {
-      background: var(--bg-cream);
+    .product-item {
+      background: #FFF;
       border-radius: 16px;
-      padding: 20px;
+      padding: 16px;
       text-align: center;
       border: 1px solid var(--border-light);
-      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+      transition: transform 0.2s;
     }
+    .product-item:hover { transform: translateY(-5px); }
 
-    .product-shelf-item:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 12px 30px rgba(184, 107, 125, 0.18);
-      background: #FFF;
-    }
-
-    .product-img-wrap {
-      height: 180px;
+    .product-img {
+      height: 140px;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 14px;
-      position: relative;
+      margin-bottom: 12px;
     }
+    .product-img img { max-height: 130px; max-width: 100%; object-fit: contain; }
 
-    .product-img-wrap img {
-      max-height: 160px;
-      max-width: 100%;
-      object-fit: contain;
-      filter: drop-shadow(0 6px 12px rgba(0,0,0,0.08));
-    }
-
-    .product-title { font-size: 15px; font-weight: 700; color: var(--text-main); margin-bottom: 4px; }
-    .product-desc { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
-    .product-price { font-size: 18px; font-weight: 700; color: var(--pink-deep); margin-bottom: 14px; }
+    .product-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .product-price { font-size: 16px; font-weight: 700; color: var(--pink-deep); margin-bottom: 10px; }
 
     .btn-add-trolley {
       background: #FFF;
       border: 1.5px solid var(--pink-deep);
       color: var(--pink-deep);
-      padding: 10px 18px;
+      padding: 8px 16px;
       border-radius: 20px;
       font-size: 12px;
       font-weight: 700;
       cursor: pointer;
-      transition: all 0.2s;
       width: 100%;
+      transition: all 0.2s;
     }
+    .btn-add-trolley:hover { background: var(--pink-deep); color: #FFF; }
 
-    .btn-add-trolley:hover {
-      background: var(--pink-deep);
-      color: #FFF;
-    }
-
-    /* Bottom Fixed Trolley Status Bar */
-    .fixed-trolley-bar {
+    /* Trolley Bottom Bar */
+    .trolley-bar {
       position: fixed;
       bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
       width: 90%;
-      max-width: 800px;
+      max-width: 700px;
       background: #2A2421;
       color: #FFF;
       padding: 14px 24px;
-      border-radius: 40px;
+      border-radius: 30px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
       z-index: 900;
-      border: 1px solid var(--rose-gold);
     }
 
-    .trolley-info { display: flex; align-items: center; gap: 14px; }
-    .trolley-icon-wrap {
-      background: var(--pink-deep);
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-    }
-
-    .btn-proceed-checkout {
-      background: linear-gradient(135deg, var(--pink-soft) 0%, var(--pink-medium) 100%);
+    .btn-checkout {
+      background: var(--pink-soft);
       color: var(--text-main);
       border: none;
-      padding: 12px 24px;
-      border-radius: 30px;
+      padding: 10px 20px;
+      border-radius: 20px;
       font-weight: 700;
       font-size: 13px;
       cursor: pointer;
-      transition: all 0.2s;
     }
 
-    .btn-proceed-checkout:hover { transform: scale(1.05); }
-
-    /* 3. BILLING COUNTER & POS PAYMENT */
-    .billing-counter-card {
-      max-width: 900px;
+    /* 3. CHECKOUT & POS COUNTER */
+    .counter-card {
+      max-width: 800px;
       margin: 20px auto;
       background: #FFF;
-      border-radius: 24px;
+      border-radius: 20px;
+      padding: 28px;
       border: 1px solid var(--border-light);
       box-shadow: var(--shadow-soft);
-      padding: 32px;
     }
 
-    .counter-header {
-      text-align: center;
-      margin-bottom: 30px;
-    }
+    .checkout-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
 
-    .counter-header h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 28px;
-    }
-
-    .checkout-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 32px;
-    }
-
-    /* Scratch Coupon Box */
-    .scratch-coupon-box {
+    .scratch-box {
       background: var(--bg-cream);
       border: 2px dashed var(--pink-medium);
-      border-radius: 16px;
-      padding: 20px;
+      border-radius: 12px;
+      padding: 16px;
       text-align: center;
-      position: relative;
+      margin-top: 16px;
     }
 
     .scratch-area {
-      width: 100%;
-      height: 90px;
-      background: #D1D1D1;
-      border-radius: 8px;
-      margin: 12px 0;
-      position: relative;
-      cursor: pointer;
-      overflow: hidden;
+      background: #CCC;
+      height: 50px;
+      border-radius: 6px;
+      margin-top: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
-      user-select: none;
-    }
-
-    .coupon-code-revealed {
-      font-size: 22px;
       font-weight: 800;
-      letter-spacing: 3px;
-      color: var(--pink-deep);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
     }
-
     .scratch-overlay {
       position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: linear-gradient(135deg, #C0C0C0 0%, #E8E8E8 50%, #A9A9A9 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      font-weight: 700;
-      color: #555;
-      transition: opacity 0.5s ease;
+      width: 100%; height: 100%;
+      background: linear-gradient(135deg, #CCC 0%, #AAA 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; color: #333; font-weight: 700;
     }
 
-    /* POS Terminal Simulation */
+    .form-input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      margin-bottom: 10px;
+      font-size: 13px;
+      outline: none;
+    }
+
+    /* POS Terminal */
     .pos-terminal {
-      background: #1E1E1E;
-      color: #FFF;
-      border-radius: 20px;
-      padding: 24px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    }
-
-    .pos-screen {
-      background: #000;
+      background: #1A1A1A;
       color: #00FF66;
       font-family: monospace;
       padding: 16px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      border: 1px solid #333;
-    }
-
-    .pos-options {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
+      border-radius: 12px;
+      font-size: 12px;
       margin-bottom: 16px;
     }
 
+    .pos-options { display: flex; gap: 8px; margin-bottom: 12px; }
     .pos-btn {
-      background: #333;
-      color: #FFF;
-      border: 1px solid #444;
-      padding: 12px;
-      border-radius: 8px;
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
-      text-align: center;
+      flex: 1; background: #333; color: #FFF; border: 1px solid #444; padding: 8px;
+      border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; text-align: center;
     }
-
     .pos-btn.active { background: var(--pink-deep); border-color: var(--pink-deep); }
 
-    /* Thermal Receipt Animation */
-    .receipt-paper {
-      background: #FFF;
-      color: #000;
-      font-family: 'Courier New', Courier, monospace;
-      padding: 20px;
-      width: 100%;
-      max-width: 320px;
-      margin: 20px auto 0;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-      border-top: 4px dashed #CCC;
-      border-bottom: 4px dashed #CCC;
-      display: none;
-      animation: printReceipt 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-    }
-
-    @keyframes printReceipt {
-      0% { max-height: 0; opacity: 0; transform: translateY(-20px); }
-      100% { max-height: 600px; opacity: 1; transform: translateY(0); }
-    }
-
-    .receipt-line { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; }
-
-    /* Auth & Account Views */
+    /* Auth & Account Cards */
     .auth-card {
-      max-width: 460px;
+      max-width: 440px;
       margin: 40px auto;
       background: #FFF;
       padding: 32px;
@@ -562,49 +319,14 @@
       box-shadow: var(--shadow-soft);
       text-align: center;
     }
-
     .google-btn {
-      width: 100%;
-      background: #FFF;
-      color: #333;
-      border: 1px solid #DDD;
-      padding: 12px;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 20px;
+      width: 100%; background: #FFF; color: #333; border: 1px solid #DDD; padding: 12px;
+      border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center;
+      justify-content: center; gap: 10px; margin-top: 16px;
     }
 
-    .form-input {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid var(--border-light);
-      border-radius: 8px;
-      margin-bottom: 12px;
-      font-size: 13px;
-      outline: none;
-    }
-
-    footer {
-      background: #2A2421;
-      color: #FFF;
-      text-align: center;
-      padding: 30px;
-      font-size: 12px;
-      margin-top: 60px;
-    }
-
+    footer { background: #2A2421; color: #FFF; text-align: center; padding: 20px; font-size: 12px; margin-top: 40px; }
     footer a { color: var(--pink-soft); text-decoration: none; }
-
-    @media (max-width: 768px) {
-      .checkout-grid { grid-template-columns: 1fr; }
-      .store-facade { padding: 24px 16px; }
-      .store-signboard h1 { font-size: 26px; }
-    }
   </style>
 </head>
 <body>
@@ -613,425 +335,227 @@
   <div class="announcement-bar">✨ COMPLIMENTARY LUXURY GIFT PACKAGING ON ALL ORDERS ✨</div>
 
   <header>
-    <div class="brand-logo" onclick="switchView('storefront')">
-      DAZBERY <span>BOUTIQUE</span>
-    </div>
+    <div class="brand-logo" onclick="switchView('storefront')">DAZBERY</div>
     <div class="nav-actions">
-      <button class="nav-btn" onclick="switchView('walkthrough')">🏬 Store Aisle</button>
-      <button class="nav-btn" onclick="switchView('checkout')">
-        🛒 Trolley <span class="trolley-badge" id="trolleyCount">0</span>
-      </button>
-      <button class="nav-btn" id="navAccountBtn" onclick="switchView('account')">👤 Account</button>
+      <button class="nav-btn" onclick="switchView('store')">🛍️ Store Aisle</button>
+      <button class="nav-btn" onclick="switchView('checkout')">🛒 Trolley <span class="trolley-badge" id="trolleyCount">0</span></button>
+      <button class="nav-btn" onclick="switchView('account')" id="navAccountBtn">👤 Account</button>
     </div>
   </header>
 
-  <!-- VIEW 1: BOUTIQUE STOREFRONT ENTRANCE -->
+  <!-- 1. STOREFRONT VIEW -->
   <div id="storefrontView" class="view-section active">
     <div class="storefront-hero">
-      <div class="store-facade">
-        <div class="store-signboard">
-          <h1>DAZBERY</h1>
-          <p>HAIR CARE • SKIN CARE • LUXURY BOUTIQUE</p>
-        </div>
-        
-        <div class="glass-doors" id="glassDoors">
-          <div class="door left-door"><div class="door-handle"></div></div>
-          <div class="door right-door"><div class="door-handle"></div></div>
-        </div>
-
-        <button class="btn-enter-store" onclick="enterStoreBoutique()">
-          ENTER DAZBERY BOUTIQUE
-        </button>
+      <div class="store-signboard">
+        <h1>DAZBERY</h1>
+        <p style="font-size:11px; letter-spacing:2px; color:#CCC; margin-top:6px;">SKIN CARE & HAIR CARE BOUTIQUE</p>
       </div>
+      <button class="btn-enter" onclick="switchView('store')">ENTER STORE & START SHOPPING</button>
     </div>
   </div>
 
-  <!-- VIEW 2: IN-STORE AISLE WALKTHROUGH -->
-  <div id="walkthroughView" class="view-section">
-    <div class="store-walkthrough-container">
+  <!-- 2. STORE GAME WALKTHROUGH -->
+  <div id="storeView" class="view-section">
+    <div class="store-container">
       
-      <!-- Aisle Navigation Tabs -->
-      <div class="aisle-navigator">
-        <button class="aisle-tab active" onclick="scrollToAisle('hairSection')">💇‍♀️ Hair Care Aisle</button>
-        <button class="aisle-tab" onclick="scrollToAisle('skinSection')">✨ Skin Care Aisle</button>
-        <button class="aisle-tab" onclick="scrollToAisle('kitSection')">🎁 Gift Box Sets</button>
+      <div class="aisle-header"><span>✨ Skin Care Section</span><span style="font-size:12px; color:var(--text-muted);">Shelf 01</span></div>
+      <div class="product-grid">
+        <div class="product-item">
+          <div class="product-img"><img src="https://via.placeholder.com/120/f4d0d8/2A2421?text=Sunscreen" alt="Sunscreen"></div>
+          <div class="product-title">SPF 50 Sunscreen</div>
+          <div class="product-price">₹549</div>
+          <button class="btn-add-trolley" onclick="addToTrolley('SPF 50 Sunscreen', 549)">+ Add to Trolley</button>
+        </div>
+        <div class="product-item">
+          <div class="product-img"><img src="https://via.placeholder.com/120/f4d0d8/2A2421?text=Face+Wash" alt="Face Wash"></div>
+          <div class="product-title">Gentle Face Cleanser</div>
+          <div class="product-price">₹399</div>
+          <button class="btn-add-trolley" onclick="addToTrolley('Gentle Face Cleanser', 399)">+ Add to Trolley</button>
+        </div>
+        <div class="product-item">
+          <div class="product-img"><img src="https://via.placeholder.com/120/f4d0d8/2A2421?text=Serum" alt="Serum"></div>
+          <div class="product-title">Hydrating Face Serum</div>
+          <div class="product-price">₹699</div>
+          <button class="btn-add-trolley" onclick="addToTrolley('Hydrating Face Serum', 699)">+ Add to Trolley</button>
+        </div>
       </div>
 
-      <!-- HAIR CARE AISLE SHELF -->
-      <div class="shelf-section" id="hairSection">
-        <div class="shelf-header">
-          <h2>Hair Care Shelf</h2>
-          <span style="font-size:12px; color:var(--text-muted);">Aisle 01</span>
+      <div class="aisle-header"><span>💇‍♀️ Hair Care Section</span><span style="font-size:12px; color:var(--text-muted);">Shelf 02</span></div>
+      <div class="product-grid">
+        <div class="product-item">
+          <div class="product-img"><img src="spray.PNG" alt="Hair Spray" onerror="this.src='https://via.placeholder.com/120/f4d0d8/2A2421?text=Hair+Spray'"></div>
+          <div class="product-title">Rosemary Hair Growth Spray</div>
+          <div class="product-price">₹599</div>
+          <button class="btn-add-trolley" onclick="addToTrolley('Rosemary Hair Growth Spray', 599)">+ Add to Trolley</button>
         </div>
-        <div class="shelf-rack">
-          
-          <div class="product-shelf-item">
-            <div class="product-img-wrap">
-              <img src="spray.PNG" alt="Hair Growth Spray" onerror="this.src='https://via.placeholder.com/150/f4d0d8/2A2421?text=DAZBERY+Spray'">
-            </div>
-            <div class="product-title">Rosemary Hair Growth Spray</div>
-            <div class="product-desc">100ml | Rosemary & Rice Water Mist</div>
-            <div class="product-price">₹599</div>
-            <button class="btn-add-trolley" onclick="addToTrolley('Rosemary Hair Growth Spray', 599)">+ Add to Trolley</button>
-          </div>
-
-          <div class="product-shelf-item">
-            <div class="product-img-wrap">
-              <img src="IMG_2995_628b3f.jpeg" alt="Shampoo" onerror="this.src='https://via.placeholder.com/150/f4d0d8/2A2421?text=DAZBERY+Shampoo'">
-            </div>
-            <div class="product-title">Gentle Hair Growth Shampoo</div>
-            <div class="product-desc">200ml | Strengthening Scalp Cleanser</div>
-            <div class="product-price">₹499</div>
-            <button class="btn-add-trolley" onclick="addToTrolley('Hair Growth Shampoo', 499)">+ Add to Trolley</button>
-          </div>
-
-          <div class="product-shelf-item">
-            <div class="product-img-wrap">
-              <img src="IMG_2995_628b3f.jpeg" alt="Conditioner" onerror="this.src='https://via.placeholder.com/150/f4d0d8/2A2421?text=DAZBERY+Conditioner'">
-            </div>
-            <div class="product-title">Nourishing Hair Conditioner</div>
-            <div class="product-desc">150g | Argan Oil & Shea Butter</div>
-            <div class="product-price">₹449</div>
-            <button class="btn-add-trolley" onclick="addToTrolley('Nourishing Conditioner', 449)">+ Add to Trolley</button>
-          </div>
-
+        <div class="product-item">
+          <div class="product-img"><img src="https://via.placeholder.com/120/f4d0d8/2A2421?text=Shampoo" alt="Shampoo"></div>
+          <div class="product-title">Growth Shampoo</div>
+          <div class="product-price">₹499</div>
+          <button class="btn-add-trolley" onclick="addToTrolley('Growth Shampoo', 499)">+ Add to Trolley</button>
         </div>
-        <div class="shelf-board"></div>
-      </div>
-
-      <!-- SKIN CARE AISLE SHELF -->
-      <div class="shelf-section" id="skinSection">
-        <div class="shelf-header">
-          <h2>Skin Care Shelf</h2>
-          <span style="font-size:12px; color:var(--text-muted);">Aisle 02</span>
-        </div>
-        <div class="shelf-rack">
-          
-          <div class="product-shelf-item">
-            <div class="product-img-wrap">
-              <img src="https://via.placeholder.com/150/f4d0d8/2A2421?text=DAZBERY+Sunscreen" alt="Sunscreen">
-            </div>
-            <div class="product-title">Ultra Lightweight Sunscreen SPF 50</div>
-            <div class="product-desc">50g | Zero White Cast Dewy Finish</div>
-            <div class="product-price">₹549</div>
-            <button class="btn-add-trolley" onclick="addToTrolley('SPF 50 Sunscreen', 549)">+ Add to Trolley</button>
-          </div>
-
-          <div class="product-shelf-item">
-            <div class="product-img-wrap">
-              <img src="https://via.placeholder.com/150/f4d0d8/2A2421?text=DAZBERY+Face+Wash" alt="Face Wash">
-            </div>
-            <div class="product-title">Hydrating Gentle Face Cleanser</div>
-            <div class="product-desc">100ml | Niacinamide & Ceramides</div>
-            <div class="product-price">₹399</div>
-            <button class="btn-add-trolley" onclick="addToTrolley('Gentle Face Cleanser', 399)">+ Add to Trolley</button>
-          </div>
-
-        </div>
-        <div class="shelf-board"></div>
-      </div>
-
-      <!-- LUXURY GIFT BOX SETS -->
-      <div class="shelf-section" id="kitSection">
-        <div class="shelf-header">
-          <h2>Exclusive Window Gift Sets</h2>
-          <span style="font-size:12px; color:var(--text-muted);">Special Edition</span>
-        </div>
-        <div class="shelf-rack">
-          
-          <div class="product-shelf-item" style="grid-column: span 2;">
-            <div class="product-img-wrap" style="height:220px;">
-              <img src="IMG_3020_628b1b.png" alt="Complete 5-Piece Box" onerror="this.src='https://via.placeholder.com/300/f4d0d8/2A2421?text=DAZBERY+Gift+Box'">
-            </div>
-            <div class="product-title">Complete 5-Piece Luxury Boutique Set</div>
-            <div class="product-desc">Includes Shampoo, Conditioner, Hair Serum, Neem Comb & Satin Scrunchie in Soft Pink Rigid Box</div>
-            <div class="product-price">₹1,499</div>
-            <button class="btn-add-trolley" onclick="addToTrolley('5-Piece Luxury Boutique Set', 1499)">+ Add to Trolley</button>
-          </div>
-
-        </div>
-        <div class="shelf-board"></div>
       </div>
 
     </div>
 
-    <!-- Fixed Trolley Bottom Bar -->
-    <div class="fixed-trolley-bar">
-      <div class="trolley-info">
-        <div class="trolley-icon-wrap">🛒</div>
-        <div>
-          <div style="font-size:13px; font-weight:700;" id="barTrolleyText">0 Items in Trolley</div>
-          <div style="font-size:11px; color:#AAA;" id="barTrolleyTotal">Total: ₹0</div>
-        </div>
+    <!-- Trolley Bar -->
+    <div class="trolley-bar">
+      <div>
+        <div style="font-weight:700; font-size:13px;" id="barCount">0 Items in Trolley</div>
+        <div style="font-size:11px; color:#AAA;" id="barTotal">Total: ₹0</div>
       </div>
-      <button class="btn-proceed-checkout" onclick="switchView('checkout')">
-        Proceed to Billing Counter →
-      </button>
+      <button class="btn-checkout" onclick="switchView('checkout')">Go to Billing Counter →</button>
     </div>
   </div>
 
-  <!-- VIEW 3: BILLING COUNTER & CHECKOUT -->
+  <!-- 3. CHECKOUT & BILLING COUNTER -->
   <div id="checkoutView" class="view-section">
-    <div class="billing-counter-card">
+    <div class="counter-card">
+      <h2 style="font-family:'Playfair Display', serif; font-size:24px; margin-bottom:16px;">Billing Counter</h2>
       
-      <div class="counter-header">
-        <h2>Boutique Billing Counter</h2>
-        <p style="font-size:12px; color:var(--text-muted);">Review items, scratch coupon & process payment</p>
-      </div>
-
       <div class="checkout-grid">
-        
-        <!-- Left: Customer Details & Order Items -->
         <div>
-          <h3 style="font-size:15px; margin-bottom:12px;">Your Trolley Summary</h3>
-          <div id="trolleyItemsList" style="margin-bottom:20px;"></div>
-
-          <h3 style="font-size:15px; margin-bottom:12px;">Delivery Address Details</h3>
-          <form id="checkoutForm" onsubmit="processPOSOrder(event)">
+          <h3 style="font-size:14px; margin-bottom:8px;">Delivery Details</h3>
+          <form id="checkoutForm" onsubmit="processOrder(event)">
             <input type="text" class="form-input" id="cName" placeholder="Full Name" required>
-            <input type="tel" class="form-input" id="cPhone" placeholder="Mobile / WhatsApp Number" required>
-            <textarea class="form-input" id="cAddress" placeholder="House/Flat No, Street, Landmark" rows="2" required></textarea>
-            <input type="text" class="form-input" id="cPin" placeholder="6-Digit PIN Code" maxlength="6" oninput="fetchPinDetails(this.value)" required>
-            <div style="display:flex; gap:10px;">
-              <input type="text" class="form-input" id="cCity" placeholder="City / District" required>
+            <input type="tel" class="form-input" id="cPhone" placeholder="Mobile Number" required>
+            <textarea class="form-input" id="cAddress" placeholder="Address / Street" rows="2" required></textarea>
+            <input type="text" class="form-input" id="cPin" placeholder="6-Digit PIN Code" maxlength="6" oninput="fetchPin(this.value)" required>
+            <div style="display:flex; gap:8px;">
+              <input type="text" class="form-input" id="cCity" placeholder="City" required>
               <input type="text" class="form-input" id="cState" placeholder="State" required>
             </div>
 
-            <!-- Scratch Coupon Box -->
-            <div class="scratch-coupon-box">
-              <div style="font-size:12px; font-weight:700;">Scratch to Reveal Discount Card</div>
+            <div class="scratch-box">
+              <div style="font-size:11px; font-weight:700;">Scratch Card for 50% OFF</div>
               <div class="scratch-area" onclick="revealCoupon()">
-                <div class="coupon-code-revealed">DAZBERY50</div>
-                <div class="scratch-overlay" id="scratchOverlay">👇 TAP / SCRATCH HERE</div>
+                <div id="scratchText" style="color:var(--pink-deep); font-size:16px; display:none;">DAZBERY50 APPLIED!</div>
+                <div class="scratch-overlay" id="scratchOverlay">TAP TO SCRATCH</div>
               </div>
-              <div style="font-size:11px; color:var(--text-muted);" id="couponStatusText">Tap above to reveal 50% OFF Code!</div>
             </div>
 
-            <button type="submit" id="posSubmitBtn" class="btn-enter-store" style="width:100%; margin-top:20px; border-radius:12px;">
-              PAY & GENERATE RECEIPT
-            </button>
+            <button type="submit" class="btn-enter" style="width:100%; margin-top:16px; border-radius:10px;">COMPLETE PAYMENT</button>
           </form>
         </div>
 
-        <!-- Right: POS Terminal Simulation -->
         <div>
-          <h3 style="font-size:15px; margin-bottom:12px;">POS Terminal Payment</h3>
-          
-          <div class="pos-terminal">
-            <div class="pos-screen" id="posScreen">
-              DAZBERY POS v2.6<br>
-              --------------------<br>
-              ITEMS QTY : <span id="posQty">0</span><br>
-              SUBTOTAL  : ₹<span id="posSubtotal">0</span><br>
-              DISCOUNT  : ₹<span id="posDiscount">0</span><br>
-              --------------------<br>
-              TOTAL PAY : ₹<span id="posTotal">0</span>
-            </div>
-
-            <div style="font-size:11px; margin-bottom:8px; color:#AAA;">SELECT PAYMENT METHOD:</div>
-            <div class="pos-options">
-              <div class="pos-btn active" onclick="setPosMode('UPI')">📲 GPay / UPI</div>
-              <div class="pos-btn" onclick="setPosMode('CARD')">💳 Card Swipe</div>
-              <div class="pos-btn" onclick="setPosMode('CASH')">💵 Cash Counter</div>
-            </div>
-
-            <div id="posModeDetail" style="font-size:11px; color:#888; text-align:center;">
-              Scan UPI QR Code on Terminal Screen
-            </div>
+          <h3 style="font-size:14px; margin-bottom:8px;">POS Terminal</h3>
+          <div class="pos-terminal" id="posScreen">
+            DAZBERY POS v2.6<br>
+            --------------------<br>
+            ITEMS : <span id="posQty">0</span><br>
+            TOTAL : ₹<span id="posTotal">0</span>
           </div>
 
-          <!-- Printed Thermal Receipt output -->
-          <div class="receipt-paper" id="receiptPaper">
-            <div style="text-align:center; font-weight:bold; font-size:14px;">DAZBERY BOUTIQUE</div>
-            <div style="text-align:center; font-size:10px; margin-bottom:10px;">CHERUVATHUR, KERALA</div>
-            <div class="receipt-line"><span>DATE:</span><span id="rDate">2026-10-24</span></div>
-            <div class="receipt-line"><span>RECEIPT NO:</span><span id="rNum">#DZ-9421</span></div>
-            <hr style="border-top:1px dashed #000; margin:8px 0;">
-            <div id="receiptItems"></div>
-            <hr style="border-top:1px dashed #000; margin:8px 0;">
-            <div class="receipt-line" style="font-weight:bold;"><span>TOTAL PAID:</span><span id="rTotal">₹0</span></div>
-            <div style="text-align:center; margin-top:12px; font-size:10px;">*** THANK YOU FOR SHOPPING WITH DAZBERY ***</div>
+          <div style="font-size:11px; margin-bottom:6px; font-weight:600;">SELECT PAYMENT:</div>
+          <div class="pos-options">
+            <div class="pos-btn active" onclick="setPayment('UPI')">📲 GPay / UPI</div>
+            <div class="pos-btn" onclick="setPayment('CARD')">💳 Card Swipe</div>
           </div>
-
         </div>
-
       </div>
 
     </div>
   </div>
 
-  <!-- VIEW 4: USER ACCOUNT & SUPABASE AUTH -->
+  <!-- 4. ACCOUNT & SUPABASE LOGIN -->
   <div id="accountView" class="view-section">
     <div class="auth-card" id="loginCard">
       <h2 style="font-family:'Playfair Display', serif;">Customer Account</h2>
-      <p style="font-size:12px; color:var(--text-muted); margin-top:4px;">Sign in with Google to save orders & addresses</p>
-
-      <button class="google-btn" onclick="loginWithGoogle()">
+      <p style="font-size:12px; color:var(--text-muted); margin-top:4px;">Sign in to save addresses & view order history</p>
+      <button class="google-btn" onclick="loginGoogle()">
         <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.18v3.15C3.17 21.32 7.23 24 12 24z"/><path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.61H1.18C.43 8.14 0 9.87 0 12s.43 3.86 1.18 5.39l4.09-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.23 0 3.17 2.68 1.18 6.61l4.09 3.15c.95-2.85 3.6-4.96 6.73-4.96z"/></svg>
         Continue with Google
       </button>
     </div>
 
-    <div class="auth-card" id="profileDashboardCard" style="display:none; text-align:left;">
-      <h2 style="font-size:18px;">Welcome Back!</h2>
-      <p id="userEmail" style="font-size:12px; color:var(--text-muted); margin-bottom:16px;"></p>
+    <div class="auth-card" id="dashboardCard" style="display:none; text-align:left;">
+      <h2 style="font-size:16px;">My Account</h2>
+      <p id="userEmail" style="font-size:12px; color:var(--text-muted); margin-bottom:14px;"></p>
       
-      <div id="pastOrdersList"></div>
+      <div id="orderHistoryList" style="font-size:12px; margin-bottom:14px;"></div>
       
-      <button onclick="handleLogout()" class="btn-add-trolley" style="margin-top:20px; border-color:#dc2626; color:#dc2626;">
-        Logout
-      </button>
+      <button onclick="logout()" class="btn-add-trolley" style="border-color:#dc2626; color:#dc2626;">Logout</button>
     </div>
   </div>
 
   <footer>
-    <p>&copy; 2026 DAZBERY Luxury Hair & Skincare Boutique. All Rights Reserved.</p>
-    <p style="margin-top:6px;">Follow on Instagram: <a href="https://instagram.com/dazbery" target="_blank">@dazbery</a></p>
+    <p>&copy; 2026 DAZBERY. All Rights Reserved.</p>
   </footer>
 
   <script>
-    // SUPABASE INTEGRATION
     const SUPABASE_URL = 'https://cccpqyfbwofkfydcacxo.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_j5jnvFhMmUHaRarHJ_s2LQ_m_TM8ecT';
     let supabaseClient = null;
-
-    if (window.supabase) {
-      supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-    }
+    if (window.supabase) supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     let trolley = [];
-    let isCouponScratched = false;
-    let selectedPosMode = 'UPI';
+    let isDiscount = false;
     let currentUser = null;
 
     function showToast(msg) {
-      const toast = document.getElementById('toast');
-      toast.innerText = msg;
-      toast.classList.add('show');
-      setTimeout(() => { toast.classList.remove('show'); }, 2500);
+      const t = document.getElementById('toast');
+      t.innerText = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2500);
     }
 
-    function switchView(viewId) {
-      document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
-      document.getElementById(viewId + 'View').classList.add('active');
+    function switchView(id) {
+      document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
+      document.getElementById(id + 'View').classList.add('active');
       window.scrollTo(0, 0);
     }
 
-    function enterStoreBoutique() {
-      const doors = document.getElementById('glassDoors');
-      doors.classList.add('door-opened');
-      showToast('🏬 Welcome inside DAZBERY Boutique!');
-      setTimeout(() => { switchView('walkthrough'); }, 700);
+    function addToTrolley(name, price) {
+      trolley.push({name, price});
+      updateUI();
+      showToast(`✓ Added ${name} to trolley`);
     }
 
-    function scrollToAisle(sectionId) {
-      document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
-    }
-
-    function addToTrolley(title, price) {
-      trolley.push({ title, price });
-      updateTrolleyUI();
-      showToast(`✓ Added ${title} to Trolley`);
-    }
-
-    function updateTrolleyUI() {
-      const count = trolley.length;
-      const total = trolley.reduce((sum, item) => sum + item.price, 0);
-
-      document.getElementById('trolleyCount').innerText = count;
-      document.getElementById('barTrolleyText').innerText = `${count} Item(s) in Trolley`;
-      document.getElementById('barTrolleyTotal').innerText = `Total: ₹${total}`;
-
-      renderCheckoutSummary();
+    function updateUI() {
+      const total = trolley.reduce((s, i) => s + i.price, 0);
+      const final = isDiscount ? Math.round(total * 0.5) : total;
+      document.getElementById('trolleyCount').innerText = trolley.length;
+      document.getElementById('barCount').innerText = `${trolley.length} Items in Trolley`;
+      document.getElementById('barTotal').innerText = `Total: ₹${final}`;
+      document.getElementById('posQty').innerText = trolley.length;
+      document.getElementById('posTotal').innerText = final;
     }
 
     function revealCoupon() {
-      if (isCouponScratched) return;
-      isCouponScratched = true;
-      document.getElementById('scratchOverlay').style.opacity = '0';
-      setTimeout(() => { document.getElementById('scratchOverlay').style.display = 'none'; }, 500);
-      document.getElementById('couponStatusText').innerText = '🎉 50% OFF Code DAZBERY50 Applied!';
-      document.getElementById('couponStatusText').style.color = 'var(--pink-deep)';
-      showToast('🎉 50% Discount Applied to Order!');
-      renderCheckoutSummary();
+      if (isDiscount) return;
+      isDiscount = true;
+      document.getElementById('scratchOverlay').style.display = 'none';
+      document.getElementById('scratchText').style.display = 'block';
+      showToast('🎉 50% Discount Applied!');
+      updateUI();
     }
 
-    function renderCheckoutSummary() {
-      const list = document.getElementById('trolleyItemsList');
-      if (trolley.length === 0) {
-        list.innerHTML = `<p style="font-size:12px; color:var(--text-muted);">Your trolley is empty. Add products from the store aisle.</p>`;
-      } else {
-        let html = '';
-        trolley.forEach((item, idx) => {
-          html += `
-            <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:8px; padding-bottom:6px; border-bottom:1px solid #EEE;">
-              <span>${item.title}</span>
-              <span style="font-weight:700;">₹${item.price}</span>
-            </div>
-          `;
-        });
-        list.innerHTML = html;
-      }
-
-      const subtotal = trolley.reduce((sum, item) => sum + item.price, 0);
-      const discount = isCouponScratched ? Math.round(subtotal * 0.5) : 0;
-      const finalTotal = subtotal - discount;
-
-      document.getElementById('posQty').innerText = trolley.length;
-      document.getElementById('posSubtotal').innerText = subtotal;
-      document.getElementById('posDiscount').innerText = discount;
-      document.getElementById('posTotal').innerText = finalTotal;
-    }
-
-    function setPosMode(mode) {
-      selectedPosMode = mode;
-      document.querySelectorAll('.pos-btn').forEach(btn => btn.classList.remove('active'));
+    function setPayment(mode) {
+      document.querySelectorAll('.pos-btn').forEach(b => b.classList.remove('active'));
       event.target.classList.add('active');
-
-      const detail = document.getElementById('posModeDetail');
-      if (mode === 'UPI') detail.innerText = 'Scan UPI QR Code on Terminal Screen';
-      else if (mode === 'CARD') detail.innerText = 'Swipe / Tap Card on POS Terminal';
-      else detail.innerText = 'Handover Cash to Counter Executive';
     }
 
-    async function fetchPinDetails(pin) {
+    async function fetchPin(pin) {
       if (pin.length === 6) {
         try {
-          const res = await fetch(`https://api.postalpincode.in/pincode/${pin}`);
-          const data = await res.json();
-          if (data[0].Status === "Success") {
-            document.getElementById('cCity').value = data[0].PostOffice[0].District;
-            document.getElementById('cState').value = data[0].PostOffice[0].State;
+          let res = await fetch(`https://api.postalpincode.in/pincode/${pin}`);
+          let d = await res.json();
+          if (d[0].Status === "Success") {
+            document.getElementById('cCity').value = d[0].PostOffice[0].District;
+            document.getElementById('cState').value = d[0].PostOffice[0].State;
           }
-        } catch (e) {}
+        } catch(e){}
       }
     }
 
-    async function processPOSOrder(e) {
+    async function processOrder(e) {
       e.preventDefault();
-      if (trolley.length === 0) {
-        showToast('❌ Your trolley is empty!');
-        return;
-      }
-
-      const name = document.getElementById('cName').value;
-      const total = document.getElementById('posTotal').innerText;
-
-      // Print Thermal Receipt
-      const receipt = document.getElementById('receiptPaper');
-      document.getElementById('rDate').innerText = new Date().toISOString().split('T')[0];
+      if (trolley.length === 0) { showToast('❌ Trolley is empty!'); return; }
       
-      let itemsHtml = '';
-      trolley.forEach(i => {
-        itemsHtml += `<div class="receipt-line"><span>${i.title.substring(0, 18)}</span><span>₹${i.price}</span></div>`;
-      });
-      document.getElementById('receiptItems').innerHTML = itemsHtml;
-      document.getElementById('rTotal').innerText = '₹' + total;
+      const total = document.getElementById('posTotal').innerText;
+      showToast('🖨️ Payment Successful! Order Confirmed.');
 
-      receipt.style.display = 'block';
-      showToast('🖨️ Payment Successful! Printing Receipt...');
-
-      // Save Order to Supabase if logged in
       if (currentUser && supabaseClient) {
         await supabaseClient.from('orders').insert({
           user_id: currentUser.id,
@@ -1044,20 +568,17 @@
       }
     }
 
-    async function loginWithGoogle() {
+    async function loginGoogle() {
       if (!supabaseClient) return;
-      await supabaseClient.auth.signInWithOAuth({
-        provider: 'google',
-        options: { redirectTo: window.location.origin }
-      });
+      await supabaseClient.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.origin } });
     }
 
-    async function handleLogout() {
+    async function logout() {
       if (supabaseClient) await supabaseClient.auth.signOut();
       currentUser = null;
       document.getElementById('loginCard').style.display = 'block';
-      document.getElementById('profileDashboardCard').style.display = 'none';
-      showToast('Logged out successfully');
+      document.getElementById('dashboardCard').style.display = 'none';
+      showToast('Logged out');
     }
 
     window.onload = async () => {
@@ -1066,8 +587,19 @@
         if (session) {
           currentUser = session.user;
           document.getElementById('loginCard').style.display = 'none';
-          document.getElementById('profileDashboardCard').style.display = 'block';
+          document.getElementById('dashboardCard').style.display = 'block';
           document.getElementById('userEmail').innerText = currentUser.email;
+
+          // Fetch profile data
+          let { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', currentUser.id).single();
+          if (profile) {
+            document.getElementById('cName').value = profile.full_name || '';
+            document.getElementById('cPhone').value = profile.phone || '';
+            document.getElementById('cAddress').value = profile.address || '';
+            document.getElementById('cPin').value = profile.pin || '';
+            document.getElementById('cCity').value = profile.city || '';
+            document.getElementById('cState').value = profile.state || '';
+          }
         }
       }
     };
