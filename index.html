@@ -1,408 +1,814 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>DAZBERY - 3D Virtual Luxury Store</title>
-    <style>
-        * { box-sizing: border-box; user-select: none; -webkit-user-select: none; }
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-        #canvas-container { width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 1; }
-        
-        /* UI Overlays */
-        .ui-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none; display: flex; flex-direction: column; justify-content: space-between; padding: 20px; }
-        .interactive { pointer-events: auto; }
-        
-        /* Header */
-        .brand-header { background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px); border-bottom: 1px solid #333; color: #fff; padding: 12px 24px; display: flex; justify-content: space-between; align-items: center; border-radius: 12px; }
-        .brand-title { font-size: 20px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; color: #fff; }
-        .cart-summary { background: #fff; color: #000; padding: 6px 14px; border-radius: 20px; font-weight: 700; font-size: 14px; display: flex; align-items: center; gap: 8px; }
-        
-        /* Joysticks */
-        .controls-area { display: flex; justify-content: space-between; align-items: flex-end; width: 100%; padding-bottom: 10px; }
-        .joystick-container { width: 120px; height: 120px; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(5px); border: 2px solid rgba(255, 255, 255, 0.2); border-radius: 50%; position: relative; touch-action: none; display: flex; justify-content: center; align-items: center; }
-        .joystick-knob { width: 50px; height: 50px; background: #fff; border-radius: 50%; position: absolute; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: transform 0.05s linear; }
-        .controls-hint { background: rgba(0,0,0,0.7); color: #aaa; padding: 8px 14px; border-radius: 8px; font-size: 12px; text-align: center; border: 1px solid #333; }
-
-        /* Modal Overlays */
-        .modal-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 100; display: none; justify-content: center; align-items: center; pointer-events: auto; }
-        .modal-card { background: #111; border: 1px solid #333; color: #fff; width: 90%; max-width: 400px; padding: 24px; border-radius: 16px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
-        .modal-card h2 { margin-top: 0; letter-spacing: 1px; font-size: 22px; }
-        .btn { background: #fff; color: #000; border: none; padding: 12px 24px; font-weight: 700; border-radius: 8px; cursor: pointer; width: 100%; margin-top: 15px; font-size: 15px; transition: 0.2s; }
-        .btn:hover { background: #ddd; }
-        
-        /* Scratch Card Canvas */
-        #scratch-canvas { width: 100%; height: 100px; background: #ddd; border-radius: 8px; cursor: crosshair; margin: 15px 0; touch-action: none; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DAZBERY | 3D Haircare Store</title>
+<meta name="theme-color" content="#f7e9ed">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--pink:#f2d5df;--pink2:#f9edf1;--ink:#292126;--muted:#766a70;--line:#eadde2;--white:#fff;--green:#516b57}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:#fff}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+.topbar{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.brand{font-weight:850;letter-spacing:4px;font-size:18px}
+.tagline{font-size:10px;color:var(--muted);letter-spacing:1.5px;margin-top:3px}
+.top-actions{display:flex;gap:8px;align-items:center}
+.btn{border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 14px;font-size:12px;font-weight:750;color:var(--ink)}
+.btn.dark{background:var(--ink);color:#fff;border-color:var(--ink)}
+.btn.pink{background:var(--pink2);border-color:#e8c6d3}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.hero{padding:26px 16px 18px;background:linear-gradient(140deg,#fff 0%,#f9edf1 60%,#f4dce5 100%)}
+.eyebrow{font-size:10px;letter-spacing:2px;font-weight:800;color:#936a7a}
+.hero h1{font-size:clamp(27px,6vw,48px);line-height:1.05;letter-spacing:-1.5px;margin:10px 0}
+.hero p{color:var(--muted);font-size:13px;line-height:1.6;max-width:540px;margin:0 0 15px}
+.hero-buttons{display:flex;gap:8px;flex-wrap:wrap}
+.store-wrap{padding:14px 12px 22px;max-width:1100px;margin:auto}
+.store-heading{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:6px 4px 12px}
+.store-heading h2{font-size:17px;margin:0}
+.store-heading p{font-size:11px;color:var(--muted);margin:4px 0 0}
+#sceneWrap{height:min(58vh,510px);min-height:320px;border-radius:18px;overflow:hidden;background:#e9e0e2;position:relative;border:1px solid #e4d5dc;box-shadow:0 10px 30px #4a263014}
+#scene{width:100%;height:100%;display:block;touch-action:none}
+.scene-label{position:absolute;left:12px;top:12px;background:#ffffffdb;border:1px solid #ffffffa8;border-radius:12px;padding:9px 11px;font-size:11px;backdrop-filter:blur(8px);max-width:70%}
+.scene-label strong{display:block;font-size:12px}
+.scene-label span{color:var(--muted)}
+.scene-help{position:absolute;right:10px;top:10px;background:#ffffffd9;border-radius:10px;padding:7px 9px;font-size:10px;color:#51464b}
+.joystick{position:absolute;left:14px;bottom:16px;width:94px;height:94px;border-radius:50%;background:#ffffff78;border:1px solid #ffffffd9;display:grid;place-items:center;touch-action:none;user-select:none}
+.joy-knob{width:39px;height:39px;border-radius:50%;background:#fff;border:1px solid #d9c4ce;box-shadow:0 2px 8px #0001;position:absolute;left:27px;top:27px}
+.look-hint{position:absolute;right:12px;bottom:17px;background:#ffffffc9;padding:8px 10px;border-radius:10px;font-size:10px}
+.products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:16px}
+.product{border:1px solid var(--line);border-radius:15px;padding:12px;background:white;min-width:0}
+.prod-visual{height:128px;border-radius:11px;background:linear-gradient(145deg,#fcf5f7,#f2e2e8);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.bottle{width:52px;height:85px;border-radius:8px 8px 11px 11px;background:linear-gradient(90deg,#e8c8d4,#f8e8ee 48%,#dfb8c7);border:1px solid #d7b2c1;box-shadow:8px 8px 12px #6b3e4c12;position:relative}
+.bottle:before{content:"";position:absolute;width:22px;height:16px;top:-15px;left:14px;border-radius:4px 4px 1px 1px;background:#c6b9bc;border:1px solid #b9a9ae}
+.bottle:after{content:"DAZBERY";position:absolute;top:32px;left:0;right:0;text-align:center;font-size:6px;font-weight:900;letter-spacing:1px;color:#5d414b}
+.bottle.spray{height:91px;width:46px;background:linear-gradient(90deg,#c9d5c4,#edf1e8 50%,#b8c7b3)}
+.bottle.serum{height:75px;width:38px;background:linear-gradient(90deg,#e4c9a8,#fff0d9 50%,#d8b58d)}
+.bottle.conditioner{background:linear-gradient(90deg,#f1d8df,#fff0f4 50%,#e7c2d0)}
+.prod-name{font-size:12px;font-weight:800;line-height:1.35;margin:10px 0 4px}
+.prod-sub{font-size:10px;color:var(--muted);min-height:25px}
+.price-row{display:flex;justify-content:space-between;align-items:center;gap:6px;margin-top:9px}
+.price{font-size:14px;font-weight:850}
+.small-btn{border:0;border-radius:999px;background:var(--ink);color:#fff;padding:9px 11px;font-size:10px;font-weight:800}
+.section{padding:22px 16px;border-top:1px solid var(--line)}
+.section-inner{max-width:850px;margin:auto}
+.section h2{font-size:20px;margin:0 0 12px}
+.panel{border:1px solid var(--line);border-radius:16px;padding:16px;background:#fff;margin:10px 0}
+.muted{color:var(--muted);font-size:12px;line-height:1.6}
+.cart-line{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:12px}
+.cart-line:last-child{border-bottom:0}
+.qty{display:flex;gap:8px;align-items:center}
+.qty button{width:27px;height:27px;border-radius:50%;border:1px solid var(--line);background:#fff}
+.field{display:block;width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;margin:7px 0 12px;background:#fff;font-size:13px}
+.field-label{font-size:11px;font-weight:800}
+.total{font-size:20px;font-weight:900}
+.pay-options{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.pay-option{border:1px solid var(--line);border-radius:10px;padding:11px;font-size:12px;display:flex;gap:8px;align-items:center}
+.pay-option:has(input:checked){background:var(--pink2);border-color:#d5a9ba}
+footer{text-align:center;background:#fbf6f8;padding:24px 16px;color:var(--muted);font-size:11px;line-height:1.7}
+.modal-backdrop{display:none;position:fixed;inset:0;background:#21161bc2;z-index:50;align-items:flex-end;justify-content:center;padding:12px}
+.modal-backdrop.show{display:flex}
+.modal{background:#fff;border-radius:20px 20px 14px 14px;padding:20px;width:min(100%,520px);max-height:88vh;overflow:auto}
+.modal-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.modal h3{margin:0;font-size:19px}
+.close{border:0;background:#f7edf1;border-radius:50%;width:34px;height:34px;font-size:18px}
+.toast{position:fixed;z-index:80;left:50%;bottom:22px;transform:translate(-50%,120px);opacity:0;transition:.25s;background:#282027;color:#fff;padding:12px 16px;border-radius:999px;font-size:12px;max-width:90%;text-align:center}
+.toast.show{transform:translate(-50%,0);opacity:1}
+@media(min-width:700px){
+.hero{padding:42px max(24px,calc((100vw - 1000px)/2))}
+.store-wrap{padding:20px 24px 34px}
+.products{grid-template-columns:repeat(4,minmax(0,1fr))}
+.prod-visual{height:150px}
+.section{padding:32px 24px}
+.modal-backdrop{align-items:center}
+.modal{border-radius:20px}
+.topbar{padding:14px 28px}
+}
+</style>
 </head>
 <body>
+<header class="topbar">
+ <div>
+  <div class="brand">DAZBERY</div>
+  <div class="tagline">HAIRCARE • NATURALLY YOURS</div>
+ </div>
+ <div class="top-actions">
+  <button class="btn" id="signinBtn">Sign in</button>
+  <button class="btn dark" id="cartBtn">Bag <span id="cartCount">0</span></button>
+ </div>
+</header>
 
-    <div id="canvas-container"></div>
+<section class="hero">
+ <div class="eyebrow">WELCOME TO THE DAZBERY STORE</div>
+ <h1>Healthy hair.<br>Happier you.</h1>
+ <p>Explore our haircare collection inside a little 3D DAZBERY boutique. Look around, browse the shelf, and add your favourites to your bag.</p>
+ <div class="hero-buttons">
+  <button class="btn dark" onclick="document.getElementById('store').scrollIntoView({behavior:'smooth'})">Enter the 3D store ↘</button>
+  <button class="btn" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">Shop products</button>
+ </div>
+</section>
 
-    <div class="ui-layer">
-        <div class="brand-header interactive">
-            <div class="brand-title">DAZBERY</div>
-            <div class="cart-summary">
-                🛒 Cart: <span id="cart-count">0</span> items | <span id="cart-total">₹0</span>
-            </div>
-        </div>
+<main>
+<section class="store-wrap" id="store">
+ <div class="store-heading">
+  <div>
+   <h2>Explore the store</h2>
+   <p>Drag to look around • Use the joystick to move</p>
+  </div>
+  <button class="btn" id="resetView">Reset view</button>
+ </div>
 
-        <div class="controls-area">
-            <div id="move-stick" class="joystick-container interactive">
-                <div id="move-knob" class="joystick-knob"></div>
-            </div>
-            <div class="controls-hint">
-                <b>Move:</b> Left Joystick / WASD<br><b>Look:</b> Right Joystick / Drag
-            </div>
-            <div id="look-stick" class="joystick-container interactive">
-                <div id="look-knob" class="joystick-knob"></div>
-            </div>
-        </div>
+ <div id="sceneWrap">
+  <canvas id="scene" aria-label="Interactive 3D DAZBERY store"></canvas>
+  <div class="scene-label">
+   <strong>DAZBERY Haircare Boutique</strong>
+   <span>Tap a product on the shelf to shop</span>
+  </div>
+  <div class="scene-help">360° LOOK</div>
+  <div class="joystick" id="joystick"><div class="joy-knob" id="joyKnob"></div></div>
+  <div class="look-hint">Swipe to look around</div>
+ </div>
+
+ <div class="products" id="products"></div>
+</section>
+
+<section class="section" id="checkout">
+ <div class="section-inner">
+  <h2>Your shopping bag</h2>
+  <p class="muted">Review your items before checkout.</p>
+  <div class="panel" id="cartPanel"></div>
+
+  <div class="panel">
+   <h2 style="font-size:16px">Checkout details</h2>
+
+   <label class="field-label" for="customerName">Full name</label>
+   <input class="field" id="customerName" autocomplete="name" placeholder="Enter your full name">
+
+   <label class="field-label" for="customerPhone">Mobile number</label>
+   <input class="field" id="customerPhone" inputmode="tel" autocomplete="tel" placeholder="10-digit mobile number">
+
+   <label class="field-label" for="customerAddress">Delivery address</label>
+   <textarea class="field" id="customerAddress" rows="3" autocomplete="street-address" placeholder="House / street / town / PIN code"></textarea>
+
+   <label class="field-label" for="coupon">Scratch-card offer code (optional)</label>
+   <input class="field" id="coupon" placeholder="Try DAZBERY50">
+   <button class="btn pink" id="applyCoupon">Apply offer</button>
+
+   <p class="muted" id="couponMessage">Demo offer: DAZBERY50 shows a sample 50% discount. Do not use this as a real promotion until server-side validation is added.</p>
+
+   <div style="display:flex;justify-content:space-between;align-items:center;margin:14px 0">
+    <span class="muted">Estimated total</span>
+    <span class="total" id="total">₹0</span>
+   </div>
+
+   <div class="field-label" style="margin:14px 0 8px">Payment preference</div>
+   <div class="pay-options">
+    <label class="pay-option"><input type="radio" name="payment" value="UPI / GPay" checked> UPI / GPay</label>
+    <label class="pay-option"><input type="radio" name="payment" value="PhonePe"> PhonePe</label>
+    <label class="pay-option"><input type="radio" name="payment" value="Paytm"> Paytm</label>
+    <label class="pay-option"><input type="radio" name="payment" value="Card"> Debit / Credit card</label>
+    <label class="pay-option"><input type="radio" name="payment" value="Cash on delivery"> Cash on delivery</label>
+   </div>
+
+   <p class="muted" style="margin:10px 0">Payment is a demo selection only. No money will be charged. A verified payment gateway must be connected before accepting real online payments.</p>
+
+   <button class="btn dark" style="width:100%;padding:14px" id="placeOrder">Place demo order</button>
+  </div>
+
+  <h2 style="margin-top:24px">My orders</h2>
+  <div class="panel" id="ordersPanel">
+   <p class="muted">Your demo orders will appear here on this device.</p>
+  </div>
+ </div>
+</section>
+</main>
+
+<footer>
+ <strong>DAZBERY</strong><br>
+ Haircare made with care.<br>
+ <span>Store prototype • Prices and checkout are illustrative until connected to your live inventory and payment provider.</span>
+</footer>
+
+<div class="modal-backdrop" id="signinModal">
+ <div class="modal">
+  <div class="modal-head">
+   <h3>Sign in to DAZBERY</h3>
+   <button class="close" data-close="signinModal">×</button>
+  </div>
+  <p class="muted">Use Google to sign in. This uses the Supabase project settings from your existing website.</p>
+  <button class="btn dark" style="width:100%;margin-top:12px" id="googleBtn">Continue with Google</button>
+  <p class="muted" id="authStatus"></p>
+ </div>
+</div>
+
+<div class="modal-backdrop" id="scratchModal">
+ <div class="modal">
+  <div class="modal-head">
+   <h3>Your surprise offer</h3>
+   <button class="close" data-close="scratchModal">×</button>
+  </div>
+  <p class="muted">Tap the card to reveal the demo offer.</p>
+  <button id="scratchCard" style="width:100%;height:140px;margin-top:12px;border:0;border-radius:15px;background:linear-gradient(135deg,#d7b0c0,#f8e7ee);font-weight:900;font-size:20px;color:#4a303b">SCRATCH TO REVEAL ✦</button>
+  <p class="muted" id="scratchResult"></p>
+ </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+
+const PRODUCTS=[
+ {id:'shampoo',name:'Rosemary & Rice Water Shampoo',size:'200 ml',price:499,type:'shampoo',desc:'Gentle everyday hair cleansing'},
+ {id:'conditioner',name:'Rosemary & Rice Water Conditioner',size:'150 g',price:449,type:'conditioner',desc:'Softness and smooth-feeling hair'},
+ {id:'serum',name:'Hair Growth Serum',size:'30 ml',price:599,type:'serum',desc:'Targeted scalp-care routine'},
+ {id:'spray',name:'Rosemary & Rice Water Hair Growth Spray',size:'100 ml',price:599,type:'spray',desc:'Lightweight leave-in scalp care'}
+];
+
+const SUPABASE_URL='https://cccpqyfbwofkfydcacxo.supabase.co';
+const SUPABASE_ANON_KEY='sb_publishable_j5jnvFhMmUHaRarHJ_s2LQ_m_TM8ecT';
+
+let supabaseClient=null;
+let session=null;
+let cart={},discount=0,couponApplied=false;
+
+try{
+ if(window.supabase?.createClient){
+  supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+  supabaseClient.auth.getSession().then(({data})=>{
+   session=data.session;
+   updateSignIn();
+  }).catch(()=>{});
+  supabaseClient.auth.onAuthStateChange((_event,s)=>{
+   session=s;
+   updateSignIn();
+  });
+ }
+}catch(e){
+ console.warn('Supabase auth setup:',e);
+}
+
+const money=n=>'₹'+Math.round(n).toLocaleString('en-IN');
+const $=id=>document.getElementById(id);
+
+function toast(msg){
+ const el=$('toast');
+ el.textContent=msg;
+ el.classList.add('show');
+ clearTimeout(window._toastTimer);
+ window._toastTimer=setTimeout(()=>el.classList.remove('show'),2500);
+}
+
+function getSubtotal(){
+ return PRODUCTS.reduce((sum,p)=>sum+p.price*(cart[p.id]||0),0);
+}
+
+function getTotal(){
+ return Math.max(0,getSubtotal()*(1-discount));
+}
+
+function updateCount(){
+ $('cartCount').textContent=Object.values(cart).reduce((a,b)=>a+b,0);
+}
+
+function renderProducts(){
+ $('products').innerHTML=PRODUCTS.map(p=>`
+ <article class="product">
+  <div class="prod-visual"><div class="bottle ${p.type}"></div></div>
+  <div class="prod-name">${p.name}</div>
+  <div class="prod-sub">${p.size} · ${p.desc}</div>
+  <div class="price-row">
+   <span class="price">${money(p.price)}</span>
+   <button class="small-btn" data-add="${p.id}">ADD +</button>
+  </div>
+ </article>`).join('');
+
+ $('products').querySelectorAll('[data-add]').forEach(b=>{
+  b.addEventListener('click',()=>addToCart(b.dataset.add));
+ });
+}
+
+function addToCart(id){
+ cart[id]=(cart[id]||0)+1;
+ updateCount();
+ renderCart();
+ toast('Added to your bag');
+}
+
+function renderCart(){
+ const entries=PRODUCTS.filter(p=>cart[p.id]);
+
+ if(!entries.length){
+  $('cartPanel').innerHTML='<p class="muted">Your bag is empty. Add a product from the shelf to get started.</p>';
+ }else{
+  $('cartPanel').innerHTML=entries.map(p=>`
+   <div class="cart-line">
+    <div>
+     <strong>${p.name}</strong>
+     <div class="muted">${p.size} · ${money(p.price)} each</div>
     </div>
-
-    <!-- Modal for Product Interaction -->
-    <div id="product-modal" class="modal-overlay">
-        <div class="modal-card">
-            <h2 id="modal-title">Product Name</h2>
-            <p id="modal-desc" style="color: #aaa; font-size: 14px;"></p>
-            <p id="modal-price" style="font-size: 18px; font-weight: bold; color: #fff;"></p>
-            <button class="btn" onclick="addToCartFromModal()">Add to Trolley</button>
-            <button class="btn" style="background: #333; color: #fff;" onclick="closeModal()">Close</button>
-        </div>
+    <div class="qty">
+     <button data-minus="${p.id}" aria-label="Decrease quantity">−</button>
+     <strong>${cart[p.id]}</strong>
+     <button data-plus="${p.id}" aria-label="Increase quantity">+</button>
     </div>
+   </div>`).join('')+`
+   <div style="display:flex;justify-content:space-between;margin-top:12px">
+    <span class="muted">Subtotal</span><strong>${money(getSubtotal())}</strong>
+   </div>`;
+ }
 
-    <!-- Modal for Billing Counter -->
-    <div id="billing-modal" class="modal-overlay">
-        <div class="modal-card">
-            <h2>Cashier Checkout</h2>
-            <p style="color: #aaa; font-size: 13px;">Scratch below to reveal your discount coupon!</p>
-            <div style="position: relative;">
-                <canvas id="scratch-canvas" width="350" height="100"></canvas>
-                <div id="scratch-text" style="position: absolute; top: 35px; width: 100%; font-weight: bold; color: #000; font-size: 18px; pointer-events: none;">DAZBERY20 (20% OFF)</div>
-            </div>
-            <p id="bill-summary" style="font-size: 14px; margin: 10px 0;">Total: ₹0</p>
-            <div style="display: flex; gap: 10px;">
-                <button class="btn" style="background:#fff; color:#000;" onclick="pay('Card')">Swipe Card</button>
-                <button class="btn" style="background:#222; color:#fff; border:1px solid #444;" onclick="pay('UPI')">GPay / UPI QR</button>
-            </div>
-            <button class="btn" style="background: transparent; color: #666; margin-top: 5px;" onclick="closeBilling()">Back to Store</button>
-        </div>
+ $('cartPanel').querySelectorAll('[data-minus]').forEach(b=>{
+  b.onclick=()=>{
+   const id=b.dataset.minus;
+   cart[id]--;
+   if(cart[id]<=0)delete cart[id];
+   updateCount();
+   renderCart();
+  };
+ });
+
+ $('cartPanel').querySelectorAll('[data-plus]').forEach(b=>{
+  b.onclick=()=>addToCart(b.dataset.plus);
+ });
+
+ $('total').textContent=money(getTotal());
+ updateCount();
+}
+
+function updateSignIn(){
+ $('signinBtn').textContent=session?.user?'Account':'Sign in';
+ $('authStatus').textContent=session?.user
+  ?`Signed in as ${session.user.email||'Google user'}`
+  :'';
+}
+
+$('cartBtn').onclick=()=>$('checkout').scrollIntoView({behavior:'smooth'});
+
+$('signinBtn').onclick=()=>{
+ $('signinModal').classList.add('show');
+};
+
+document.querySelectorAll('[data-close]').forEach(b=>{
+ b.onclick=()=>$(b.dataset.close).classList.remove('show');
+});
+
+$('googleBtn').onclick=async()=>{
+ if(!supabaseClient){
+  toast('Sign-in service could not load');
+  return;
+ }
+ try{
+  const {error}=await supabaseClient.auth.signInWithOAuth({
+   provider:'google',
+   options:{redirectTo:window.location.origin+window.location.pathname}
+  });
+  if(error)throw error;
+ }catch(e){
+  $('authStatus').textContent=e.message||'Could not start Google sign-in.';
+ }
+};
+
+$('applyCoupon').onclick=()=>{
+ const code=$('coupon').value.trim().toUpperCase();
+ if(code==='DAZBERY50'){
+  discount=.5;
+  couponApplied=true;
+  $('couponMessage').textContent='Demo code applied: 50% sample discount. Server-side validation is required for a real store.';
+  toast('Demo offer applied');
+ }else{
+  discount=0;
+  couponApplied=false;
+  $('couponMessage').textContent='Code not recognised. Try DAZBERY50 for the demo.';
+  toast('Offer code not recognised');
+ }
+ renderCart();
+};
+
+$('scratchCard').onclick=()=>{
+ $('scratchCard').textContent='DAZBERY50 · 50% OFF';
+ discount=.5;
+ couponApplied=true;
+ $('coupon').value='DAZBERY50';
+ $('scratchResult').textContent='Demo offer revealed and applied to this prototype checkout.';
+ renderCart();
+};
+
+$('placeOrder').onclick=()=>{
+ if(!Object.keys(cart).length){
+  toast('Please add a product first');
+  return;
+ }
+
+ const name=$('customerName').value.trim();
+ const phone=$('customerPhone').value.trim();
+ const address=$('customerAddress').value.trim();
+
+ if(!name||!phone||!address){
+  toast('Please enter your name, mobile and address');
+  return;
+ }
+
+ if(!/^[0-9+\-\s]{10,15}$/.test(phone)){
+  toast('Please check your mobile number');
+  return;
+ }
+
+ const payment=document.querySelector('input[name="payment"]:checked')?.value||'UPI / GPay';
+
+ const order={
+  id:'DZ-'+Date.now().toString().slice(-8),
+  date:new Date().toLocaleString('en-IN'),
+  items:PRODUCTS.filter(p=>cart[p.id]).map(p=>({
+   name:p.name,qty:cart[p.id],price:p.price
+  })),
+  total:getTotal(),
+  payment,
+  status:'Demo order · payment not processed',
+  name,phone,address
+ };
+
+ const old=JSON.parse(localStorage.getItem('dazbery_demo_orders')||'[]');
+ old.unshift(order);
+ localStorage.setItem('dazbery_demo_orders',JSON.stringify(old.slice(0,10)));
+
+ renderOrders();
+ cart={};
+ discount=0;
+ couponApplied=false;
+ $('coupon').value='';
+ $('couponMessage').textContent='Demo offer: DAZBERY50 shows a sample 50% discount.';
+ renderCart();
+ toast('Demo order saved on this device');
+ $('ordersPanel').scrollIntoView({behavior:'smooth',block:'center'});
+};
+
+function renderOrders(){
+ const orders=JSON.parse(localStorage.getItem('dazbery_demo_orders')||'[]');
+
+ $('ordersPanel').innerHTML=orders.length
+ ?orders.map(o=>`
+  <div class="cart-line">
+   <div>
+    <strong>${o.id}</strong>
+    <div class="muted">
+     ${o.date}<br>
+     ${o.items.map(i=>`${i.name} × ${i.qty}`).join('<br>')}<br>
+     ${o.payment} · ${o.status}
     </div>
+   </div>
+   <strong>${money(o.total)}</strong>
+  </div>`).join('')
+ :'<p class="muted">Your demo orders will appear here on this device.</p>';
+}
 
-    <!-- Success Receipt Modal -->
-    <div id="receipt-modal" class="modal-overlay">
-        <div class="modal-card" style="background: #fff; color: #000;">
-            <h2>DAZBERY RECEIPT</h2>
-            <p style="font-size: 12px; color: #666;">Order Successfully Completed</p>
-            <div id="receipt-details" style="text-align: left; font-size: 13px; margin: 15px 0; border-top: 1px dashed #ccc; border-bottom: 1px dashed #ccc; padding: 10px 0;"></div>
-            <button class="btn" style="background: #000; color: #fff;" onclick="restartGame()">Continue Shopping</button>
-        </div>
-    </div>
+renderProducts();
+renderCart();
+renderOrders();
+    /* 3D DAZBERY boutique */
+const canvas=$('scene');
+const wrap=$('sceneWrap');
 
-    <!-- Include Three.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script>
-        // Basic Scene Setup
-        const container = document.getElementById('canvas-container');
-        const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x050505);
+let renderer,scene,camera,storeGroup;
+let lookYaw=0,lookPitch=.06;
+let moveX=0,moveZ=0,playerX=0,playerZ=3.8;
+const clickable=[];
 
-        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.set(0, 1.6, 5);
+function material(color,roughness=.8){
+ return new THREE.MeshStandardMaterial({color,roughness});
+}
 
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.shadowMap.enabled = true;
-        container.appendChild(renderer.domElement);
+function box(w,h,d,color,x,y,z,group=storeGroup){
+ const m=new THREE.Mesh(
+  new THREE.BoxGeometry(w,h,d),
+  material(color)
+ );
+ m.position.set(x,y,z);
+ group.add(m);
+ return m;
+}
 
-        // Lighting (Black & White Luxury Minimalist Tone)
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
-        scene.add(ambientLight);
+function labelTexture(lines){
+ const c=document.createElement('canvas');
+ c.width=512;
+ c.height=512;
+ const ctx=c.getContext('2d');
 
-        const dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
-        dirLight.position.set(0, 10, 5);
-        dirLight.castShadow = true;
-        scene.add(dirLight);
+ ctx.fillStyle='#fff8fa';
+ ctx.fillRect(0,0,512,512);
 
-        // Store Floor & Ceiling
-        const floorGeo = new THREE.PlaneGeometry(20, 30);
-        const floorMat = new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.2, metalness: 0.8 });
-        const floor = new THREE.Mesh(floorGeo, floorMat);
-        floor.rotation.x = -Math.PI / 2;
-        floor.receiveShadow = true;
-        scene.add(floor);
+ ctx.fillStyle='#4a303b';
+ ctx.textAlign='center';
+ ctx.font='bold 38px Arial';
+ ctx.fillText('DAZBERY',256,210);
 
-        const ceilingGeo = new THREE.PlaneGeometry(20, 30);
-        const ceilingMat = new THREE.MeshStandardMaterial({ color: 0x0a0a0a });
-        const ceiling = new THREE.Mesh(ceilingGeo, ceilingMat);
-        ceiling.rotation.x = Math.PI / 2;
-        ceiling.position.y = 5;
-        scene.add(ceiling);
+ ctx.font='24px Arial';
+ lines.forEach((t,i)=>{
+  ctx.fillText(t,256,260+i*35);
+ });
 
-        // Walls
-        const wallMat = new THREE.MeshStandardMaterial({ color: 0xf5f5f5, roughness: 0.9 });
-        
-        // Back Wall
-        const backWall = new THREE.Mesh(new THREE.PlaneGeometry(20, 5), wallMat);
-        backWall.position.set(0, 2.5, -15);
-        scene.add(backWall);
+ return new THREE.CanvasTexture(c);
+}
 
-        // DAZBERY Signboard on back wall
-        const signGeo = new THREE.PlaneGeometry(6, 1.2);
-        const signCanvas = document.createElement('canvas');
-        signCanvas.width = 600; signCanvas.height = 120;
-        const ctx = signCanvas.getContext('2d');
-        ctx.fillStyle = '#000'; ctx.fillRect(0,0,600,120);
-        ctx.fillStyle = '#fff'; ctx.font = 'bold 50px Arial'; ctx.textAlign = 'center'; ctx.fillText('DAZBERY', 300, 75);
-        
-        const signTex = new THREE.CanvasTexture(signCanvas);
-        const signMat = new THREE.MeshBasicMaterial({ map: signTex });
-        const signboard = new THREE.Mesh(signGeo, signMat);
-        signboard.position.set(0, 3.8, -14.9);
-        scene.add(signboard);
+function makeProduct(p,x,y,z,scale=1){
+ const g=new THREE.Group();
+ g.position.set(x,y,z);
+ g.scale.setScalar(scale);
+ storeGroup.add(g);
 
-        // Shelves Creation helper
-        const shelves = [];
-        function createShelf(x, z, rotY) {
-            const shelfGroup = new THREE.Group();
-            const frameMat = new THREE.MeshStandardMaterial({ color: 0x222222, metalness: 0.5 });
-            
-            for(let i=0; i<3; i++) {
-                const board = new THREE.Mesh(new THREE.BoxGeometry(4, 0.1, 1), frameMat);
-                board.position.set(0, i * 1.2 + 0.5, 0);
-                board.castShadow = true; board.receiveShadow = true;
-                shelfGroup.add(board);
-            }
-            shelfGroup.position.set(x, 0, z);
-            shelfGroup.rotation.y = rotY;
-            scene.add(shelfGroup);
-            return shelfGroup;
-        }
+ const colors={
+  shampoo:0xe8c4d1,
+  conditioner:0xf0d4df,
+  serum:0xd8b78e,
+  spray:0xc9d6c2
+ };
 
-        createShelf(-6, -8, Math.PI / 2); // Left Skincare Aisle
-        createShelf(6, -8, -Math.PI / 2);  // Right Haircare Aisle
+ const col=colors[p.type];
 
-        // Products Database
-        const productsData = [
-            { id: 1, name: "Dazbery Shampoo (200 ml)", price: 499, desc: "Rosemary, Hibiscus & Coconut Milk", x: -5.8, z: -8 },
-            { id: 2, name: "Scalp-Safe Conditioner (150 g)", price: 549, desc: "Oat, Aloe, Hyaluronic Acid & B5", x: -5.8, z: -6 },
-            { id: 3, name: "Hair Growth Serum (30 ml)", price: 899, desc: "3% Redensyl, 4% Anagain, 3% Baicapil", x: 5.8, z: -8 },
-            { id: 4, name: "Minimalist Sunscreen SPF 50", price: 649, desc: "Broad Spectrum, Non-Greasy", x: 5.8, z: -6 }
-        ];
+ const body=new THREE.Mesh(
+  new THREE.CylinderGeometry(
+   p.type==='serum'?.20:.28,
+   p.type==='serum'?.22:.3,
+   p.type==='serum'?.78:1.1,
+   24
+  ),
+  material(col,.35)
+ );
+ body.position.y=.58;
+ g.add(body);
 
-        const productMeshes = [];
-        productsData.forEach(prod => {
-            const geom = new THREE.BoxGeometry(0.4, 0.8, 0.4);
-            const mat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.3 });
-            const mesh = new THREE.Mesh(geom, mat);
-            mesh.position.set(prod.x, 1.8, prod.z);
-            mesh.castShadow = true;
-            scene.add(mesh);
-            productMeshes.push({ mesh: mesh, data: prod });
-        });
+ const cap=new THREE.Mesh(
+  new THREE.CylinderGeometry(.13,.15,.2,20),
+  material(p.type==='spray'?0xeee8e7:0xb8a9ad,.35)
+ );
+ cap.position.y=1.24;
+ g.add(cap);
 
-        // Billing Counter Desk
-        const deskGeo = new THREE.BoxGeometry(3, 1, 1.2);
-        const deskMat = new THREE.MeshStandardMaterial({ color: 0x000000, roughness: 0.2 });
-        const desk = new THREE.Mesh(deskGeo, deskMat);
-        desk.position.set(0, 0.5, 8);
-        scene.add(desk);
+ const front=new THREE.Mesh(
+  new THREE.PlaneGeometry(.48,.5),
+  new THREE.MeshBasicMaterial({
+   map:labelTexture([
+    p.name.replace('Rosemary & Rice Water ','').replace(' Hair Growth',''),
+    p.size
+   ])
+  })
+ );
+ front.position.set(0,.62,.285);
+ g.add(front);
 
-        // Player & Controls State
-        let playerPos = { x: 0, z: 5 };
-        let cameraAngle = 0;
-        let cart = [];
+ [body,cap,front].forEach(obj=>{
+  obj.userData.productId=p.id;
+  clickable.push(obj);
+ });
 
-        // Joystick Logic
-        function setupJoystick(stickId, knobId, callback) {
-            const stick = document.getElementById(stickId);
-            const knob = document.getElementById(knobId);
-            let active = false, startX = 0, startY = 0;
+ return g;
+}
 
-            stick.addEventListener('pointerdown', (e) => {
-                active = true; startX = e.clientX; startY = e.clientY;
-                stick.setPointerCapture(e.pointerId);
-            });
+function init3D(){
+ try{
+  renderer=new THREE.WebGLRenderer({
+   canvas,
+   antialias:true,
+   alpha:false
+  });
 
-            stick.addEventListener('pointermove', (e) => {
-                if (!active) return;
-                let dx = e.clientX - startX;
-                let dy = e.clientY - startY;
-                let dist = Math.hypot(dx, dy);
-                let maxDist = 40;
-                if (dist > maxDist) { dx *= maxDist / dist; dy *= maxDist / dist; }
-                knob.style.transform = `translate(${dx}px, ${dy}px)`;
-                callback(dx / maxDist, dy / maxDist);
-            });
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  renderer.setSize(wrap.clientWidth,wrap.clientHeight);
+  renderer.outputColorSpace=THREE.SRGBColorSpace;
+  renderer.shadowMap.enabled=true;
 
-            const endAction = (e) => {
-                if (!active) return;
-                active = false;
-                knob.style.transform = `translate(0px, 0px)`;
-                callback(0, 0);
-            };
-            stick.addEventListener('pointerup', endAction);
-            stick.addEventListener('pointercancel', endAction);
-        }
+  scene=new THREE.Scene();
+  scene.background=new THREE.Color('#e8dfe2');
+  scene.fog=new THREE.Fog('#e8dfe2',12,27);
 
-        let moveVector = { x: 0, y: 0 };
-        let lookVector = { x: 0, y: 0 };
+  camera=new THREE.PerspectiveCamera(
+   65,
+   wrap.clientWidth/wrap.clientHeight,
+   .1,
+   100
+  );
 
-        setupJoystick('move-stick', 'move-knob', (x, y) => { moveVector = { x, y }; });
-        setupJoystick('look-stick', 'look-knob', (x, y) => { lookVector = { x, y }; });
+  scene.add(
+   new THREE.HemisphereLight(0xfff4f8,0x82737b,2)
+  );
 
-        // Keyboard support
-        const keys = {};
-        window.addEventListener('keydown', e => keys[e.key.toLowerCase()] = true);
-        window.addEventListener('keyup', e => keys[e.key.toLowerCase()] = false);
+  const light=new THREE.DirectionalLight(0xffffff,2.5);
+  light.position.set(3,8,5);
+  light.castShadow=true;
+  scene.add(light);
 
-        // Main Animation & Physics Loop
-        function animate() {
-            requestAnimationFrame(animate);
+  storeGroup=new THREE.Group();
+  scene.add(storeGroup);
 
-            // Movement Calculation
-            let moveX = moveVector.x + (keys['d'] || keys['arrowright'] ? 1 : 0) - (keys['a'] || keys['arrowleft'] ? 1 : 0);
-            let moveZ = moveVector.y + (keys['s'] || keys['arrowdown'] ? 1 : 0) - (keys['w'] || keys['arrowup'] ? -1 : 0);
+  /* Floor and walls */
+  box(12,.25,14,0xd6c8cd,0,-.18,0);
+  box(12,4,.25,0xf8edf1,0,1.8,-6.8);
+  box(.25,4,14,0xf4e4ea,-6,1.8,0);
+  box(.25,4,14,0xf4e4ea,6,1.8,0);
 
-            let speed = 0.08;
-            let forward = new THREE.Vector3(Math.sin(cameraAngle), 0, Math.cos(cameraAngle));
-            let side = new THREE.Vector3(Math.cos(cameraAngle), 0, -Math.sin(cameraAngle));
+  /* DAZBERY wall sign */
+  box(3.4,1.05,.12,0xf0d7e1,0,3.1,-6.55);
 
-            playerPos.x += (forward.x * -moveZ + side.x * moveX) * speed;
-            playerPos.z += (forward.z * -moveZ + side.z * moveX) * speed;
+  /* Display shelves */
+  for(const x of [-3.8,0,3.8]){
+   box(2.8,2.6,.25,0xd4bdc6,x,1.35,-5.9);
 
-            // Boundaries
-            playerPos.x = Math.max(-8, Math.min(8, playerPos.x));
-            playerPos.z = Math.max(-12, Math.min(10, playerPos.z));
+   for(const y of [.55,1.45,2.35]){
+    box(2.6,.10,.65,0xb99da8,x,y,-5.42);
+   }
+  }
 
-            // Camera Rotation via Look Joystick or Mouse Drag
-            cameraAngle -= lookVector.x * 0.04;
+  /* Haircare products */
+  const slots=[
+   [-4.65,.62,-5,'shampoo'],
+   [-3.8,.62,-5,'conditioner'],
+   [-2.95,.62,-5,'spray'],
+   [-.85,.62,-5,'serum'],
+   [0,.62,-5,'spray'],
+   [.85,.62,-5,'shampoo'],
+   [2.95,.62,-5,'conditioner'],
+   [3.8,.62,-5,'serum'],
+   [4.65,.62,-5,'spray']
+  ];
 
-            camera.position.set(playerPos.x, 1.6, playerPos.z);
-            let lookTarget = new THREE.Vector3(
-                playerPos.x + Math.sin(cameraAngle) * 10,
-                1.6,
-                playerPos.z + Math.cos(cameraAngle) * 10
-            );
-            camera.lookAt(lookTarget);
+  slots.forEach(([x,y,z,id])=>{
+   const p=PRODUCTS.find(v=>v.id===id);
+   makeProduct(p,x,y,z,.63);
+  });
 
-            // Check Proximity to Products
-            productMeshesforEachCheck();
+  /* Billing counter */
+  box(2.3,1,.85,0xd4aebd,3.7,.5,1.1);
+  box(2.35,.12,.9,0xf8edf1,3.7,1.06,1.1);
+  box(.8,.08,.5,0x443a40,3.7,1.17,.95);
 
-            // Check Proximity to Billing Counter
-            if (playerPos.z > 6 && Math.abs(playerPos.x) < 2) {
-                openBillingCounter();
-                playerPos.z = 5.5; // push back slightly
-            }
+  /* Entrance mat */
+  box(2.4,.04,1.5,0xe6c8d5,0,.0,4.9);
 
-            renderer.render(scene, camera);
-        }
+  /* Decorative greenery */
+  for(let i=0;i<3;i++){
+   const stem=new THREE.Mesh(
+    new THREE.ConeGeometry(.14,.7,8),
+    material(0x7c997b)
+   );
+   stem.position.set(-4.9+i*.22,.5,2.2);
+   stem.rotation.z=(i-1)*.25;
+   storeGroup.add(stem);
+  }
 
-        function productMeshesforEachCheck() {
-            productMeshes.forEach(item => {
-                let dist = Math.hypot(playerPos.x - item.data.x, playerPos.z - item.data.z);
-                if (dist < 1.5) {
-                    showProductModal(item.data);
-                }
-            });
-        }
+  camera.position.set(playerX,1.65,playerZ);
 
-        let selectedProduct = null;
-        function showProductModal(prod) {
-            selectedProduct = prod;
-            document.getElementById('modal-title').innerText = prod.name;
-            document.getElementById('modal-desc').innerText = prod.desc;
-            document.getElementById('modal-price').innerText = `₹${prod.price}`;
-            document.getElementById('product-modal').style.display = 'flex';
-        }
+  /* Tap a shelf product to add it */
+  const raycaster=new THREE.Raycaster();
+  const pointer=new THREE.Vector2();
 
-        function closeModal() {
-            document.getElementById('product-modal').style.display = 'none';
-            playerPos.z += 1.0; // Step back
-        }
+  canvas.addEventListener('pointerdown',e=>{
+   canvas.setPointerCapture?.(e.pointerId);
+   canvas._dragX=e.clientX;
+   canvas._dragY=e.clientY;
+   canvas._moved=false;
+  });
 
-        function addToCartFromModal() {
-            if (!selectedProduct) return;
-            cart.push(selectedProduct);
-            updateCartUI();
-            closeModal();
-        }
+  canvas.addEventListener('pointermove',e=>{
+   if(canvas.hasPointerCapture?.(e.pointerId)){
+    const dx=e.clientX-canvas._dragX;
+    const dy=e.clientY-canvas._dragY;
 
-        function updateCartUI() {
-            document.getElementById('cart-count').innerText = cart.length;
-            let total = cart.reduce((sum, item) => sum + item.price, 0);
-            document.getElementById('cart-total').innerText = `₹${total}`;
-        }
+    if(Math.abs(dx)+Math.abs(dy)>3){
+     canvas._moved=true;
+    }
 
-        // Billing & Scratch Card Logic
-        function openBillingCounter() {
-            if (cart.length === 0) {
-                alert("Your trolley is empty! Pick up some items first.");
-                playerPos.z = 4;
-                return;
-            }
-            let total = cart.reduce((sum, item) => sum + item.price, 0);
-            document.getElementById('bill-summary').innerText = `Total Amount: ₹${total} (20% Discount applied via Scratch Card)`;
-            document.getElementById('billing-modal').style.display = 'flex';
-            initScratchCard();
-        }
+    lookYaw-=dx*.006;
+    lookPitch=Math.max(
+     -.35,
+     Math.min(.35,lookPitch+dy*.003)
+    );
 
-        function closeBilling() {
-            document.getElementById('billing-modal').style.display = 'none';
-            playerPos.z = 4;
-        }
+    canvas._dragX=e.clientX;
+    canvas._dragY=e.clientY;
+   }
+  });
 
-        function initScratchCard() {
-            const canvas = document.getElementById('scratch-canvas');
-            const ctx = canvas.getContext('2d');
-            ctx.fillStyle = '#888';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#333';
-            ctx.font = '20px Arial';
-            ctx.fillText('SCRATCH HERE FOR 20% OFF', 40, 60);
+  canvas.addEventListener('pointerup',e=>{
+   if(canvas._moved)return;
 
-            let scratching = false;
-            canvas.onpointerdown = () => scratching = true;
-            canvas.onpointerup = () => scratching = false;
-            canvas.onpointermove = (e) => {
-                if (!scratching) return;
-                const rect = canvas.getBoundingClientRect();
-                let x = e.clientX - rect.left;
-                let y = e.clientY - rect.top;
-                ctx.globalCompositeOperation = 'destination-out';
-                ctx.beginPath();
-                ctx.arc(x, y, 20, 0, Math.PI * 2);
-                ctx.fill();
-            };
-        }
+   const r=canvas.getBoundingClientRect();
 
-        function pay(method) {
-            document.getElementById('billing-modal').style.display = 'none';
-            let total = cart.reduce((sum, item) => sum + item.price, 0);
-            let discounted = Math.round(total * 0.8);
+   pointer.x=((e.clientX-r.left)/r.width)*2-1;
+   pointer.y=-((e.clientY-r.top)/r.height)*2+1;
 
-            let html = `<b>Payment Mode:</b> ${method}<br><br>`;
-            cart.forEach(i => html += `${i.name} - ₹${i.price}<br>`);
-            html += `<br><b>Discount:</b> 20% OFF<br><b>Final Paid:</b> ₹${discounted}`;
-            
-            document.getElementById('receipt-details').innerHTML = html;
-            document.getElementById('receipt-modal').style.display = 'flex';
-        }
+   raycaster.setFromCamera(pointer,camera);
 
-        function restartGame() {
-            cart = [];
-            updateCartUI();
-            document.getElementById('receipt-modal').style.display = 'none';
-            playerPos = { x: 0, z: 5 };
-        }
+   const hit=raycaster.intersectObjects(clickable,false)[0];
 
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
+   if(hit?.object.userData.productId){
+    addToCart(hit.object.userData.productId);
+    $('checkout').scrollIntoView({behavior:'smooth'});
+   }
+  });
 
-        animate();
-    </script>
+  /* Reset camera */
+  $('resetView').onclick=()=>{
+   lookYaw=0;
+   lookPitch=.06;
+   playerX=0;
+   playerZ=3.8;
+  };
+
+  /* Mobile joystick */
+  const joy=$('joystick');
+  const knob=$('joyKnob');
+  let joyActive=false;
+
+  function joyMove(e){
+   const r=joy.getBoundingClientRect();
+   const cx=r.left+r.width/2;
+   const cy=r.top+r.height/2;
+
+   let dx=e.clientX-cx;
+   let dy=e.clientY-cy;
+
+   const len=Math.hypot(dx,dy);
+   const max=27;
+
+   if(len>max){
+    dx=dx/len*max;
+    dy=dy/len*max;
+   }
+
+   knob.style.transform=`translate(${dx}px,${dy}px)`;
+   moveX=dx/max;
+   moveZ=dy/max;
+  }
+
+  joy.addEventListener('pointerdown',e=>{
+   joyActive=true;
+   joy.setPointerCapture(e.pointerId);
+   joyMove(e);
+  });
+
+  joy.addEventListener('pointermove',e=>{
+   if(joyActive)joyMove(e);
+  });
+
+  function joyEnd(){
+   joyActive=false;
+   moveX=0;
+   moveZ=0;
+   knob.style.transform='translate(0,0)';
+  }
+
+  joy.addEventListener('pointerup',joyEnd);
+  joy.addEventListener('pointercancel',joyEnd);
+
+  /* Game animation */
+  function animate(){
+   requestAnimationFrame(animate);
+
+   const forward=new THREE.Vector3(
+    -Math.sin(lookYaw),0,-Math.cos(lookYaw)
+   );
+
+   const right=new THREE.Vector3(
+    Math.cos(lookYaw),0,-Math.sin(lookYaw)
+   );
+
+   playerX+=(right.x*moveX+forward.x*(-moveZ))*.045;
+   playerZ+=(right.z*moveX+forward.z*(-moveZ))*.045;
+
+   playerX=Math.max(-4.9,Math.min(4.9,playerX));
+   playerZ=Math.max(-5.5,Math.min(5.4,playerZ));
+
+   camera.position.set(playerX,1.65,playerZ);
+   camera.rotation.order='YXZ';
+   camera.rotation.y=lookYaw;
+   camera.rotation.x=lookPitch;
+
+   renderer.render(scene,camera);
+  }
+
+  animate();
+
+  window.addEventListener('resize',()=>{
+   if(!renderer)return;
+
+   renderer.setSize(wrap.clientWidth,wrap.clientHeight);
+   camera.aspect=wrap.clientWidth/wrap.clientHeight;
+   camera.updateProjectionMatrix();
+  });
+
+ }catch(err){
+  console.error(err);
+
+  wrap.insertAdjacentHTML(
+   'beforeend',
+   '<div style="position:absolute;inset:auto 12px 12px;background:#fff;padding:10px;border-radius:10px;font-size:12px">3D view could not start in this browser. You can still shop using the product cards below.</div>'
+  );
+ }
+}
+
+init3D();
+</script>
 </body>
 </html>
