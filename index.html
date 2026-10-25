@@ -2,974 +2,464 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>DAZBERY | Haircare • Naturally Yours - 3D Store</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>DAZBERY | Luxury 3D Boutique Experience</title>
 
-  <!-- Tailwind CSS & Google Fonts -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Three.js 3D Engine -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-  
-  <!-- Embedded Three.js script loader with safety fallback -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --bg-cream: #F5EBE6;
+      --bg-cream: #FDFBF7;
       --pink-soft: #f4d0d8;
       --pink-medium: #e8a5b8;
       --pink-deep: #B86B7D;
       --rose-gold: #D4A373;
       --text-main: #2A2421;
       --text-muted: #7A6F6B;
-      --surface-white: #FFFFFF;
+      --surface: #FFFFFF;
       --border-light: rgba(232, 165, 184, 0.4);
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; user-select: none; -webkit-tap-highlight-color: transparent; }
+    body, html { width: 100%; height: 100%; overflow: hidden; background-color: #1a1a1a; color: var(--text-main); }
 
-    html, body {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      background-color: #F8F2EF;
-      color: var(--text-main);
-    }
+    /* 3D Canvas Viewport - Absolute full screen */
+    #canvas-container { width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 1; }
 
-    /* Background High-res Store Scene Canvas */
-    #store-background {
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      top: 0;
-      left: 0;
-      background-image: url('https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=2000&q=80');
-      background-size: cover;
-      background-position: center;
-      z-index: 1;
-      filter: brightness(0.95) saturate(1.1);
-      transition: transform 0.1s linear;
-    }
+    /* HUD Controls Layer */
+    #hud-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none; }
 
-    /* WebGL Overlay Canvas */
-    #canvas-container {
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 2;
-    }
-
-    /* HUD Overlay Layer */
-    #hud-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 10;
-      pointer-events: none;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-
-    .pointer-auto {
-      pointer-events: auto;
-    }
-
-    /* Top Navigation Header */
     header {
-      background: rgba(248, 242, 239, 0.92);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border-bottom: 1px solid rgba(232, 165, 184, 0.3);
-      padding: 14px 36px;
+      pointer-events: auto;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(12px);
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-light);
     }
 
-    .brand-title {
-      font-family: 'Playfair Display', serif;
-      letter-spacing: 5px;
-      font-weight: 700;
-      font-size: 24px;
-      color: #2A2421;
-    }
-    .brand-subtitle {
-      font-size: 8px;
-      letter-spacing: 2.5px;
-      color: #7A6F6B;
-      text-transform: uppercase;
-      font-weight: 600;
+    .brand-logo-wrap { display: flex; flex-direction: column; }
+    .brand-logo { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; letter-spacing: 3px; color: var(--text-main); }
+    .brand-sub { font-size: 7px; letter-spacing: 2px; color: var(--text-muted); text-transform: uppercase; }
+
+    .nav-links { display: flex; gap: 20px; font-size: 12px; font-weight: 600; color: var(--text-main); }
+    .nav-links span { cursor: pointer; }
+    .nav-links span.active { border-bottom: 2px solid var(--text-main); padding-bottom: 2px; }
+
+    .cart-pill { background: #2A2421; color: #FFF; padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: 600; display: flex; gap: 6px; align-items: center; cursor: pointer; }
+
+    .swipe-badge {
+      position: absolute; top: 75px; left: 20px;
+      background: rgba(42, 36, 33, 0.75); backdrop-filter: blur(6px); color: #FFF;
+      padding: 6px 14px; border-radius: 20px; font-size: 11px; display: flex; align-items: center; gap: 6px;
     }
 
-    .nav-link {
-      font-size: 13px;
-      font-weight: 600;
-      color: #3A322E;
-      transition: color 0.2s;
-      position: relative;
-    }
-    .nav-link.active::after {
-      content: '';
-      position: absolute;
-      bottom: -6px;
-      left: 0;
-      width: 100%;
-      height: 2px;
-      background-color: #2A2421;
-      border-radius: 2px;
-    }
-
-    /* Joystick Control */
-    #joystick-container {
-      width: 120px;
-      height: 120px;
-      background: rgba(42, 36, 33, 0.45);
-      backdrop-filter: blur(10px);
-      border: 2px solid rgba(255, 255, 255, 0.25);
-      border-radius: 50%;
-      position: relative;
-      touch-action: none;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    /* Interactive Dual Joystick */
+    #joystick-zone {
+      position: absolute; bottom: 85px; left: 25px; width: 120px; height: 120px;
+      background: rgba(255, 255, 255, 0.35); backdrop-filter: blur(8px);
+      border: 2px solid rgba(255, 255, 255, 0.6); border-radius: 50%;
+      pointer-events: auto; touch-action: none;
     }
     #joystick-knob {
-      width: 46px;
-      height: 46px;
-      background: #FFFFFF;
-      border: 3px solid rgba(42, 36, 33, 0.8);
-      border-radius: 50%;
-      position: absolute;
-      top: 34px;
-      left: 34px;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.3);
-      transition: transform 0.05s ease-out;
+      width: 44px; height: 44px; background: var(--pink-deep); border: 2px solid #FFF; border-radius: 50%;
+      position: absolute; top: 38px; left: 38px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     }
 
-    /* 360 View Pill Button */
-    .btn-360-pill {
-      background: rgba(42, 36, 33, 0.8);
-      backdrop-filter: blur(8px);
-      color: #FFF;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      border-radius: 25px;
-      padding: 10px 18px;
-      font-size: 13px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    .btn-360 {
+      position: absolute; bottom: 125px; left: 160px;
+      background: rgba(42, 36, 33, 0.85); color: #FFF; width: 44px; height: 44px;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 700; pointer-events: auto; cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.3);
     }
 
-    /* Bottom Dock Floating Panel */
     .bottom-dock {
-      background: rgba(255, 255, 255, 0.92);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(232, 165, 184, 0.4);
-      border-radius: 35px;
-      padding: 8px 24px;
-      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
-      display: flex;
-      gap: 24px;
-      align-items: center;
+      position: absolute; bottom: 25px; right: 25px;
+      background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(10px);
+      padding: 8px 20px; border-radius: 35px; display: flex; gap: 24px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1); pointer-events: auto; border: 1px solid var(--border-light);
     }
-    .dock-btn {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 3px;
-      color: #7A6F6B;
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    .dock-btn:hover, .dock-btn.active {
-      color: #B86B7D;
-      transform: translateY(-2px);
+    .dock-item { display: flex; flex-direction: column; align-items: center; font-size: 10px; font-weight: 700; color: var(--text-muted); cursor: pointer; gap: 2px; }
+    .dock-item span:first-child { font-size: 16px; }
+
+    /* Action Trigger Button */
+    #action-btn {
+      position: absolute; bottom: 95px; right: 25px;
+      background: linear-gradient(135deg, var(--pink-deep) 0%, #9E5263 100%);
+      color: #FFF; border: none; padding: 12px 22px; border-radius: 30px;
+      font-weight: 700; font-size: 12px; box-shadow: 0 8px 20px rgba(184, 107, 125, 0.4);
+      pointer-events: auto; display: none; cursor: pointer;
     }
 
-    /* Hotspots on shelves */
-    .hotspot-pin {
-      position: absolute;
-      width: 28px;
-      height: 28px;
-      background: rgba(184, 107, 125, 0.85);
-      border: 2px solid #FFF;
-      border-radius: 50%;
-      color: #FFF;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      animation: pulse 2s infinite;
-      z-index: 15;
+    /* Modal Styling */
+    .modal-overlay {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.65); backdrop-filter: blur(8px);
+      z-index: 100; display: none; align-items: center; justify-content: center; padding: 16px; pointer-events: auto;
     }
-    @keyframes pulse {
-      0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(184, 107, 125, 0.7); }
-      70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(184, 107, 125, 0); }
-      100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(184, 107, 125, 0); }
+    .modal-card { background: #FFF; border-radius: 20px; width: 100%; max-width: 440px; padding: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.3); position: relative; }
+    .modal-close { position: absolute; top: 14px; right: 18px; background: none; border: none; font-size: 20px; cursor: pointer; color: #888; }
+    
+    .qty-picker { display: flex; align-items: center; justify-content: center; gap: 16px; margin: 16px 0; }
+    .qty-btn { width: 34px; height: 34px; border-radius: 50%; border: none; background: var(--pink-soft); font-weight: 700; cursor: pointer; }
+
+    .btn-primary { width: 100%; background: var(--pink-deep); color: #FFF; border: none; padding: 12px; border-radius: 12px; font-weight: 700; font-size: 13px; cursor: pointer; }
+
+    /* Self Payment Screen */
+    .self-monitor {
+      background: #0D0D0D; color: #00FF66; font-family: 'Courier New', monospace;
+      padding: 14px; border-radius: 10px; font-size: 11px; margin-bottom: 12px;
     }
 
-    /* Interactive Product Tooltip Cards */
-    .hotspot-card {
-      position: absolute;
-      background: rgba(255, 255, 255, 0.96);
-      backdrop-filter: blur(12px);
-      border: 1.5px solid rgba(232, 165, 184, 0.6);
-      border-radius: 16px;
-      padding: 12px 16px;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.18);
-      pointer-events: auto;
-      display: none;
-      z-index: 20;
-      width: 220px;
+    #toast {
+      position: absolute; top: 70px; left: 50%; transform: translateX(-50%) translateY(-20px);
+      background: #2A2421; color: #FFF; padding: 8px 18px; border-radius: 20px; font-size: 11px; font-weight: 600;
+      opacity: 0; transition: all 0.3s ease; z-index: 200;
     }
-
-    /* Trolley Dynamic Slide Drawer */
-    #trolleyDrawer {
-      position: absolute;
-      top: 80px;
-      right: 24px;
-      width: 360px;
-      max-width: calc(100vw - 48px);
-      background: rgba(255, 255, 255, 0.98);
-      backdrop-filter: blur(16px);
-      border: 1px solid var(--border-light);
-      border-radius: 24px;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.2);
-      z-index: 30;
-      display: none;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
-    /* Scratch Card Canvas */
-    #scratchCanvas {
-      width: 100%;
-      height: 90px;
-      border-radius: 14px;
-      cursor: pointer;
-    }
-
-    /* Toast Notification */
-    #toastNotice {
-      position: absolute;
-      top: 90px;
-      left: 50%;
-      transform: translateX(-50%) translateY(-20px);
-      background: #2A2421;
-      color: #FFF;
-      padding: 10px 24px;
-      border-radius: 30px;
-      font-size: 13px;
-      font-weight: 600;
-      opacity: 0;
-      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      z-index: 100;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-      pointer-events: none;
-    }
-    #toastNotice.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
-
-    /* Thermal Receipt Simulation Modal */
-    .receipt-paper {
-      background: #FFFDF9;
-      background-image: repeating-linear-gradient(#FFFDF9, #FFFDF9 24px, #F7F3EB 25px);
-      font-family: 'Courier New', Courier, monospace;
-      border-top: 6px dashed #CCC;
-      border-bottom: 6px dashed #CCC;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
   </style>
 </head>
 <body>
 
-  <!-- Store Panorama Background -->
-  <div id="store-background"></div>
-
-  <!-- Interactive Shelf Hotspot Pins -->
-  <div id="shelfHotspot1" class="hotspot-pin pointer-auto" style="top: 38%; left: 22%;" onclick="openHotspotCard('shampoo', 22, 38)">1</div>
-  <div id="shelfHotspot2" class="hotspot-pin pointer-auto" style="top: 38%; left: 32%;" onclick="openHotspotCard('conditioner', 32, 38)">2</div>
-  <div id="shelfHotspot3" class="hotspot-pin pointer-auto" style="top: 42%; left: 78%;" onclick="openHotspotCard('serum', 78, 42)">3</div>
-
-  <!-- 3D Three.js WebGL Canvas Container -->
+  <!-- 3D Canvas Viewport -->
   <div id="canvas-container"></div>
 
-  <!-- Floating HUD Interface -->
+  <!-- HUD Overlay -->
   <div id="hud-overlay">
-    
-    <!-- Header Navigation -->
-    <header class="pointer-auto flex justify-between items-center">
-      <div class="flex flex-col">
-        <span class="brand-title">DAZBERY</span>
-        <span class="brand-subtitle">HAIRCARE • NATURALLY YOURS</span>
+    <header>
+      <div class="brand-logo-wrap">
+        <div class="brand-logo">DAZBERY</div>
+        <div class="brand-sub">Haircare • Naturally Yours</div>
       </div>
-
-      <nav class="hidden md:flex gap-8 items-center">
-        <span class="nav-link cursor-pointer">Home</span>
-        <span class="nav-link cursor-pointer">Shop</span>
-        <span class="nav-link active cursor-pointer">3D Store</span>
-        <span class="nav-link cursor-pointer">About</span>
-        <span class="nav-link cursor-pointer">Contact</span>
-      </nav>
-
-      <div class="flex items-center gap-5">
-        <button class="text-xl text-stone-800 hover:text-pink-700 transition" onclick="showToast('🔍 Search products across DAZBERY store')">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-        </button>
-        <button class="text-xl text-stone-800 hover:text-pink-700 transition" onclick="openAuthModal()">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-        </button>
-        <div class="bg-stone-900 text-white px-4 py-2 rounded-full text-xs font-bold flex items-center gap-2 cursor-pointer shadow-md hover:bg-stone-800 transition" onclick="toggleTrolleyDrawer()">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
-          <span id="headerCartBadge">3</span>
-        </div>
+      <div class="nav-links">
+        <span>Home</span>
+        <span>Shop</span>
+        <span class="active">3D Store</span>
+        <span>About</span>
+      </div>
+      <div class="cart-pill" onclick="openCheckoutModal()">
+        <span>🛒</span> <span id="cartCount">0</span>
       </div>
     </header>
 
-    <!-- Top Left Swipe Hint Pill -->
-    <div class="pointer-auto absolute top-20 left-6 bg-stone-900/80 backdrop-blur-md text-white px-4 py-2 rounded-full text-xs font-semibold flex items-center gap-2 shadow-lg">
-      <span>👆</span> Drag to explore store view
+    <div id="toast"></div>
+
+    <div class="swipe-badge"><span>👆</span> Touch & Drag to Pan View</div>
+    <div class="btn-360">360°</div>
+
+    <!-- Joystick Move Control -->
+    <div id="joystick-zone">
+      <div id="joystick-knob"></div>
     </div>
 
-    <!-- Bottom Controls (Joystick, 360 Pill, Trolley Dock) -->
-    <div class="p-6 flex justify-between items-end w-full">
+    <button id="action-btn" onclick="handleActionTrigger()">Inspect Shelf</button>
+
+    <div class="bottom-dock">
+      <div class="dock-item" onclick="openCheckoutModal()">
+        <span>🛒</span>
+        <span>Trolley</span>
+      </div>
+      <div class="dock-item" onclick="openCheckoutModal()">
+        <span>🛍️</span>
+        <span>Bag</span>
+      </div>
+      <div class="dock-item" onclick="showToast('📦 Tracking Orders...')">
+        <span>📋</span>
+        <span>Orders</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRODUCT INSPECT MODAL -->
+  <div class="modal-overlay" id="inspectModal">
+    <div class="modal-card" style="text-align:center;">
+      <button class="modal-close" onclick="closeModal('inspectModal')">✕</button>
+      <h3 id="inspectTitle" style="font-size:18px;">Product Title</h3>
+      <p id="inspectPrice" style="font-size:20px; font-weight:800; color:var(--pink-deep); margin-top:6px;">₹599</p>
+
+      <div class="qty-picker">
+        <button class="qty-btn" onclick="updateQty(-1)">-</button>
+        <span id="inspectQty" style="font-size:16px; font-weight:700;">1</span>
+        <button class="qty-btn" onclick="updateQty(1)">+</button>
+      </div>
+
+      <button class="btn-primary" onclick="addInspectedToTrolley()">+ Drop into 3D Trolley</button>
+    </div>
+  </div>
+
+  <!-- CHECKOUT MODAL -->
+  <div class="modal-overlay" id="checkoutModal">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal('checkoutModal')">✕</button>
+      <h3 style="font-family:'Playfair Display',serif; font-size:18px; margin-bottom:10px;">Self Checkout Counter</h3>
       
-      <!-- Joystick & 360° Controls -->
-      <div class="pointer-auto flex items-end gap-4">
-        <div id="joystick-container">
-          <div id="joystick-knob"></div>
-          <span class="absolute top-2 left-1/2 -translate-x-1/2 text-white/70 text-xs font-bold">▲</span>
-          <span class="absolute bottom-2 left-1/2 -translate-x-1/2 text-white/70 text-xs font-bold">▼</span>
-          <span class="absolute left-2 top-1/2 -translate-y-1/2 text-white/70 text-xs font-bold">◀</span>
-          <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white/70 text-xs font-bold">▶</span>
-        </div>
-
-        <button class="btn-360-pill" onclick="reset360CameraView()">
-          <svg class="w-4 h-4 text-pink-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-          360° View
-        </button>
+      <div class="self-monitor" id="selfMonitorScreen">
+        DAZBERY SELF-CHECKOUT MONITOR<br>
+        ----------------------------<br>
+        <div id="monitorItemList">Trolley Empty</div>
+        ----------------------------<br>
+        TOTAL PAY: ₹<span id="mTotal">0</span>
       </div>
 
-      <!-- Right Bottom Floating Dock -->
-      <div class="pointer-auto bottom-dock">
-        <div class="dock-btn" onclick="toggleTrolleyDrawer()">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/></svg>
-          <span>Trolley</span>
-        </div>
-        <div class="dock-btn" onclick="openCheckoutModal()">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
-          <span>Bag</span>
-        </div>
-        <div class="dock-btn" onclick="showToast('📋 Order tracking initialized')">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-          <span>Orders</span>
-        </div>
-        <div class="dock-btn" onclick="openAuthModal()">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/></svg>
-          <span>Settings</span>
-        </div>
-      </div>
+      <button class="btn-primary" onclick="completePayment()">Pay & Print Receipt</button>
     </div>
   </div>
-
-  <!-- Interactive Hotspot Tooltip (Product Floating UI) -->
-  <div class="hotspot-card" id="shelfHotspotCard">
-    <div class="flex justify-between items-start mb-1">
-      <span class="font-bold text-sm text-stone-900" id="hotspotTitle">DAZBERY Shampoo</span>
-      <span class="text-xs font-bold text-pink-700 bg-pink-100 px-2 py-0.5 rounded-full" id="hotspotPrice">₹899</span>
-    </div>
-    <p class="text-xs text-stone-500 mb-3" id="hotspotDesc">Nourishing natural formula with argan & rose extracts.</p>
-    <div class="flex items-center justify-between">
-      <div class="flex items-center gap-2 bg-stone-100 px-2 py-1 rounded-lg">
-        <button class="w-5 h-5 rounded bg-white text-stone-800 font-bold text-xs shadow hover:bg-stone-200" onclick="updateHotspotQty(-1)">-</button>
-        <span class="text-xs font-bold px-1" id="hotspotQty">1</span>
-        <button class="w-5 h-5 rounded bg-white text-stone-800 font-bold text-xs shadow hover:bg-stone-200" onclick="updateHotspotQty(1)">+</button>
-      </div>
-      <button class="bg-pink-700 hover:bg-pink-800 text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow-md transition" onclick="addHotspotItemToCart()">
-        Add to Trolley 🛒
-      </button>
-    </div>
-  </div>
-
-  <!-- Trolley Drawer Slide Panel -->
-  <div id="trolleyDrawer" class="pointer-auto">
-    <div class="p-4 bg-stone-50 border-b border-stone-200 flex justify-between items-center">
-      <div class="flex items-center gap-2">
-        <svg class="w-5 h-5 text-pink-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
-        <span class="font-bold text-base text-stone-800">Your DAZBERY Trolley</span>
-      </div>
-      <button class="text-stone-400 hover:text-stone-700 font-bold text-lg" onclick="toggleTrolleyDrawer()">✕</button>
-    </div>
-    
-    <div class="p-4 flex-1 overflow-y-auto max-h-[280px] space-y-3" id="trolleyItemList">
-      <!-- Items dynamically populated -->
-    </div>
-
-    <div class="p-4 bg-stone-50 border-t border-stone-200 space-y-3">
-      <div class="flex justify-between items-center text-sm font-bold text-stone-900">
-        <span>Subtotal</span>
-        <span id="trolleySubtotalText">₹2,997</span>
-      </div>
-      <button class="w-full bg-pink-700 hover:bg-pink-800 text-white font-bold py-3 rounded-xl shadow-lg transition text-sm flex justify-center items-center gap-2" onclick="openCheckoutModal()">
-        Proceed to Self-Checkout Counter 💳
-      </button>
-    </div>
-  </div>
-
-  <!-- Self-Checkout Modal -->
-  <div id="checkoutModal" class="fixed inset-0 bg-stone-900/70 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 overflow-y-auto pointer-auto">
-    <div class="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl relative my-8 border border-pink-100">
-      <button class="absolute top-5 right-5 text-stone-400 hover:text-stone-700 text-xl font-bold" onclick="closeModal('checkoutModal')">✕</button>
-      
-      <div class="flex items-center gap-3 mb-6 border-b border-stone-100 pb-4">
-        <div class="w-10 h-10 rounded-2xl bg-pink-100 text-pink-700 flex items-center justify-center font-bold text-lg">🏪</div>
-        <div>
-          <h2 class="font-serif text-2xl font-bold text-stone-900">DAZBERY POS Terminal</h2>
-          <p class="text-xs text-stone-500">Self-Checkout & Direct Order Fulfillment</p>
-        </div>
-      </div>
-
-      <!-- Scratch Card Banner -->
-      <div class="mb-6 bg-gradient-to-r from-pink-50 to-rose-50 p-4 rounded-2xl border border-pink-200">
-        <div class="flex justify-between items-center mb-2">
-          <span class="text-xs font-bold text-pink-800 uppercase tracking-wider">🎁 Scratch & Win Discount</span>
-          <span class="text-xs text-pink-600 font-semibold" id="scratchStatus">Rub silver box below</span>
-        </div>
-        <div class="relative w-full bg-white rounded-xl overflow-hidden shadow-inner flex items-center justify-center">
-          <div class="absolute inset-0 flex items-center justify-center bg-pink-100 font-bold text-pink-700 text-lg">
-            🎉 CODE: <span class="text-pink-900 tracking-widest ml-2">DAZBERY50</span> (50% OFF)
-          </div>
-          <canvas id="scratchCanvas"></canvas>
-        </div>
-      </div>
-
-      <div class="mb-6 space-y-2 bg-stone-50 p-4 rounded-2xl border border-stone-100 max-h-40 overflow-y-auto" id="posCartSummary">
-      </div>
-
-      <form onsubmit="processPOSPayment(event)" class="space-y-3">
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <input type="text" required placeholder="Full Name" id="custName" class="w-full text-xs p-3 border border-stone-200 rounded-xl focus:ring-2 focus:ring-pink-500 outline-none">
-          <input type="tel" required placeholder="Mobile Number" id="custPhone" class="w-full text-xs p-3 border border-stone-200 rounded-xl focus:ring-2 focus:ring-pink-500 outline-none">
-        </div>
-        
-        <input type="text" required placeholder="Delivery Address Line" id="custAddr" class="w-full text-xs p-3 border border-stone-200 rounded-xl focus:ring-2 focus:ring-pink-500 outline-none">
-        
-        <div class="grid grid-cols-3 gap-3">
-          <input type="text" required placeholder="PIN Code" id="custPin" maxlength="6" oninput="autofillPinCode(this.value)" class="w-full text-xs p-3 border border-stone-200 rounded-xl focus:ring-2 focus:ring-pink-500 outline-none">
-          <input type="text" required placeholder="City" id="custCity" class="w-full text-xs p-3 border border-stone-200 rounded-xl focus:ring-2 focus:ring-pink-500 outline-none bg-stone-100">
-          <input type="text" required placeholder="State" id="custState" class="w-full text-xs p-3 border border-stone-200 rounded-xl focus:ring-2 focus:ring-pink-500 outline-none bg-stone-100">
-        </div>
-
-        <div class="pt-2">
-          <label class="block text-xs font-bold text-stone-700 mb-2">Select Payment Method</label>
-          <div class="grid grid-cols-2 gap-3">
-            <button type="button" id="payBtnUPI" onclick="setPayMethod('UPI')" class="py-2.5 px-4 text-xs font-bold rounded-xl border-2 border-pink-700 bg-pink-50 text-pink-700 flex items-center justify-center gap-2">
-              📱 GPay / UPI QR
-            </button>
-            <button type="button" id="payBtnCARD" onclick="setPayMethod('CARD')" class="py-2.5 px-4 text-xs font-bold rounded-xl border-2 border-stone-200 text-stone-600 flex items-center justify-center gap-2">
-              💳 Credit / Debit Card
-            </button>
-          </div>
-        </div>
-
-        <div class="pt-4 border-t border-stone-100 flex items-center justify-between">
-          <div>
-            <div class="text-xs text-stone-400">Total Amount Payable</div>
-            <div class="text-xl font-bold text-stone-900" id="finalPayableText">₹2,997</div>
-          </div>
-          <button type="submit" class="bg-pink-700 hover:bg-pink-800 text-white text-sm font-bold px-6 py-3.5 rounded-2xl shadow-xl transition flex items-center gap-2">
-            Pay & Print Receipt 🧾
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- Thermal Receipt Modal -->
-  <div id="receiptModal" class="fixed inset-0 bg-stone-900/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 pointer-auto">
-    <div class="max-w-md w-full receipt-paper p-6 rounded-lg text-stone-800 space-y-4">
-      <div class="text-center border-b border-dashed border-stone-400 pb-4">
-        <h3 class="font-bold text-xl tracking-widest">DAZBERY BOUTIQUE</h3>
-        <p class="text-xs text-stone-600">HAIRCARE • NATURALLY YOURS</p>
-        <p class="text-[10px] text-stone-500 mt-1" id="receiptTimestamp">Date: 2026-10-25 10:30 AM</p>
-      </div>
-
-      <div class="text-xs space-y-1 border-b border-dashed border-stone-400 pb-3" id="receiptCustomerInfo">
-      </div>
-
-      <div class="text-xs space-y-2 border-b border-dashed border-stone-400 pb-3" id="receiptItemsList">
-      </div>
-
-      <div class="text-xs space-y-1 pt-1 font-bold">
-        <div class="flex justify-between">
-          <span>Subtotal:</span>
-          <span id="rcpSub">₹2,997</span>
-        </div>
-        <div class="flex justify-between text-pink-700">
-          <span>Scratch Discount (50%):</span>
-          <span id="rcpDisc">-₹0</span>
-        </div>
-        <div class="flex justify-between text-sm pt-2 border-t border-dashed border-stone-400">
-          <span>PAID TOTAL:</span>
-          <span id="rcpTotal">₹2,997</span>
-        </div>
-      </div>
-
-      <div class="text-center pt-4">
-        <button onclick="closeModal('receiptModal')" class="w-full bg-stone-900 text-white font-sans text-xs font-bold py-2.5 rounded-xl shadow">
-          Close & Back to Store 🌸
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Auth Modal -->
-  <div id="authModal" class="fixed inset-0 bg-stone-900/70 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 pointer-auto">
-    <div class="bg-white rounded-3xl max-w-sm w-full p-6 text-center space-y-4 shadow-2xl relative">
-      <button class="absolute top-4 right-4 text-stone-400 text-lg" onclick="closeModal('authModal')">✕</button>
-      <div class="w-12 h-12 bg-pink-100 text-pink-700 rounded-full flex items-center justify-center mx-auto text-xl font-bold">👤</div>
-      <h3 class="font-serif text-xl font-bold text-stone-900">DAZBERY Membership</h3>
-      <p class="text-xs text-stone-500">Sign in to sync your bag and receive boutique member perks.</p>
-      <button onclick="loginUser()" class="w-full bg-stone-900 text-white text-xs font-bold py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-stone-800 transition shadow-lg">
-        Continue as Guest / Member
-      </button>
-    </div>
-  </div>
-
-  <!-- Toast Notification Container -->
-  <div id="toastNotice">Action Completed</div>
 
   <script>
-    // Audio Feedback Generator using Web Audio API safely
-    let audioCtx = null;
-    function playBeep(freq = 600, duration = 0.08) {
-      try {
-        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        if (audioCtx.state === 'suspended') audioCtx.resume();
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.start();
-        osc.stop(audioCtx.currentTime + duration);
-      } catch (e) {}
-    }
+    let trolley = [];
+    let inspectQty = 1;
+    let selectedItem = null;
 
-    // Toast Utility
     function showToast(msg) {
-      const toast = document.getElementById('toastNotice');
-      if (toast) {
-        toast.innerText = msg;
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 2500);
-      }
+      const t = document.getElementById('toast');
+      t.innerText = msg; t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2000);
     }
+    function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-    // Modal Handlers
-    function openModal(id) { 
-      const el = document.getElementById(id);
-      if (el) el.style.display = 'flex'; 
-    }
-    function closeModal(id) { 
-      const el = document.getElementById(id);
-      if (el) el.style.display = 'none'; 
-    }
-    function toggleTrolleyDrawer() {
-      const drawer = document.getElementById('trolleyDrawer');
-      if (drawer) {
-        drawer.style.display = (drawer.style.display === 'flex') ? 'none' : 'flex';
-        renderTrolleyItems();
-      }
-    }
-
-    // Product Inventory Data
-    const products = {
-      shampoo: { id: 'shampoo', name: 'DAZBERY Shampoo', size: '200 ml', price: 899, desc: 'Ultra-nourishing organic hair cleanser.', color: '#F4D0D8' },
-      conditioner: { id: 'conditioner', name: 'DAZBERY Conditioner', size: '150 g', price: 799, desc: 'Silky smooth hydration & gloss lock.', color: '#E8A5B8' },
-      serum: { id: 'serum', name: 'DAZBERY Hair Serum', size: '30 ml', price: 1299, desc: 'Repairing anti-frizz botanical elixir.', color: '#B86B7D' }
-    };
-
-    // User Trolley State
-    let cart = [
-      { id: 'shampoo', qty: 1 },
-      { id: 'conditioner', qty: 1 },
-      { id: 'serum', qty: 1 }
-    ];
-    let selectedHotspotId = 'shampoo';
-    let hotspotCurrentQty = 1;
-    let selectedPayMethod = 'UPI';
-    let discountApplied = false;
-
-    function renderTrolleyItems() {
-      const list = document.getElementById('trolleyItemList');
-      const posSummary = document.getElementById('posCartSummary');
-      if (!list || !posSummary) return;
-      
-      list.innerHTML = '';
-      posSummary.innerHTML = '';
-      
-      let subtotal = 0;
-      let totalCount = 0;
-
-      cart.forEach(item => {
-        const prod = products[item.id];
-        if(!prod) return;
-        const itemTotal = prod.price * item.qty;
-        subtotal += itemTotal;
-        totalCount += item.qty;
-
-        list.innerHTML += `
-          <div class="flex items-center justify-between bg-stone-50 p-3 rounded-xl border border-stone-100">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-lg bg-pink-100 flex items-center justify-center font-bold text-xs text-pink-700">
-                🧴
-              </div>
-              <div>
-                <div class="font-bold text-xs text-stone-900">${prod.name}</div>
-                <div class="text-[11px] text-stone-400">${prod.size} • ₹${prod.price}</div>
-              </div>
-            </div>
-            <div class="flex items-center gap-2">
-              <button onclick="changeCartQty('${item.id}', -1)" class="w-6 h-6 rounded bg-white text-stone-700 font-bold text-xs border border-stone-200"> - </button>
-              <span class="text-xs font-bold w-4 text-center">${item.qty}</span>
-              <button onclick="changeCartQty('${item.id}', 1)" class="w-6 h-6 rounded bg-white text-stone-700 font-bold text-xs border border-stone-200"> + </button>
-            </div>
-          </div>
-        `;
-
-        posSummary.innerHTML += `
-          <div class="flex justify-between items-center text-xs">
-            <span class="font-semibold text-stone-700">${prod.name} (${prod.size}) x${item.qty}</span>
-            <span class="font-bold text-stone-900">₹${itemTotal}</span>
-          </div>
-        `;
-      });
-
-      document.getElementById('headerCartBadge').innerText = totalCount;
-      document.getElementById('trolleySubtotalText').innerText = `₹${subtotal.toLocaleString()}`;
-
-      calculateFinalPayable(subtotal);
-    }
-
-    function changeCartQty(id, delta) {
-      playBeep(800, 0.05);
-      const item = cart.find(i => i.id === id);
-      if(item) {
-        item.qty += delta;
-        if(item.qty <= 0) {
-          cart = cart.filter(i => i.id !== id);
-        }
-      } else if(delta > 0) {
-        cart.push({ id, qty: delta });
-      }
-      renderTrolleyItems();
-    }
-
-    function calculateFinalPayable(subtotal) {
-      let finalPay = subtotal;
-      if(discountApplied) {
-        finalPay = subtotal * 0.5;
-      }
-      document.getElementById('finalPayableText').innerText = `₹${Math.round(finalPay).toLocaleString()}`;
-    }
-
-    // Three.js 3D Wireframe Trolley overlay
-    let scene, camera, renderer, trolleyMeshGroup;
-    let cameraYaw = 0;
-    let isJoystickActive = false;
-    let joyDelta = { x: 0, y: 0 };
-    let storeBgPos = 50;
+    // THREE.JS 3D REAL-TIME ENVIRONMENT ENGINE
+    let scene, camera, renderer, trolleyGroup;
+    let playerPos = { x: 0, z: 12 }, playerAngle = 0;
+    let joystickActive = false, joyVec = { x: 0, y: 0 };
+    let activeZone = null;
 
     function init3DStore() {
-      try {
-        const container = document.getElementById('canvas-container');
-        if (typeof THREE !== 'undefined' && container) {
-          scene = new THREE.Scene();
+      const container = document.getElementById('canvas-container');
+      scene = new THREE.Scene();
+      scene.background = new THREE.Color(0xFDF7F4); // Warm Pink Store Atmosphere
 
-          camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-          camera.position.set(0, 0, 5);
+      camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.set(playerPos.x, 2.2, playerPos.z);
 
-          renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-          renderer.setSize(window.innerWidth, window.innerHeight);
-          renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-          container.appendChild(renderer.domElement);
+      renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.shadowMap.enabled = true;
+      container.appendChild(renderer.domElement);
 
-          const ambientLight = new THREE.AmbientLight(0xFFFFFF, 1.5);
-          scene.add(ambientLight);
+      // Warm Soft Lights
+      scene.add(new THREE.AmbientLight(0xffece6, 1.1));
+      const light = new THREE.DirectionalLight(0xfff5f0, 0.8);
+      light.position.set(10, 20, 10);
+      scene.add(light);
 
-          // Render Pink Wireframe Trolley centered in camera foreground
-          trolleyMeshGroup = new THREE.Group();
-          const basket = new THREE.Mesh(
-            new THREE.BoxGeometry(2.4, 1.2, 1.8),
-            new THREE.MeshBasicMaterial({ color: 0xB86B7D, wireframe: true })
-          );
-          basket.position.set(0, -1.2, -2.5);
-          trolleyMeshGroup.add(basket);
+      // 3D Polished Marble Floor
+      const floorMat = new THREE.MeshStandardMaterial({ color: 0xF3E6E1, roughness: 0.15 });
+      const floor = new THREE.Mesh(new THREE.PlaneGeometry(40, 50), floorMat);
+      floor.rotation.x = -Math.PI / 2;
+      scene.add(floor);
 
-          scene.add(trolleyMeshGroup);
-        }
-      } catch(err) {
-        console.warn('Three.js initialized with fallback mode:', err);
-      }
+      // Back Arch Wall & Gold DAZBERY Neon Logo
+      const wallMat = new THREE.MeshStandardMaterial({ color: 0xFCEBE6 });
+      const backWall = new THREE.Mesh(new THREE.BoxGeometry(40, 14, 0.5), wallMat);
+      backWall.position.set(0, 7, -18);
+      scene.add(backWall);
 
-      setupJoystickController();
-      setupMouseTouchLook();
-      renderTrolleyItems();
-      initScratchCard();
+      const signMat = new THREE.MeshStandardMaterial({ color: 0x2A2421 });
+      const sign = new THREE.Mesh(new THREE.BoxGeometry(10, 2.4, 0.3), signMat);
+      sign.position.set(0, 9.5, -17.7);
+      scene.add(sign);
 
-      window.addEventListener('resize', onWindowResize);
-      animate();
-    }
+      // Built-in Cosmetic Shelves (Left & Right)
+      create3DShelf(-9, -6, 0xB86B7D);
+      create3DShelf(9, -6, 0xE8A5B8);
 
-    function setupJoystickController() {
-      const container = document.getElementById('joystick-container');
-      const knob = document.getElementById('joystick-knob');
-      if (!container || !knob) return;
+      // Reception / Checkout Table
+      const deskMat = new THREE.MeshStandardMaterial({ color: 0xE8A5B8 });
+      const desk = new THREE.Mesh(new THREE.CylinderGeometry(3.5, 3.5, 2, 32), deskMat);
+      desk.position.set(0, 1.0, -10);
+      scene.add(desk);
 
-      const handleTouch = (e) => {
-        const rect = container.getBoundingClientRect();
-        const touch = e.touches ? e.touches[0] : e;
-        let dx = touch.clientX - (rect.left + rect.width / 2);
-        let dy = touch.clientY - (rect.top + rect.height / 2);
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        const maxDist = 36;
+      // 3D PINK SHOPPING TROLLEY (Moves with Camera)
+      create3DTrolleyMesh();
 
-        if (dist > maxDist) {
-          dx = (dx / dist) * maxDist;
-          dy = (dy / dist) * maxDist;
-        }
+      setupJoystick();
+      setupTouchLook();
 
-        knob.style.transform = `translate(${dx}px, ${dy}px)`;
-        joyDelta = { x: dx / maxDist, y: dy / maxDist };
-      };
-
-      container.addEventListener('pointerdown', (e) => { isJoystickActive = true; handleTouch(e); });
-      window.addEventListener('pointermove', (e) => { if (isJoystickActive) handleTouch(e); });
-      window.addEventListener('pointerup', () => {
-        isJoystickActive = false;
-        knob.style.transform = 'translate(0px, 0px)';
-        joyDelta = { x: 0, y: 0 };
-      });
-    }
-
-    let isDragging = false, lastX = 0;
-    function setupMouseTouchLook() {
-      window.addEventListener('pointerdown', (e) => {
-        if(e.clientY < 80) return;
-        isDragging = true;
-        lastX = e.clientX;
-      });
-      window.addEventListener('pointermove', (e) => {
-        if (!isDragging) return;
-        const dx = e.clientX - lastX;
-        storeBgPos += dx * 0.1;
-        document.getElementById('store-background').style.backgroundPosition = `${storeBgPos}% center`;
-        lastX = e.clientX;
-      });
-      window.addEventListener('pointerup', () => { isDragging = false; });
-    }
-
-    function reset360CameraView() {
-      playBeep(900, 0.1);
-      storeBgPos = 50;
-      document.getElementById('store-background').style.backgroundPosition = `50% center`;
-      showToast('🔄 Camera view reset to 360° entrance');
-    }
-
-    function onWindowResize() {
-      if (camera && renderer) {
+      window.addEventListener('resize', () => {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
-      }
+      });
+
+      animate3D();
     }
 
-    function animate() {
-      requestAnimationFrame(animate);
-      if (Math.abs(joyDelta.x) > 0.05) {
-        storeBgPos += joyDelta.x * 0.5;
-        const bg = document.getElementById('store-background');
-        if (bg) bg.style.backgroundPosition = `${storeBgPos}% center`;
-      }
-      if (renderer && scene && camera) {
-        renderer.render(scene, camera);
-      }
-    }
+    function create3DShelf(x, z, colorHex) {
+      const group = new THREE.Group();
+      const woodMat = new THREE.MeshStandardMaterial({ color: 0xD4A373 });
+      const bottleMat = new THREE.MeshStandardMaterial({ color: colorHex });
 
-    function openHotspotCard(id, leftPercent, topPercent) {
-      const prod = products[id];
-      if(!prod) return;
-      selectedHotspotId = id;
-      const card = document.getElementById('shelfHotspotCard');
-      document.getElementById('hotspotTitle').innerText = prod.name;
-      document.getElementById('hotspotPrice').innerText = `₹${prod.price}`;
-      document.getElementById('hotspotDesc').innerText = prod.desc;
-      document.getElementById('hotspotQty').innerText = hotspotCurrentQty;
-      
-      card.style.display = 'block';
-      card.style.left = leftPercent + '%';
-      card.style.top = (topPercent - 15) + '%';
-    }
+      for (let i = 0; i < 4; i++) {
+        const board = new THREE.Mesh(new THREE.BoxGeometry(5, 0.15, 1.4), woodMat);
+        board.position.set(0, 1.2 + (i * 1.3), 0);
+        group.add(board);
 
-    function updateHotspotQty(delta) {
-      hotspotCurrentQty = Math.max(1, hotspotCurrentQty + delta);
-      document.getElementById('hotspotQty').innerText = hotspotCurrentQty;
-      playBeep(700, 0.04);
-    }
-
-    function addHotspotItemToCart() {
-      changeCartQty(selectedHotspotId, hotspotCurrentQty);
-      showToast(`✨ Added ${hotspotCurrentQty}x ${products[selectedHotspotId].name} to Trolley!`);
-      document.getElementById('shelfHotspotCard').style.display = 'none';
-      playBeep(1200, 0.12);
-    }
-
-    function initScratchCard() {
-      const canvas = document.getElementById('scratchCanvas');
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-      canvas.width = canvas.offsetWidth || 300;
-      canvas.height = canvas.offsetHeight || 90;
-
-      ctx.fillStyle = '#C0C0C0';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.font = 'bold 14px sans-serif';
-      ctx.fillStyle = '#555';
-      ctx.textAlign = 'center';
-      ctx.fillText('RUB HERE TO SCRATCH 🎁', canvas.width / 2, canvas.height / 2 + 5);
-
-      let isScratching = false;
-
-      const scratch = (e) => {
-        if (!isScratching) return;
-        const rect = canvas.getBoundingClientRect();
-        const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
-        const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
-
-        ctx.globalCompositeOperation = 'destination-out';
-        ctx.beginPath();
-        ctx.arc(x, y, 18, 0, Math.PI * 2);
-        ctx.fill();
-
-        if (!discountApplied) {
-          discountApplied = true;
-          document.getElementById('scratchStatus').innerText = '🎉 50% OFF APPLIED!';
-          showToast('🎁 Coupon DAZBERY50 Applied! 50% Discount');
-          renderTrolleyItems();
-          playBeep(1400, 0.2);
+        for (let b = -1.8; b <= 1.8; b += 0.8) {
+          const bottle = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.14, 0.7, 12), bottleMat);
+          bottle.position.set(b, 1.6 + (i * 1.3), 0);
+          group.add(bottle);
         }
-      };
+      }
+      group.position.set(x, 0, z);
+      scene.add(group);
+    }
 
-      canvas.addEventListener('pointerdown', () => isScratching = true);
-      canvas.addEventListener('pointermove', scratch);
-      canvas.addEventListener('pointerup', () => isScratching = false);
+    function create3DTrolleyMesh() {
+      trolleyGroup = new THREE.Group();
+      const wireMat = new THREE.MeshStandardMaterial({ color: 0xE8A5B8, wireframe: true });
+      const handleMat = new THREE.MeshStandardMaterial({ color: 0xB86B7D });
+
+      const basket = new THREE.Mesh(new THREE.BoxGeometry(1.5, 0.9, 1.7), wireMat);
+      basket.position.set(0, 0.9, -2.5);
+      trolleyGroup.add(basket);
+
+      const handle = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 1.1), handleMat);
+      handle.rotation.z = Math.PI / 2;
+      handle.position.set(0, 1.3, -1.7);
+      trolleyGroup.add(handle);
+
+      scene.add(trolleyGroup);
+    }
+
+    function setupJoystick() {
+      const zone = document.getElementById('joystick-zone');
+      const knob = document.getElementById('joystick-knob');
+
+      zone.addEventListener('touchstart', () => { joystickActive = true; });
+      window.addEventListener('touchmove', (e) => {
+        if (!joystickActive) return;
+        const t = e.touches[0];
+        const rect = zone.getBoundingClientRect();
+        let dx = t.clientX - (rect.left + rect.width / 2);
+        let dy = t.clientY - (rect.top + rect.height / 2);
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist > 35) { dx = (dx / dist) * 35; dy = (dy / dist) * 35; }
+        knob.style.transform = `translate(${dx}px, ${dy}px)`;
+        joyVec.x = dx / 35; joyVec.y = dy / 35;
+      });
+
+      window.addEventListener('touchend', () => {
+        joystickActive = false;
+        knob.style.transform = `translate(0px, 0px)`;
+        joyVec = { x: 0, y: 0 };
+      });
+    }
+
+    let touchX = 0;
+    function setupTouchLook() {
+      window.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; });
+      window.addEventListener('touchmove', e => {
+        let dx = e.touches[0].clientX - touchX;
+        playerAngle -= dx * 0.004;
+        touchX = e.touches[0].clientX;
+      });
+    }
+
+    function animate3D() {
+      requestAnimationFrame(animate3D);
+
+      if (Math.abs(joyVec.x) > 0.1 || Math.abs(joyVec.y) > 0.1) {
+        playerPos.x -= Math.sin(playerAngle) * joyVec.y * 0.12;
+        playerPos.z -= Math.cos(playerAngle) * joyVec.y * 0.12;
+      }
+
+      camera.position.x = playerPos.x;
+      camera.position.z = playerPos.z;
+      camera.rotation.y = playerAngle;
+
+      if (trolleyGroup) {
+        trolleyGroup.position.x = playerPos.x;
+        trolleyGroup.position.z = playerPos.z;
+        trolleyGroup.rotation.y = playerAngle;
+      }
+
+      checkProximity();
+      renderer.render(scene, camera);
+    }
+
+    function checkProximity() {
+      const actBtn = document.getElementById('action-btn');
+      const distLeft = Math.hypot(playerPos.x - (-9), playerPos.z - (-6));
+      const distRight = Math.hypot(playerPos.x - 9, playerPos.z - (-6));
+      const distDesk = Math.hypot(playerPos.x - 0, playerPos.z - (-10));
+
+      if (distLeft < 4) {
+        activeZone = 'leftShelf';
+        actBtn.style.display = 'block';
+        actBtn.innerText = '✨ Inspect Shampoo & Conditioner';
+      } else if (distRight < 4) {
+        activeZone = 'rightShelf';
+        actBtn.style.display = 'block';
+        actBtn.innerText = '💇‍♀️ Inspect Hair Serum Spray';
+      } else if (distDesk < 4) {
+        activeZone = 'desk';
+        actBtn.style.display = 'block';
+        actBtn.innerText = '🧾 Self Checkout Counter';
+      } else {
+        activeZone = null;
+        actBtn.style.display = 'none';
+      }
+    }
+
+    function handleActionTrigger() {
+      if (activeZone === 'leftShelf') {
+        selectedItem = { name: "DAZBERY Shampoo 200ml", price: 899 };
+        openInspectModal();
+      } else if (activeZone === 'rightShelf') {
+        selectedItem = { name: "Rosemary Hair Spray", price: 599 };
+        openInspectModal();
+      } else if (activeZone === 'desk') {
+        openCheckoutModal();
+      }
+    }
+
+    function openInspectModal() {
+      inspectQty = 1;
+      document.getElementById('inspectTitle').innerText = selectedItem.name;
+      document.getElementById('inspectPrice').innerText = '₹' + selectedItem.price;
+      document.getElementById('inspectQty').innerText = inspectQty;
+      openModal('inspectModal');
+    }
+
+    function updateQty(val) {
+      inspectQty += val;
+      if (inspectQty < 1) inspectQty = 1;
+      document.getElementById('inspectQty').innerText = inspectQty;
+    }
+
+    function addInspectedToTrolley() {
+      trolley.push({ name: selectedItem.name, price: selectedItem.price, qty: inspectQty });
+      document.getElementById('cartCount').innerText = trolley.reduce((s, i) => s + i.qty, 0);
+      closeModal('inspectModal');
+      showToast(`✓ Dropped ${inspectQty}x ${selectedItem.name} into Trolley`);
     }
 
     function openCheckoutModal() {
-      closeModal('trolleyDrawer');
-      openModal('checkoutModal');
-      renderTrolleyItems();
-    }
-
-    async function autofillPinCode(pin) {
-      if (pin.length === 6) {
-        showToast('📍 Fetching location for PIN...');
-        try {
-          const res = await fetch(`https://api.postalpincode.in/pincode/${pin}`);
-          const data = await res.json();
-          if (data && data[0] && data[0].Status === 'Success') {
-            const po = data[0].PostOffice[0];
-            document.getElementById('custCity').value = po.District;
-            document.getElementById('custState').value = po.State;
-            showToast(`✅ Loaded: ${po.District}, ${po.State}`);
-          }
-        } catch(e) {}
-      }
-    }
-
-    function setPayMethod(method) {
-      selectedPayMethod = method;
-      const bUpi = document.getElementById('payBtnUPI');
-      const bCard = document.getElementById('payBtnCARD');
-      if (method === 'UPI') {
-        bUpi.className = "py-2.5 px-4 text-xs font-bold rounded-xl border-2 border-pink-700 bg-pink-50 text-pink-700 flex items-center justify-center gap-2";
-        bCard.className = "py-2.5 px-4 text-xs font-bold rounded-xl border-2 border-stone-200 text-stone-600 flex items-center justify-center gap-2";
-      } else {
-        bCard.className = "py-2.5 px-4 text-xs font-bold rounded-xl border-2 border-pink-700 bg-pink-50 text-pink-700 flex items-center justify-center gap-2";
-        bUpi.className = "py-2.5 px-4 text-xs font-bold rounded-xl border-2 border-stone-200 text-stone-600 flex items-center justify-center gap-2";
-      }
-    }
-
-    function processPOSPayment(e) {
-      e.preventDefault();
-      closeModal('checkoutModal');
-
-      const name = document.getElementById('custName').value;
-      const phone = document.getElementById('custPhone').value;
-      const addr = document.getElementById('custAddr').value;
-      const pin = document.getElementById('custPin').value;
-      const city = document.getElementById('custCity').value;
-
-      document.getElementById('receiptTimestamp').innerText = `Date: ${new Date().toLocaleString()}`;
-      document.getElementById('receiptCustomerInfo').innerHTML = `
-        <div><strong>Customer:</strong> ${name}</div>
-        <div><strong>Phone:</strong> ${phone}</div>
-        <div><strong>Deliver To:</strong> ${addr}, ${city} - ${pin}</div>
-        <div><strong>Payment Mode:</strong> ${selectedPayMethod}</div>
-      `;
-
-      let subtotal = 0;
-      let rcpItemsHtml = '';
-      cart.forEach(item => {
-        const p = products[item.id];
-        if(!p) return;
-        const tot = p.price * item.qty;
-        subtotal += tot;
-        rcpItemsHtml += `
-          <div class="flex justify-between">
-            <span>${p.name} x${item.qty}</span>
-            <span>₹${tot}</span>
-          </div>
-        `;
+      let html = '';
+      let tot = 0;
+      trolley.forEach(i => {
+        tot += i.price * i.qty;
+        html += `<div style="display:flex; justify-content:space-between;"><span>${i.qty}x ${i.name}</span><span>₹${i.price * i.qty}</span></div>`;
       });
-
-      document.getElementById('receiptItemsList').innerHTML = rcpItemsHtml;
-      document.getElementById('rcpSub').innerText = `₹${subtotal}`;
-      const discVal = discountApplied ? subtotal * 0.5 : 0;
-      document.getElementById('rcpDisc').innerText = `-₹${discVal}`;
-      document.getElementById('rcpTotal').innerText = `₹${subtotal - discVal}`;
-
-      openModal('receiptModal');
-      playBeep(1500, 0.3);
-      showToast('🖨️ Payment Approved! Printing Receipt...');
+      document.getElementById('monitorItemList').innerHTML = html || 'Trolley Empty';
+      document.getElementById('mTotal').innerText = tot;
+      openModal('checkoutModal');
     }
 
-    function openAuthModal() { openModal('authModal'); }
-    function loginUser() {
-      showToast('👤 Logged in successfully');
-      closeModal('authModal');
+    function completePayment() {
+      showToast('🖨️ Payment Successful! Receipt Printed.');
+      closeModal('checkoutModal');
+      trolley = [];
+      document.getElementById('cartCount').innerText = '0';
     }
 
     window.onload = init3DStore;
