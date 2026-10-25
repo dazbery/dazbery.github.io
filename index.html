@@ -612,381 +612,989 @@ input:focus-visible {
 
 </main>
 
-<!-- PART 2 WILL CONTINUE HERE -->
-
-  /* ==========================================
-   DAZBERY MOBILE GAME CONTROLS
-   Virtual joystick + 360 degree camera
-========================================== */
-
-const movement = {
-  forward: false,
-  backward: false,
-  left: false,
-  right: false
-};
-
-let yaw = 0;
-let pitch = 0;
-
-const WALK_SPEED = 0.075;
-const LOOK_SENSITIVITY = 0.005;
-
-camera.position.set(0, 1.65, 7.5);
-
-function updateCameraLook() {
-  const direction = new THREE.Vector3(
-    Math.sin(yaw) * Math.cos(pitch),
-    Math.sin(pitch),
-    -Math.cos(yaw) * Math.cos(pitch)
-  );
-
-  camera.lookAt(
-    camera.position.x + direction.x,
-    camera.position.y + direction.y,
-    camera.position.z + direction.z
-  );
-}
-
-/* MOBILE CONTROL DESIGN */
-
-showroom.style.position = "relative";
-showroom.style.overflow = "hidden";
-
-const controlStyle = document.createElement("style");
-
-controlStyle.textContent = `
-.daz-game-control {
-  position: absolute;
-  z-index: 20;
-  touch-action: none;
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-.daz-joystick {
-  left: 22px;
-  bottom: 24px;
-  width: 125px;
-  height: 125px;
-  border-radius: 50%;
-  background: rgba(255,255,255,.32);
-  border: 2px solid rgba(255,255,255,.8);
-  box-shadow: 0 5px 25px rgba(100,45,70,.12);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.daz-joystick-knob {
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  background: linear-gradient(145deg,#fff,#f2cbdc);
-  border: 2px solid #bd7896;
-  box-shadow: 0 4px 12px rgba(100,45,70,.2);
-  pointer-events: none;
-}
-
-.daz-look-area {
-  right: 0;
-  top: 0;
-  width: 55%;
-  height: 100%;
-  background: transparent;
-}
-
-.daz-look-label {
-  position: absolute;
-  right: 14px;
-  bottom: 165px;
-  z-index: 21;
-  padding: 9px 13px;
-  border-radius: 18px;
-  background: rgba(255,255,255,.72);
-  color: #8d506b;
-  font: 12px Arial,sans-serif;
-  pointer-events: none;
-}
-
-.daz-control-hint {
-  position: absolute;
-  left: 50%;
-  bottom: 14px;
-  transform: translateX(-50%);
-  z-index: 21;
-  padding: 7px 12px;
-  border-radius: 15px;
-  background: rgba(255,255,255,.75);
-  color: #8d506b;
-  font: 11px Arial,sans-serif;
-  white-space: nowrap;
-  pointer-events: none;
-}
-
-@media(max-width:600px) {
-  .daz-joystick {
-    width: 108px;
-    height: 108px;
-    left: 15px;
-    bottom: 18px;
-  }
-
-  .daz-joystick-knob {
-    width: 45px;
-    height: 45px;
-  }
-}
-`;
-
-document.head.appendChild(controlStyle);
-
-/* VIRTUAL JOYSTICK */
-
-const joystick = document.createElement("div");
-joystick.className = "daz-game-control daz-joystick";
-
-const joystickKnob = document.createElement("div");
-joystickKnob.className = "daz-joystick-knob";
-
-joystick.appendChild(joystickKnob);
-showroom.appendChild(joystick);
-
-const lookArea = document.createElement("div");
-lookArea.className = "daz-game-control daz-look-area";
-showroom.appendChild(lookArea);
-
-const lookLabel = document.createElement("div");
-lookLabel.className = "daz-look-label";
-lookLabel.textContent = "DRAG TO LOOK 360°";
-showroom.appendChild(lookLabel);
-
-const controlHint = document.createElement("div");
-controlHint.className = "daz-control-hint";
-controlHint.textContent = "LEFT: MOVE  •  RIGHT: LOOK";
-showroom.appendChild(controlHint);
-
-let joystickPointer = null;
-let joystickX = 0;
-let joystickY = 0;
-
-function resetJoystick() {
-  joystickPointer = null;
-  joystickX = 0;
-  joystickY = 0;
-
-  joystickKnob.style.transform = "translate(0px,0px)";
-}
-
-joystick.addEventListener("pointerdown", function(event) {
-  event.preventDefault();
-
-  joystickPointer = event.pointerId;
-
-  try {
-    joystick.setPointerCapture(event.pointerId);
-  } catch (error) {}
-
-  updateJoystick(event);
-});
-
-function updateJoystick(event) {
-  const rect = joystick.getBoundingClientRect();
-
-  let dx = event.clientX - (rect.left + rect.width / 2);
-  let dy = event.clientY - (rect.top + rect.height / 2);
-
-  const maxDistance = rect.width * 0.32;
-  const distance = Math.sqrt(dx * dx + dy * dy);
-
-  if (distance > maxDistance) {
-    dx = dx / distance * maxDistance;
-    dy = dy / distance * maxDistance;
-  }
-
-  joystickX = dx / maxDistance;
-  joystickY = dy / maxDistance;
-
-  joystickKnob.style.transform =
-    "translate(" + dx + "px," + dy + "px)";
-}
-
-joystick.addEventListener("pointermove", function(event) {
-  if (event.pointerId !== joystickPointer) return;
-
-  event.preventDefault();
-  updateJoystick(event);
-});
-
-["pointerup", "pointercancel", "lostpointercapture"].forEach(
-  function(eventName) {
-    joystick.addEventListener(eventName, resetJoystick);
-  }
-);
-
-/* RIGHT SIDE: TOUCH / DRAG TO LOOK */
-
-let lookPointer = null;
-let previousLookX = 0;
-let previousLookY = 0;
-
-lookArea.addEventListener("pointerdown", function(event) {
-  event.preventDefault();
-
-  lookPointer = event.pointerId;
-  previousLookX = event.clientX;
-  previousLookY = event.clientY;
-
-  try {
-    lookArea.setPointerCapture(event.pointerId);
-  } catch (error) {}
-});
-
-lookArea.addEventListener("pointermove", function(event) {
-  if (event.pointerId !== lookPointer) return;
-
-  event.preventDefault();
-
-  const deltaX = event.clientX - previousLookX;
-  const deltaY = event.clientY - previousLookY;
-
-  previousLookX = event.clientX;
-  previousLookY = event.clientY;
-
-  yaw -= deltaX * LOOK_SENSITIVITY;
-  pitch -= deltaY * LOOK_SENSITIVITY;
-
-  pitch = THREE.MathUtils.clamp(
-    pitch,
-    -1.05,
-    1.05
-  );
-});
-
-function stopLooking() {
-  lookPointer = null;
-}
-
-["pointerup", "pointercancel", "lostpointercapture"].forEach(
-  function(eventName) {
-    lookArea.addEventListener(eventName, stopLooking);
-  }
-);
-
-/* KEYBOARD CONTROLS FOR COMPUTER */
-
-window.addEventListener("keydown", function(event) {
-  const key = event.key.toLowerCase();
-
-  if (key === "w" || key === "arrowup") movement.forward = true;
-  if (key === "s" || key === "arrowdown") movement.backward = true;
-  if (key === "a" || key === "arrowleft") movement.left = true;
-  if (key === "d" || key === "arrowright") movement.right = true;
-});
-
-window.addEventListener("keyup", function(event) {
-  const key = event.key.toLowerCase();
-
-  if (key === "w" || key === "arrowup") movement.forward = false;
-  if (key === "s" || key === "arrowdown") movement.backward = false;
-  if (key === "a" || key === "arrowleft") movement.left = false;
-  if (key === "d" || key === "arrowright") movement.right = false;
-});
-
-function stopAllMovement() {
-  movement.forward = false;
-  movement.backward = false;
-  movement.left = false;
-  movement.right = false;
-
-  resetJoystick();
-}
-
-window.addEventListener("blur", stopAllMovement);
-
-document.addEventListener("visibilitychange", function() {
-  if (document.hidden) stopAllMovement();
-});
-
-/* MOVEMENT AND COLLISION BOUNDARIES */
-
-function updateMovement() {
-  const forward = new THREE.Vector3(
-    Math.sin(yaw),
-    0,
-    -Math.cos(yaw)
-  );
-
-  const right = new THREE.Vector3(
-    Math.cos(yaw),
-    0,
-    Math.sin(yaw)
-  );
-
-  let moveX = 0;
-  let moveZ = 0;
-
-  moveX += forward.x * (-joystickY);
-  moveZ += forward.z * (-joystickY);
-
-  moveX += right.x * joystickX;
-  moveZ += right.z * joystickX;
-
-  if (movement.forward) {
-    moveX += forward.x;
-    moveZ += forward.z;
-  }
-
-  if (movement.backward) {
-    moveX -= forward.x;
-    moveZ -= forward.z;
-  }
-
-  if (movement.left) {
-    moveX -= right.x;
-    moveZ -= right.z;
-  }
-
-  if (movement.right) {
-    moveX += right.x;
-    moveZ += right.z;
-  }
-
-  const length = Math.sqrt(moveX * moveX + moveZ * moveZ);
-
-  if (length > 0) {
-    moveX /= Math.max(1, length);
-    moveZ /= Math.max(1, length);
-
-    camera.position.x += moveX * WALK_SPEED;
-    camera.position.z += moveZ * WALK_SPEED;
-  }
-
-  /* Keep player inside the boutique */
-
-  camera.position.x = THREE.MathUtils.clamp(
-    camera.position.x, -7.8, 7.8
-  );
-
-  camera.position.z = THREE.MathUtils.clamp(
-    camera.position.z, -10.0, 6.8
-  );
-
-  camera.position.y = 1.65;
-
-  updateCameraLook();
-}
-
-/* INITIAL CAMERA VIEW */
-
-updateCameraLook();
-
-/* END OF MOBILE GAME CONTROLS */
-
-  <!-- ============================= -->
-<!-- DAZBERY PRODUCTS - PART 3 -->
+<!-- ============================= -->
+<!-- DAZBERY 3D SHOWROOM - PART 2 -->
 <!-- ============================= -->
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<script>
+/* =================================
+   DAZBERY 3D BOUTIQUE ENGINE
+================================= */
+
+(function () {
+  "use strict";
+
+  const showroom = document.getElementById("showroom");
+  const statusText = document.getElementById("sceneStatus");
+
+  if (showroom && !showroom.style.minHeight && showroom.clientHeight < 180) {
+    showroom.style.minHeight = "420px";
+  }
+
+  if (!showroom || !window.THREE) {
+    if (statusText) {
+      statusText.textContent = "3D showroom unavailable";
+    }
+    return;
+  }
+
+  /* SCENE */
+
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color("#f2dfe7");
+  scene.fog = new THREE.Fog("#f2dfe7", 18, 45);
+
+  /* CAMERA */
+
+  const camera = new THREE.PerspectiveCamera(
+    60,
+    showroom.clientWidth / showroom.clientHeight,
+    0.1,
+    100
+  );
+
+  camera.position.set(0, 1.65, 7.5);
+  camera.lookAt(0, 1.5, 0);
+
+  /* RENDERER */
+
+  const renderer = new THREE.WebGLRenderer({
+    antialias: true,
+    alpha: false
+  });
+
+  renderer.setPixelRatio(
+    Math.min(window.devicePixelRatio || 1, 1.7)
+  );
+
+  renderer.setSize(
+    Math.max(showroom.clientWidth, 1),
+    Math.max(showroom.clientHeight, 1)
+  );
+
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+  renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.15;
+
+  renderer.domElement.setAttribute(
+    "aria-label",
+    "Interactive 3D DAZBERY haircare boutique"
+  );
+
+  renderer.domElement.style.touchAction = "pan-y";
+
+  showroom.insertBefore(
+    renderer.domElement,
+    showroom.firstChild
+  );
+
+  /* MATERIALS */
+
+  function material(color, roughness = 0.65, metalness = 0) {
+    return new THREE.MeshStandardMaterial({
+      color: color,
+      roughness: roughness,
+      metalness: metalness
+    });
+  }
+
+  const materials = {
+    floor: material("#ead7de"),
+    wall: material("#f8e9ef"),
+    pink: material("#e8b8ca"),
+    rose: material("#b87691"),
+    darkRose: material("#8d506b"),
+    cream: material("#fff6ee"),
+    white: material("#fffdfb"),
+    gold: material("#c9a36c", 0.28, 0.65),
+    wood: material("#c6a9a0"),
+    glass: new THREE.MeshPhysicalMaterial({
+      color: "#f8e5ed",
+      roughness: 0.22,
+      metalness: 0.05,
+      transparent: true,
+      opacity: 0.9
+    })
+  };
+
+  /* LIGHTING */
+
+  scene.add(
+    new THREE.HemisphereLight(
+      "#fff6fa",
+      "#b68b9c",
+      2.1
+    )
+  );
+
+  const mainLight = new THREE.DirectionalLight(
+    "#fff7f0",
+    2.2
+  );
+
+  mainLight.position.set(3, 8, 6);
+  mainLight.castShadow = true;
+  mainLight.shadow.mapSize.set(1024, 1024);
+  scene.add(mainLight);
+
+  const softLight = new THREE.PointLight(
+    "#ffd9e7",
+    65,
+    25
+  );
+
+  softLight.position.set(-4, 4, 1);
+  scene.add(softLight);
+
+  const backLight = new THREE.PointLight(
+    "#fff1d8",
+    45,
+    22
+  );
+
+  backLight.position.set(4, 4, -6);
+  scene.add(backLight);
+
+  /* OBJECT HELPERS */
+
+  function box(
+    width,
+    height,
+    depth,
+    x,
+    y,
+    z,
+    mat,
+    castShadow = true
+  ) {
+    const mesh = new THREE.Mesh(
+      new THREE.BoxGeometry(width, height, depth),
+      mat
+    );
+
+    mesh.position.set(x, y, z);
+    mesh.castShadow = castShadow;
+    mesh.receiveShadow = true;
+
+    scene.add(mesh);
+    return mesh;
+  }
+
+  function cylinder(
+    radiusTop,
+    radiusBottom,
+    height,
+    x,
+    y,
+    z,
+    mat,
+    segments = 32
+  ) {
+    const mesh = new THREE.Mesh(
+      new THREE.CylinderGeometry(
+        radiusTop,
+        radiusBottom,
+        height,
+        segments
+      ),
+      mat
+    );
+
+    mesh.position.set(x, y, z);
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+
+    scene.add(mesh);
+    return mesh;
+  }
+
+  function sphere(
+    radius,
+    x,
+    y,
+    z,
+    mat
+  ) {
+    const mesh = new THREE.Mesh(
+      new THREE.SphereGeometry(radius, 24, 16),
+      mat
+    );
+
+    mesh.position.set(x, y, z);
+    mesh.castShadow = true;
+
+    scene.add(mesh);
+    return mesh;
+  }
+
+  /* FLOOR */
+
+  box(
+    24, 0.25, 30,
+    0, -0.14, -5,
+    materials.floor,
+    false
+  );
+
+  /* BACK WALL */
+
+  box(
+    18, 8, 0.3,
+    0, 3.8, -11,
+    materials.wall,
+    false
+  );
+
+  /* SIDE WALLS */
+
+  box(
+    0.3, 8, 22,
+    -9, 3.8, -1,
+    materials.wall,
+    false
+  );
+
+  box(
+    0.3, 8, 22,
+    9, 3.8, -1,
+    materials.wall,
+    false
+  );
+
+  /* DECORATIVE WALL PANELS */
+
+  for (let i = -3; i <= 3; i++) {
+    box(
+      1.9, 3.4, 0.08,
+      i * 2.3, 3.4, -10.78,
+      materials.cream,
+      false
+    );
+  }
+
+  /* CEILING LIGHT PANELS */
+
+  for (let i = -2; i <= 2; i++) {
+    box(
+      1.2, 0.08, 2.2,
+      i * 2.5, 7.4, -3,
+      materials.white,
+      false
+    );
+  }
+
+  /* DISPLAY SHELVES */
+
+  function createShelf(x, z, width) {
+    const shelfMat = materials.cream;
+
+    box(
+      width, 0.16, 1.1,
+      x, 1.5, z,
+      shelfMat
+    );
+
+    box(
+      width, 0.13, 1.1,
+      x, 3.1, z,
+      shelfMat
+    );
+
+    box(
+      0.13, 3.1, 0.9,
+      x - width / 2 + 0.08,
+      2.95, z,
+      materials.wood
+    );
+
+    box(
+      0.13, 3.1, 0.9,
+      x + width / 2 - 0.08,
+      2.95, z,
+      materials.wood
+    );
+
+    /* GOLD SHELF EDGES */
+
+    box(
+      width, 0.035, 0.04,
+      x, 1.59, z + 0.54,
+      materials.gold,
+      false
+    );
+
+    box(
+      width, 0.035, 0.04,
+      x, 3.19, z + 0.54,
+      materials.gold,
+      false
+    );
+  }
+
+  createShelf(-5.9, -5.4, 3.8);
+  createShelf(5.9, -5.4, 3.8);
+
+  createShelf(0, -9.7, 8.5);
+
+  /* DAZBERY SIGN */
+
+  box(
+    5.3, 1.25, 0.18,
+    0, 5.25, -10.55,
+    materials.cream
+  );
+
+  /* SIGN BORDER */
+
+  box(
+    5.4, 0.055, 0.22,
+    0, 5.91, -10.55,
+    materials.gold,
+    false
+  );
+
+  box(
+    5.4, 0.055, 0.22,
+    0, 4.59, -10.55,
+    materials.gold,
+    false
+  );
+
+  /* TEXTURE LABEL HELPER */
+
+  function createLabelTexture(
+    title,
+    subtitle,
+    background = "#fff7fa"
+  ) {
+    const canvas = document.createElement("canvas");
+
+    canvas.width = 512;
+    canvas.height = 256;
+
+    const ctx = canvas.getContext("2d");
+
+    ctx.fillStyle = background;
+    ctx.fillRect(0, 0, 512, 256);
+
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+
+    ctx.fillStyle = "#8d506b";
+    ctx.font = "bold 48px Georgia";
+
+    ctx.fillText(title, 256, 100);
+
+    ctx.fillStyle = "#8c737e";
+    ctx.font = "22px Arial";
+
+    ctx.fillText(subtitle, 256, 157);
+
+    const texture = new THREE.CanvasTexture(canvas);
+
+    texture.encoding = THREE.sRGBEncoding;
+
+    return texture;
+  }
+
+  function createWallSign() {
+    const signMaterial = new THREE.MeshBasicMaterial({
+      map: createLabelTexture(
+        "DAZBERY",
+        "THE HAIRCARE EDIT",
+        "#fff8fa"
+      )
+    });
+
+    const sign = new THREE.Mesh(
+      new THREE.PlaneGeometry(5.0, 1.1),
+      signMaterial
+    );
+
+    sign.position.set(0, 5.25, -10.43);
+
+    scene.add(sign);
+  }
+
+  createWallSign();
+
+  /* 3D PRODUCT BOTTLES */
+
+  const productObjects = [];
+
+  function createBottle(
+    x,
+    y,
+    z,
+    options = {}
+  ) {
+    const group = new THREE.Group();
+
+    const bottleColor = options.color || "#e8b8ca";
+
+    const bottleMaterial = new THREE.MeshPhysicalMaterial({
+      color: bottleColor,
+      roughness: 0.26,
+      metalness: 0.03,
+      clearcoat: 0.7,
+      clearcoatRoughness: 0.2
+    });
+
+    /* Rounded bottle body */
+
+    const body = new THREE.Mesh(
+      new THREE.CapsuleGeometry(0.43, 0.95, 8, 24),
+      bottleMaterial
+    );
+
+    body.scale.set(0.88, 0.78, 0.42);
+    body.position.y = 0.82;
+    body.castShadow = true;
+
+    group.add(body);
+
+    /* Neck */
+
+    const neck = new THREE.Mesh(
+      new THREE.CylinderGeometry(
+        0.19, 0.22, 0.22, 24
+      ),
+      bottleMaterial
+    );
+
+    neck.position.y = 1.49;
+    group.add(neck);
+
+    /* Cap */
+
+    const capMaterial = material(
+      options.capColor || "#fff7f5",
+      0.3,
+      0.05
+    );
+
+    const cap = new THREE.Mesh(
+      new THREE.CylinderGeometry(
+        0.24, 0.24, 0.33, 32
+      ),
+      capMaterial
+    );
+
+    cap.position.y = 1.76;
+    cap.castShadow = true;
+
+    group.add(cap);
+
+    /* Gold cap ring */
+
+    const ring = new THREE.Mesh(
+      new THREE.CylinderGeometry(
+        0.245, 0.245, 0.045, 32
+      ),
+      materials.gold
+    );
+
+    ring.position.y = 1.59;
+    group.add(ring);
+
+    /* Front label */
+
+    const labelMaterial = new THREE.MeshBasicMaterial({
+      map: createLabelTexture(
+        "DAZBERY",
+        options.subtitle || "HAIRCARE",
+        options.labelColor || "#fff7fa"
+      ),
+      side: THREE.DoubleSide
+    });
+
+    const label = new THREE.Mesh(
+      new THREE.PlaneGeometry(0.63, 0.44),
+      labelMaterial
+    );
+
+    label.position.set(0, 0.85, 0.19);
+    group.add(label);
+
+    /* Position */
+
+    group.position.set(x, y, z);
+
+    scene.add(group);
+
+    productObjects.push({
+      group: group,
+      originalY: y,
+      phase: Math.random() * Math.PI * 2
+    });
+
+    return group;
+  }
+
+  /* LEFT SHELF PRODUCTS */
+
+  createBottle(
+    -7.0, 1.65, -5.0,
+    {
+      color: "#e8b8ca",
+      subtitle: "SHAMPOO"
+    }
+  );
+
+  createBottle(
+    -5.9, 1.65, -5.0,
+    {
+      color: "#fff0f3",
+      subtitle: "CARE"
+    }
+  );
+
+  createBottle(
+    -4.8, 1.65, -5.0,
+    {
+      color: "#d99bb4",
+      subtitle: "SERUM"
+    }
+  );
+
+  createBottle(
+    -7.0, 3.25, -5.0,
+    {
+      color: "#fff0f3",
+      subtitle: "SHAMPOO"
+    }
+  );
+
+  createBottle(
+    -5.9, 3.25, -5.0,
+    {
+      color: "#e8b8ca",
+      subtitle: "CONDITIONER"
+    }
+  );
+
+  createBottle(
+    -4.8, 3.25, -5.0,
+    {
+      color: "#d99bb4",
+      subtitle: "SERUM"
+    }
+  );
+
+  /* RIGHT SHELF PRODUCTS */
+
+  createBottle(
+    4.8, 1.65, -5.0,
+    {
+      color: "#fff0f3",
+      subtitle: "SHAMPOO"
+    }
+  );
+
+  createBottle(
+    5.9, 1.65, -5.0,
+    {
+      color: "#d99bb4",
+      subtitle: "CONDITIONER"
+    }
+  );
+
+  createBottle(
+    7.0, 1.65, -5.0,
+    {
+      color: "#e8b8ca",
+      subtitle: "SERUM"
+    }
+  );
+
+  createBottle(
+    4.8, 3.25, -5.0,
+    {
+      color: "#e8b8ca",
+      subtitle: "SHAMPOO"
+    }
+  );
+
+  createBottle(
+    5.9, 3.25, -5.0,
+    {
+      color: "#fff0f3",
+      subtitle: "CARE"
+    }
+  );
+
+  createBottle(
+    7.0, 3.25, -5.0,
+    {
+      color: "#d99bb4",
+      subtitle: "SERUM"
+    }
+  );
+
+  /* BACK DISPLAY PRODUCTS */
+
+  createBottle(
+    -2.8, 3.25, -9.3,
+    {
+      color: "#e8b8ca",
+      subtitle: "SHAMPOO"
+    }
+  );
+
+  createBottle(
+    -0.9, 3.25, -9.3,
+    {
+      color: "#fff0f3",
+      subtitle: "CONDITIONER"
+    }
+  );
+
+  createBottle(
+    1.0, 3.25, -9.3,
+    {
+      color: "#d99bb4",
+      subtitle: "SERUM"
+    }
+  );
+
+  createBottle(
+    2.9, 3.25, -9.3,
+    {
+      color: "#e8b8ca",
+      subtitle: "HAIRCARE"
+    }
+  );
+
+  /* DECORATIVE PLANTS */
+
+  function createPlant(x, z) {
+    cylinder(
+      0.32, 0.24, 0.55,
+      x, 0.27, z,
+      materials.cream,
+      24
+    );
+
+    cylinder(
+      0.03, 0.04, 0.75,
+      x, 0.88, z,
+      material("#718b69"),
+      12
+    );
+
+    for (let i = 0; i < 7; i++) {
+      const angle = (i / 7) * Math.PI * 2;
+
+      const leaf = new THREE.Mesh(
+        new THREE.SphereGeometry(0.19, 12, 10),
+        material(i % 2 ? "#718b69" : "#8ca17a")
+      );
+
+      leaf.scale.set(0.65, 1.7, 0.45);
+
+      leaf.position.set(
+        x + Math.cos(angle) * 0.24,
+        0.85 + (i % 3) * 0.18,
+        z + Math.sin(angle) * 0.24
+      );
+
+      leaf.rotation.z = Math.cos(angle) * 0.6;
+
+      scene.add(leaf);
+    }
+  }
+
+  createPlant(-7.8, -9.3);
+  createPlant(7.8, -9.3);
+
+  /* CENTER DISPLAY TABLE */
+
+  cylinder(
+    1.35, 1.35, 0.18,
+    0, 0.8, -2.0,
+    materials.cream,
+    48
+  );
+
+  cylinder(
+    0.78, 0.95, 0.85,
+    0, 0.35, -2.0,
+    materials.wood,
+    48
+  );
+
+  cylinder(
+    1.36, 1.36, 0.045,
+    0, 0.91, -2.0,
+    materials.gold,
+    48
+  );
+
+  createBottle(
+    -0.55, 1.02, -2.0,
+    {
+      color: "#e8b8ca",
+      subtitle: "SHAMPOO"
+    }
+  );
+
+  createBottle(
+    0.55, 1.02, -2.0,
+    {
+      color: "#fff0f3",
+      subtitle: "CONDITIONER"
+    }
+  );
+
+  /* FIRST-PERSON CONTROLS: JOYSTICK + 360 LOOK */
+
+  const movement = { forward: 0, sideways: 0 };
+  let yaw = 0;
+  let pitch = -0.02;
+  const moveSpeed = 0.075;
+  const lookSpeed = 0.0045;
+  const keysDown = Object.create(null);
+
+  // Add the controls only once, inside the 3D showroom.
+  if (!document.getElementById("dazbery-control-style")) {
+    const style = document.createElement("style");
+    style.id = "dazbery-control-style";
+    style.textContent = `
+      #showroom{position:relative;overflow:hidden;touch-action:none;isolation:isolate}
+      #showroom canvas{display:block;width:100%;height:100%;touch-action:none}
+      #dazberyJoystick{position:absolute;left:18px;bottom:18px;width:116px;height:116px;border:2px solid rgba(255,255,255,.8);border-radius:50%;background:rgba(255,255,255,.20);box-shadow:0 4px 18px rgba(80,30,55,.16);z-index:20;touch-action:none;user-select:none;-webkit-user-select:none}
+      #dazberyKnob{position:absolute;left:50%;top:50%;width:48px;height:48px;transform:translate(-50%,-50%);border-radius:50%;background:rgba(184,112,143,.88);border:2px solid #fff;box-shadow:0 2px 8px rgba(60,20,40,.2);pointer-events:none}
+      #dazberyLookHint{position:absolute;right:12px;bottom:18px;padding:8px 11px;border-radius:20px;background:rgba(255,255,255,.72);color:#704456;font:12px/1.2 Arial,sans-serif;z-index:19;pointer-events:none}
+      @media(max-width:600px){#dazberyJoystick{width:104px;height:104px;left:12px;bottom:12px}#dazberyKnob{width:44px;height:44px}#dazberyLookHint{right:10px;bottom:14px;font-size:11px}}
+    `;
+    document.head.appendChild(style);
+  }
+
+  let joystick = document.getElementById("dazberyJoystick");
+  if (!joystick) {
+    joystick = document.createElement("div");
+    joystick.id = "dazberyJoystick";
+    joystick.setAttribute("aria-label", "Movement joystick");
+    joystick.innerHTML = '<div id="dazberyKnob"></div>';
+    showroom.appendChild(joystick);
+  }
+  const joystickKnob = document.getElementById("dazberyKnob");
+
+  let lookHint = document.getElementById("dazberyLookHint");
+  if (!lookHint) {
+    lookHint = document.createElement("div");
+    lookHint.id = "dazberyLookHint";
+    lookHint.textContent = "Swipe right side to look around";
+    showroom.appendChild(lookHint);
+  }
+
+  function stopMovement() {
+    movement.forward = 0;
+    movement.sideways = 0;
+    if (joystickKnob) joystickKnob.style.transform = "translate(-50%,-50%)";
+  }
+
+  let joystickPointerId = null;
+  function updateJoystick(event) {
+    const rect = joystick.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    let dx = event.clientX - centerX;
+    let dy = event.clientY - centerY;
+    const maxRadius = rect.width * 0.31;
+    const distance = Math.hypot(dx, dy);
+    if (distance > maxRadius) {
+      dx = dx / distance * maxRadius;
+      dy = dy / distance * maxRadius;
+    }
+    movement.sideways = dx / maxRadius;
+    movement.forward = -dy / maxRadius;
+    joystickKnob.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
+  }
+
+  joystick.addEventListener("pointerdown", function (event) {
+    event.preventDefault();
+    joystickPointerId = event.pointerId;
+    try { joystick.setPointerCapture(event.pointerId); } catch (error) {}
+    updateJoystick(event);
+  });
+  joystick.addEventListener("pointermove", function (event) {
+    if (event.pointerId !== joystickPointerId) return;
+    event.preventDefault();
+    updateJoystick(event);
+  });
+  function releaseJoystick(event) {
+    if (event && joystickPointerId !== null && event.pointerId !== joystickPointerId) return;
+    joystickPointerId = null;
+    stopMovement();
+  }
+  joystick.addEventListener("pointerup", releaseJoystick);
+  joystick.addEventListener("pointercancel", releaseJoystick);
+  joystick.addEventListener("lostpointercapture", releaseJoystick);
+  joystick.addEventListener("contextmenu", event => event.preventDefault());
+
+  // Desktop keyboard support (WASD / arrow keys).
+  window.addEventListener("keydown", function (event) {
+    if (event.target && ["INPUT", "TEXTAREA", "SELECT"].includes(event.target.tagName)) return;
+    const key = event.key.toLowerCase();
+    if (["w", "a", "s", "d", "arrowup", "arrowdown", "arrowleft", "arrowright"].includes(key)) {
+      keysDown[key] = true;
+      if (key.startsWith("arrow")) event.preventDefault();
+    }
+  });
+  window.addEventListener("keyup", function (event) { keysDown[event.key.toLowerCase()] = false; });
+  window.addEventListener("blur", function () { stopMovement(); Object.keys(keysDown).forEach(k => keysDown[k] = false); });
+  document.addEventListener("visibilitychange", function () { if (document.hidden) stopMovement(); });
+
+  // Drag/swipe on the canvas to rotate freely around 360 degrees.
+  let looking = false;
+  let lookPointerId = null;
+  let lastLookX = 0;
+  let lastLookY = 0;
+  renderer.domElement.style.touchAction = "none";
+  renderer.domElement.addEventListener("pointerdown", function (event) {
+    if (event.target === joystick || joystick.contains(event.target)) return;
+    if (event.pointerType === "mouse" && event.button !== 0) return;
+    const rect = renderer.domElement.getBoundingClientRect();
+    // On touch screens, the left side is reserved for the joystick.
+    if (event.pointerType !== "mouse" && event.clientX < rect.left + rect.width * 0.36) return;
+    looking = true;
+    lookPointerId = event.pointerId;
+    lastLookX = event.clientX;
+    lastLookY = event.clientY;
+    try { renderer.domElement.setPointerCapture(event.pointerId); } catch (error) {}
+  });
+  renderer.domElement.addEventListener("pointermove", function (event) {
+    if (!looking || event.pointerId !== lookPointerId) return;
+    event.preventDefault();
+    const dx = event.clientX - lastLookX;
+    const dy = event.clientY - lastLookY;
+    lastLookX = event.clientX;
+    lastLookY = event.clientY;
+    yaw -= dx * lookSpeed;
+    pitch = THREE.MathUtils.clamp(pitch - dy * lookSpeed, -1.15, 1.15);
+  });
+  function stopLooking(event) {
+    if (event && lookPointerId !== null && event.pointerId !== lookPointerId) return;
+    looking = false;
+    lookPointerId = null;
+  }
+  renderer.domElement.addEventListener("pointerup", stopLooking);
+  renderer.domElement.addEventListener("pointercancel", stopLooking);
+  renderer.domElement.addEventListener("lostpointercapture", stopLooking);
+
+  function updateCameraLook() {
+    const direction = new THREE.Vector3(
+      Math.sin(yaw) * Math.cos(pitch),
+      Math.sin(pitch),
+      -Math.cos(yaw) * Math.cos(pitch)
+    );
+    camera.lookAt(camera.position.clone().add(direction));
+  }
+
+  function updateMovement() {
+    let forwardInput = movement.forward;
+    let sideInput = movement.sideways;
+    if (keysDown["w"] || keysDown["arrowup"]) forwardInput = Math.max(forwardInput, 1);
+    if (keysDown["s"] || keysDown["arrowdown"]) forwardInput = Math.min(forwardInput, -1);
+    if (keysDown["a"] || keysDown["arrowleft"]) sideInput = Math.min(sideInput, -1);
+    if (keysDown["d"] || keysDown["arrowright"]) sideInput = Math.max(sideInput, 1);
+
+    const forward = new THREE.Vector3(Math.sin(yaw), 0, -Math.cos(yaw));
+    const right = new THREE.Vector3(Math.cos(yaw), 0, Math.sin(yaw));
+    camera.position.addScaledVector(forward, forwardInput * moveSpeed);
+    camera.position.addScaledVector(right, sideInput * moveSpeed);
+
+    camera.position.x = THREE.MathUtils.clamp(camera.position.x, -7.7, 7.7);
+    camera.position.z = THREE.MathUtils.clamp(camera.position.z, -10.0, 6.5);
+    camera.position.y = 1.65;
+    updateCameraLook();
+  }
+
+  /* HOME BUTTON */
+  const homeButton = document.getElementById("homeButton");
+  if (homeButton) {
+    homeButton.addEventListener("click", function () {
+      camera.position.set(0, 1.65, 7.5);
+      yaw = 0;
+      pitch = -0.02;
+      stopMovement();
+      updateCameraLook();
+    });
+  }
+
+  /* EXPLORE BUTTON */
+
+  const exploreButton = document.getElementById("exploreButton");
+
+  if (exploreButton) {
+    exploreButton.addEventListener("click", function () {
+      showroom.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
+    });
+  }
+
+  /* RESPONSIVE RESIZE */
+
+  function resizeShowroom() {
+    const width = showroom.clientWidth;
+    const height = showroom.clientHeight;
+
+    if (!width || !height) return;
+
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
+
+    renderer.setSize(width, height);
+  }
+
+  if ("ResizeObserver" in window) {
+    const resizeObserver = new ResizeObserver(resizeShowroom);
+    resizeObserver.observe(showroom);
+  } else {
+    window.addEventListener("resize", resizeShowroom);
+  }
+
+  /* ANIMATION */
+
+  const clock = new THREE.Clock();
+
+  function animate() {
+    requestAnimationFrame(animate);
+
+    const elapsed = clock.getElapsedTime();
+
+    updateMovement();
+
+    productObjects.forEach(function (item) {
+      item.group.position.y =
+        item.originalY +
+        Math.sin(elapsed * 1.15 + item.phase) * 0.025;
+    });
+
+    renderer.render(scene, camera);
+  }
+
+  resizeShowroom();
+
+  if (statusText) {
+    statusText.textContent = "Boutique ready";
+  }
+
+  animate();
+
+})();
+</script>
+
+<!-- END OF PART 2 -->
+  
 <style>
 /* PRODUCT COLLECTION */
 
