@@ -6,3239 +6,869 @@
 
 <title>DAZBERY | Premium Haircare</title>
 
-<meta name="theme-color" content="#f8e8ee">
-<meta name="description" content="Discover DAZBERY premium haircare in an immersive 3D shopping experience.">
+<meta name="description" content="Discover DAZBERY Rosemary & Rice Water Hair Growth Spray.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
 :root {
-  --pink: #f5dce5;
-  --light-pink: #fff6f9;
-  --rose: #d58ba5;
-  --dark-rose: #98556f;
-  --cream: #fffaf5;
-  --text: #35252c;
-  --muted: #8d7780;
+  --bg: #fffafa;
   --white: #ffffff;
-  --border: rgba(152,85,111,0.15);
-  --shadow: 0 12px 40px rgba(104,54,75,0.10);
+  --pink: #f7e5e9;
+  --dark: #242020;
+  --muted: #777070;
+  --border: #eadfe2;
+  --accent: #a75c70;
+  --radius: 14px;
 }
 
 * {
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
-}
-
-html {
-  scroll-behavior: smooth;
+  box-sizing: border-box;
+  font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
 body {
-  font-family: 'DM Sans', sans-serif;
-  color: var(--text);
-  background: var(--light-pink);
-  overflow-x: hidden;
+  background: var(--bg);
+  color: var(--dark);
+  line-height: 1.6;
 }
 
-button,
-input,
-select {
+button, input, textarea {
   font: inherit;
 }
 
 button {
   cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
 }
-
-button:focus-visible,
-input:focus-visible {
-  outline: 2px solid var(--dark-rose);
-  outline-offset: 3px;
-}
-
-.hidden {
-  display: none !important;
-}
-
-/* TOP ANNOUNCEMENT */
 
 .announcement {
-  width: 100%;
-  min-height: 31px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 7px 12px;
-  background: #9b6178;
+  background: var(--dark);
   color: white;
-  font-size: 10px;
-  letter-spacing: 1.5px;
   text-align: center;
+  padding: 9px;
+  font-size: 11px;
+  letter-spacing: 1px;
 }
 
-/* HEADER */
-
-.site-header {
-  position: relative;
-  z-index: 20;
-  min-height: 76px;
-  padding: 12px 5%;
+header {
+  background: white;
+  padding: 17px 5%;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 15px;
-  background: rgba(255,250,252,0.96);
   border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
-.brand {
-  border: none;
-  background: transparent;
-  text-align: left;
-  color: var(--text);
-}
-
-.brand-name {
-  display: block;
-  font-family: 'Playfair Display', serif;
-  font-size: 27px;
+.logo {
+  font-size: 21px;
   font-weight: 700;
   letter-spacing: 3px;
+  cursor: pointer;
 }
 
-.brand-caption {
-  display: block;
-  margin-top: 2px;
-  font-size: 8px;
-  letter-spacing: 3px;
-  color: var(--muted);
-}
-
-.header-actions {
+nav {
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 17px;
 }
 
-.header-btn {
-  min-height: 39px;
-  padding: 9px 13px;
-  border: 1px solid var(--border);
-  border-radius: 30px;
-  background: white;
-  color: var(--text);
+nav button {
+  border: none;
+  background: none;
+  color: var(--dark);
   font-size: 12px;
-}
-
-.bag-btn {
-  background: var(--text);
-  color: white;
-  border-color: var(--text);
-}
-
-/* INTRODUCTION */
-
-.hero {
-  padding: 36px 20px 28px;
-  text-align: center;
-  background:
-    radial-gradient(ellipse at 50% 0%, #f3d9e4 0%, transparent 70%),
-    var(--light-pink);
-}
-
-.eyebrow {
-  font-size: 10px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--dark-rose);
-  margin-bottom: 12px;
-}
-
-.hero h1 {
-  max-width: 700px;
-  margin: 0 auto;
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(30px, 6vw, 52px);
-  line-height: 1.13;
-  font-weight: 500;
-}
-
-.hero h1 span {
-  color: var(--dark-rose);
-  font-style: italic;
-}
-
-.hero-description {
-  max-width: 460px;
-  margin: 14px auto 0;
-  font-size: 13px;
-  line-height: 1.8;
-  color: var(--muted);
-}
-
-.hero-badges {
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.hero-badge {
-  padding: 8px 12px;
-  border: 1px solid rgba(152,85,111,0.20);
-  border-radius: 30px;
-  background: rgba(255,255,255,0.65);
-  font-size: 10px;
-  color: #795566;
-}
-
-/* SHOWROOM SECTION */
-
-.showroom-section {
-  padding: 0 14px 30px;
-  background: var(--light-pink);
-}
-
-.showroom-heading {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 1100px;
-  margin: 0 auto 12px;
-  gap: 10px;
-}
-
-.showroom-heading h2 {
-  font-family: 'Playfair Display', serif;
-  font-size: 22px;
-  font-weight: 500;
-}
-
-.live-label {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 10px;
-  color: var(--dark-rose);
-}
-
-.live-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #66a77d;
-  box-shadow: 0 0 0 4px rgba(102,167,125,0.13);
-}
-
-/* 3D VIEWPORT */
-
-.showroom-frame {
-  position: relative;
-  width: 100%;
-  max-width: 1100px;
-  margin: 0 auto;
-  overflow: hidden;
-  border-radius: 20px;
-  border: 1px solid rgba(152,85,111,0.16);
-  background: #f3e4e9;
-  box-shadow: var(--shadow);
-  isolation: isolate;
-}
-
-#showroom {
-  position: relative;
-  width: 100%;
-  height: min(65vh, 570px);
-  min-height: 370px;
-  overflow: hidden;
-  background: linear-gradient(#f8e8ee, #e8d1db);
-  touch-action: pan-y;
-}
-
-#showroom canvas {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-/* SHOWROOM TOP LABEL */
-
-.scene-label {
-  position: absolute;
-  z-index: 4;
-  top: 14px;
-  left: 14px;
-  padding: 10px 13px;
-  border: 1px solid rgba(255,255,255,0.65);
-  border-radius: 12px;
-  background: rgba(255,250,252,0.83);
-  backdrop-filter: blur(10px);
-  pointer-events: none;
-}
-
-.scene-label strong {
-  display: block;
-  font-family: 'Playfair Display', serif;
-  font-size: 14px;
   font-weight: 600;
 }
 
-.scene-label small {
-  display: block;
-  margin-top: 3px;
-  font-size: 9px;
-  letter-spacing: 1px;
-  color: var(--muted);
+.container {
+  width: 100%;
+  max-width: 1100px;
+  padding: 30px 18px;
+  margin: auto;
 }
 
-/* SHOWROOM INSTRUCTIONS */
-
-.scene-instructions {
-  position: absolute;
-  z-index: 4;
-  top: 14px;
-  right: 14px;
-  max-width: 155px;
-  padding: 9px 11px;
-  border-radius: 12px;
-  background: rgba(255,255,255,0.78);
-  color: #755361;
-  font-size: 10px;
-  line-height: 1.6;
-  text-align: center;
-  pointer-events: none;
-}
-
-/* MOVEMENT CONTROLS */
-
-.movement-controls {
-  position: absolute;
-  z-index: 5;
-  bottom: 18px;
-  left: 18px;
+.product-card {
   display: grid;
-  grid-template-columns: repeat(3, 43px);
-  grid-template-rows: repeat(2, 43px);
-  gap: 5px;
+  grid-template-columns: 1fr 1fr;
+  gap: 35px;
+  background: white;
+  padding: 25px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
 }
 
-.move-btn {
-  width: 43px;
-  height: 43px;
-  border: 1px solid rgba(255,255,255,0.8);
-  border-radius: 13px;
-  background: rgba(255,250,252,0.85);
-  color: #694454;
-  font-size: 20px;
-  box-shadow: 0 3px 12px rgba(80,40,55,0.10);
-  backdrop-filter: blur(8px);
-  user-select: none;
-  touch-action: none;
+.product-image {
+  position: relative;
+  background: #fcf4f5;
+  border-radius: 12px;
+  min-height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
-.move-btn:active {
-  background: var(--dark-rose);
+.product-image img {
+  width: 100%;
+  max-height: 450px;
+  object-fit: contain;
+}
+
+.badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: var(--accent);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+h1 {
+  font-size: clamp(22px, 3vw, 31px);
+  line-height: 1.35;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  color: var(--muted);
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+
+.price-box {
+  background: #fcf4f5;
+  padding: 15px;
+  border-radius: 9px;
+  margin-bottom: 20px;
+}
+
+.price {
+  font-size: 27px;
+  font-weight: 700;
+}
+
+.old-price {
+  color: #999;
+  text-decoration: line-through;
+  margin-left: 8px;
+  font-size: 15px;
+}
+
+.label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 7px;
+}
+
+.quantity {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.quantity button {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--border);
+  background: white;
+  border-radius: 6px;
+}
+
+.coupon {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  outline: none;
+  background: white;
+  font-size: 13px;
+}
+
+input:focus, textarea:focus {
+  border-color: var(--accent);
+}
+
+.btn {
+  padding: 13px 16px;
+  border: none;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.btn-dark {
+  background: var(--dark);
   color: white;
 }
 
-#moveForward {
-  grid-column: 2;
-  grid-row: 1;
+.btn-pink {
+  background: var(--accent);
+  color: white;
 }
 
-#moveLeft {
-  grid-column: 1;
-  grid-row: 2;
+.coupon button {
+  white-space: nowrap;
 }
 
-#moveBackward {
-  grid-column: 2;
-  grid-row: 2;
+.form-group {
+  margin-bottom: 10px;
 }
 
-#moveRight {
-  grid-column: 3;
-  grid-row: 2;
-}
-
-/* SCENE BOTTOM */
-
-.scene-bottom {
-  position: absolute;
-  z-index: 4;
-  bottom: 18px;
-  right: 16px;
-  max-width: 145px;
-  padding: 10px 12px;
-  border: 1px solid rgba(255,255,255,0.7);
-  border-radius: 13px;
-  background: rgba(255,250,252,0.88);
-  font-size: 10px;
-  line-height: 1.6;
-  text-align: center;
-  color: #795566;
-  pointer-events: none;
-}
-
-/* STORE STATUS */
-
-.store-status {
-  max-width: 1100px;
-  margin: 12px auto 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.action-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 10px;
-  color: var(--muted);
-  font-size: 11px;
+  margin-top: 16px;
 }
 
-/* MOBILE */
+.action-buttons button {
+  width: 100%;
+}
 
-@media (max-width: 600px) {
-  .announcement {
-    font-size: 9px;
-    letter-spacing: 1px;
+.section-title {
+  font-size: 21px;
+  margin: 35px 0 15px;
+}
+
+.notice {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 12px;
+}
+
+footer {
+  margin-top: 45px;
+  background: var(--dark);
+  color: white;
+  text-align: center;
+  padding: 30px 15px;
+  font-size: 12px;
+}
+
+footer a {
+  color: white;
+}
+
+#toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--dark);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 25px;
+  font-size: 12px;
+  display: none;
+  z-index: 999;
+  width: max-content;
+  max-width: 90%;
+}
+
+@media (max-width: 700px) {
+  header {
+    padding: 14px;
   }
 
-  .site-header {
-    min-height: 68px;
-    padding: 10px 14px;
-  }
-
-  .brand-name {
-    font-size: 23px;
+  .logo {
+    font-size: 17px;
     letter-spacing: 2px;
   }
 
-  .brand-caption {
-    font-size: 7px;
-    letter-spacing: 2px;
+  nav {
+    gap: 10px;
   }
 
-  .header-actions {
-    gap: 6px;
-  }
-
-  .header-btn {
-    min-height: 36px;
-    padding: 8px 10px;
+  nav button {
     font-size: 11px;
   }
 
-  .hero {
-    padding: 29px 16px 23px;
+  .container {
+    padding: 18px 12px;
   }
 
-  .hero-description {
-    font-size: 12px;
+  .product-card {
+    grid-template-columns: 1fr;
+    gap: 22px;
+    padding: 14px;
   }
 
-  .showroom-heading h2 {
-    font-size: 19px;
+  .product-image {
+    min-height: 260px;
   }
 
-  .showroom-section {
-    padding: 0 9px 24px;
+  .product-image img {
+    max-height: 340px;
   }
 
-  .showroom-frame {
-    border-radius: 15px;
-  }
-
-  #showroom {
-    height: 62vh;
-    min-height: 360px;
-    max-height: 520px;
-  }
-
-  .scene-label {
-    top: 10px;
-    left: 9px;
-    padding: 8px 10px;
-  }
-
-  .scene-label strong {
-    font-size: 12px;
-  }
-
-  .scene-label small {
-    font-size: 8px;
-  }
-
-  .scene-instructions {
-    top: 10px;
-    right: 9px;
-    max-width: 125px;
-    padding: 7px 8px;
-    font-size: 9px;
-  }
-
-  .movement-controls {
-    bottom: 12px;
-    left: 10px;
-    grid-template-columns: repeat(3, 39px);
-    grid-template-rows: repeat(2, 39px);
-    gap: 4px;
-  }
-
-  .move-btn {
-    width: 39px;
-    height: 39px;
-    border-radius: 11px;
-  }
-
-  .scene-bottom {
-    bottom: 12px;
-    right: 9px;
-    max-width: 120px;
-    padding: 8px;
-    font-size: 9px;
+  .action-buttons {
+    grid-template-columns: 1fr;
   }
 }
 </style>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 </head>
 
 <body>
 
 <div class="announcement">
-  DISCOVER YOUR HAIRCARE RITUAL · WELCOME TO DAZBERY
+  COMPLIMENTARY SHIPPING ON PREPAID ORDERS
 </div>
 
-<header class="site-header">
+<header>
+  <div class="logo" onclick="showPage('shop')">DAZBERY</div>
 
-  <button class="brand" id="homeButton" aria-label="DAZBERY home">
-    <span class="brand-name">DAZBERY</span>
-    <span class="brand-caption">THE HAIRCARE EDIT</span>
-  </button>
-
-  <div class="header-actions">
-    <button class="header-btn" id="exploreButton">
-      Explore Store
+  <nav>
+    <button onclick="showPage('shop')">Shop</button>
+    <button onclick="showPage('cart')">
+      Cart (<span id="cartCount">0</span>)
     </button>
-
-    <button class="header-btn bag-btn" id="bagButton">
-      Bag <span id="bagCount">0</span>
-    </button>
-  </div>
-
+    <button onclick="showPage('account')">Account</button>
+  </nav>
 </header>
 
-<main>
+<main class="container">
 
-  <section class="hero">
-    <p class="eyebrow">A NEW WAY TO SHOP HAIRCARE</p>
+  <section id="shopPage">
 
-    <h1>
-      Your hair deserves<br>
-      <span>a beautiful ritual.</span>
-    </h1>
+    <div class="product-card">
 
-    <p class="hero-description">
-      Step into the DAZBERY world. Explore our haircare collection
-      in a soft, elegant 3D boutique made just for you.
-    </p>
+      <div class="product-image">
+        <span class="badge">BEST SELLER</span>
 
-    <div class="hero-badges">
-      <span class="hero-badge">✦ Haircare Essentials</span>
-      <span class="hero-badge">✦ Thoughtful Formulations</span>
-      <span class="hero-badge">✦ Your Ritual, Your Way</span>
-    </div>
-  </section>
+        <img
+          src="spray.PNG"
+          alt="DAZBERY Rosemary and Rice Water Hair Growth Spray"
+          onerror="this.style.display='none';document.getElementById('imageError').style.display='block';"
+        >
 
-  <section class="showroom-section" id="storeSection">
+        <p id="imageError" style="display:none;padding:20px;text-align:center;">
+          Product image not found. Please check spray.PNG in GitHub.
+        </p>
+      </div>
 
-    <div class="showroom-heading">
-      <h2>Explore the Boutique</h2>
+      <div>
 
-      <div class="live-label">
-        <span class="live-dot"></span>
-        3D EXPERIENCE
+        <h1>Rosemary & Rice Water Hair Growth Spray</h1>
+
+        <p class="subtitle">
+          100ml | Botanical Scalp Mist
+        </p>
+
+        <div class="price-box">
+          <span class="price" id="displayPrice">₹599</span>
+          <span class="old-price" id="oldPrice" style="display:none;">₹599</span>
+          <p class="notice">Prepaid orders only</p>
+        </div>
+
+        <div class="quantity">
+          <span class="label" style="margin:0;">Quantity:</span>
+
+          <button type="button" onclick="changeQty(-1)">−</button>
+
+          <strong id="qty">1</strong>
+
+          <button type="button" onclick="changeQty(1)">+</button>
+        </div>
+
+        <label class="label" for="couponInput">Creator Coupon Code</label>
+
+        <div class="coupon">
+          <input
+            id="couponInput"
+            type="text"
+            placeholder="Enter coupon code"
+          >
+
+          <button class="btn btn-dark" onclick="applyCoupon()">
+            APPLY
+          </button>
+        </div>
+
+        <p id="couponMessage" class="notice"></p>
+
+        <h3 class="section-title">Delivery Details</h3>
+
+        <form id="checkoutForm">
+
+          <div class="form-group">
+            <input id="customerName" placeholder="Full Name" required>
+          </div>
+
+          <div class="form-group">
+            <input
+              id="customerPhone"
+              type="tel"
+              inputmode="numeric"
+              pattern="[6-9][0-9]{9}"
+              maxlength="10"
+              placeholder="10-digit Mobile Number"
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <textarea
+              id="customerAddress"
+              rows="2"
+              placeholder="House / Flat No, Street Name"
+              required
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <input
+              id="customerPin"
+              inputmode="numeric"
+              pattern="[1-9][0-9]{5}"
+              maxlength="6"
+              placeholder="6-digit PIN Code"
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <input id="customerCity" placeholder="City / District" required>
+          </div>
+
+          <div class="form-group">
+            <input id="customerState" placeholder="State" required>
+          </div>
+
+          <div class="action-buttons">
+            <button
+              type="button"
+              class="btn"
+              style="border:1px solid #242020;background:white;"
+              onclick="addToCart()"
+            >
+              ADD TO CART
+            </button>
+
+            <button type="submit" class="btn btn-dark" id="buyButton">
+              CONTINUE TO ORDER — ₹599
+            </button>
+          </div>
+
+        </form>
+
+        <p class="notice">
+          Your delivery details will be used to process your order.
+        </p>
+
       </div>
     </div>
 
-    <div class="showroom-frame">
+    <section id="reviewsSection">
+      <h2 class="section-title">Customer Reviews</h2>
+      <p class="notice">
+        Customer reviews will be displayed here after the review system is configured.
+      </p>
+    </section>
 
-      <div id="showroom">
+  </section>
+  <!-- DAZBERY CART PAGE -->
+<section id="cartPage" class="hidden">
 
-        <div class="scene-label">
-          <strong>DAZBERY Boutique</strong>
-          <small>BEAUTY · CARE · RITUAL</small>
+  <div style="background:white;padding:22px;border:1px solid #eadfe2;border-radius:14px">
+
+    <h2>Your Shopping Bag 🛍️</h2>
+    <p>DAZBERY Haircare</p>
+
+    <div style="display:flex;gap:15px;align-items:center;margin:20px 0">
+
+      <img src="spray.PNG"
+           alt="DAZBERY Hair Growth Spray"
+           style="width:90px;height:110px;object-fit:contain">
+
+      <div>
+        <h3>Rosemary & Rice Water Hair Growth Spray</h3>
+        <p>100 ml</p>
+        <strong>₹599</strong>
+
+        <div style="display:flex;gap:12px;align-items:center;margin-top:10px">
+          <button type="button" onclick="updateCartQty(-1)">−</button>
+          <strong id="cartQty">1</strong>
+          <button type="button" onclick="updateCartQty(1)">+</button>
         </div>
-
-        <div class="scene-instructions">
-          Move around using the arrows.<br>
-          Explore the collection.
-        </div>
-
-        <div class="movement-controls">
-
-          <button class="move-btn" id="moveForward"
-            aria-label="Move forward">↑</button>
-
-          <button class="move-btn" id="moveLeft"
-            aria-label="Move left">←</button>
-
-          <button class="move-btn" id="moveBackward"
-            aria-label="Move backward">↓</button>
-
-          <button class="move-btn" id="moveRight"
-            aria-label="Move right">→</button>
-
-        </div>
-
-        <div class="scene-bottom">
-          <strong>Welcome to DAZBERY</strong><br>
-          Your beauty destination
-        </div>
-
       </div>
 
     </div>
 
-    <div class="store-status">
-      <span>✦ Discover your haircare favourites</span>
-      <span id="sceneStatus">Preparing boutique...</span>
+    <hr style="margin:15px 0">
+
+    <p>Subtotal: <strong id="cartSubtotal">₹599</strong></p>
+    <p>Discount: <strong id="cartDiscount">₹0</strong></p>
+    <p>Total: <strong id="cartTotal">₹599</strong></p>
+
+    <button type="button"
+            class="btn btn-dark"
+            style="width:100%;margin-top:15px"
+            onclick="showPage('shop')">
+      CONTINUE SHOPPING
+    </button>
+
+  </div>
+
+</section>
+<!-- DAZBERY ACCOUNT PAGE -->
+<section id="accountPage" class="hidden">
+
+  <div class="auth-card" style="
+    max-width:480px;
+    margin:25px auto;
+    background:white;
+    padding:25px;
+    border:1px solid #eadfe2;
+    border-radius:14px;
+  ">
+
+    <div id="loginCard">
+      <h2 style="text-align:center;">Welcome to DAZBERY</h2>
+
+      <p style="text-align:center;margin:12px 0 20px;color:#777;">
+        Sign in to save your delivery details and view your orders.
+      </p>
+
+      <button
+        type="button"
+        class="btn btn-dark"
+        style="width:100%;"
+        onclick="loginWithGoogle()"
+      >
+        Continue with Google
+      </button>
     </div>
 
-  </section>
+    <div id="dashboardCard" class="hidden">
 
-</main>
+      <h2>My Account</h2>
 
-<!-- ============================= -->
-<!-- DAZBERY 3D SHOWROOM - PART 2 -->
-<!-- ============================= -->
+      <p id="userEmailDisplay"
+         style="font-size:13px;color:#777;margin:10px 0 20px;">
+      </p>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+      <form id="profileForm">
 
+        <div class="form-group">
+          <input id="profName" placeholder="Full Name" required>
+        </div>
+
+        <div class="form-group">
+          <input
+            id="profPhone"
+            type="tel"
+            inputmode="numeric"
+            pattern="[6-9][0-9]{9}"
+            maxlength="10"
+            placeholder="10-digit Mobile Number"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <textarea
+            id="profAddress"
+            rows="2"
+            placeholder="House / Flat No, Street Name"
+            required
+          ></textarea>
+        </div>
+
+        <div class="form-group">
+          <input
+            id="profPin"
+            inputmode="numeric"
+            pattern="[1-9][0-9]{5}"
+            maxlength="6"
+            placeholder="6-digit PIN Code"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <input id="profCity" placeholder="City / District" required>
+        </div>
+
+        <div class="form-group">
+          <input id="profState" placeholder="State" required>
+        </div>
+
+        <button type="submit" class="btn btn-dark" style="width:100%;">
+          SAVE MY DETAILS
+        </button>
+
+      </form>
+
+      <h3 style="margin-top:25px;">My Order History</h3>
+
+      <div id="orderHistoryList" style="margin-top:12px;">
+        No orders found.
+      </div>
+
+      <button
+        type="button"
+        class="btn"
+        style="width:100%;margin-top:20px;background:#f7e5e9;"
+        onclick="handleLogout()"
+      >
+        LOGOUT
+      </button>
+
+    </div>
+
+    <button
+      type="button"
+      class="btn"
+      style="width:100%;margin-top:15px;border:1px solid #eadfe2;background:white;"
+      onclick="showPage('shop')"
+    >
+      BACK TO SHOP
+    </button>
+
+  </div>
+
+</section>
+  <!-- REQUIRED CSS -->
+<style>
+.hidden {
+  display: none !important;
+}
+</style>
+
+<!-- DAZBERY CART AND CHECKOUT JAVASCRIPT -->
 <script>
-/* =================================
-   DAZBERY 3D BOUTIQUE ENGINE
-================================= */
+"use strict";
 
-(function () {
-  "use strict";
+const PRODUCT_PRICE = 599;
+let currentQty = 1;
+let discountApplied = false;
 
-  const showroom = document.getElementById("showroom");
-  const statusText = document.getElementById("sceneStatus");
+function showPage(page) {
+  const shop = document.getElementById("shopPage");
+  const cart = document.getElementById("cartPage");
 
-  if (showroom && !showroom.style.minHeight && showroom.clientHeight < 180) {
-    showroom.style.minHeight = "420px";
-  }
-
-  if (!showroom || !window.THREE) {
-    if (statusText) {
-      statusText.textContent = "3D showroom unavailable";
-    }
+  if (page === "account") {
+    alert("DAZBERY Account login will be added in a later step.");
     return;
   }
 
-  /* SCENE */
+  if (shop) shop.classList.toggle("hidden", page !== "shop");
+  if (cart) cart.classList.toggle("hidden", page !== "cart");
 
-  const scene = new THREE.Scene();
-  scene.background = new THREE.Color("#f2dfe7");
-  scene.fog = new THREE.Fog("#f2dfe7", 18, 45);
-
-  /* CAMERA */
-
-  const camera = new THREE.PerspectiveCamera(
-    60,
-    showroom.clientWidth / showroom.clientHeight,
-    0.1,
-    100
-  );
-
-  camera.position.set(0, 1.65, 7.5);
-  camera.lookAt(0, 1.5, 0);
-
-  /* RENDERER */
-
-  const renderer = new THREE.WebGLRenderer({
-    antialias: true,
-    alpha: false
-  });
-
-  renderer.setPixelRatio(
-    Math.min(window.devicePixelRatio || 1, 1.7)
-  );
-
-  renderer.setSize(
-    Math.max(showroom.clientWidth, 1),
-    Math.max(showroom.clientHeight, 1)
-  );
-
-  renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-
-  renderer.outputEncoding = THREE.sRGBEncoding;
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.15;
-
-  renderer.domElement.setAttribute(
-    "aria-label",
-    "Interactive 3D DAZBERY haircare boutique"
-  );
-
-  renderer.domElement.style.touchAction = "pan-y";
-
-  showroom.insertBefore(
-    renderer.domElement,
-    showroom.firstChild
-  );
-
-  /* MATERIALS */
-
-  function material(color, roughness = 0.65, metalness = 0) {
-    return new THREE.MeshStandardMaterial({
-      color: color,
-      roughness: roughness,
-      metalness: metalness
-    });
+  if (page === "cart") {
+    updateCartDisplay();
   }
 
-  const materials = {
-    floor: material("#ead7de"),
-    wall: material("#f8e9ef"),
-    pink: material("#e8b8ca"),
-    rose: material("#b87691"),
-    darkRose: material("#8d506b"),
-    cream: material("#fff6ee"),
-    white: material("#fffdfb"),
-    gold: material("#c9a36c", 0.28, 0.65),
-    wood: material("#c6a9a0"),
-    glass: new THREE.MeshPhysicalMaterial({
-      color: "#f8e5ed",
-      roughness: 0.22,
-      metalness: 0.05,
-      transparent: true,
-      opacity: 0.9
-    })
-  };
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
 
-  /* LIGHTING */
+function changeQty(amount) {
+  currentQty = Math.max(1, Math.min(10, currentQty + amount));
 
-  scene.add(
-    new THREE.HemisphereLight(
-      "#fff6fa",
-      "#b68b9c",
-      2.1
-    )
-  );
+  const qtyElement = document.getElementById("qty");
 
-  const mainLight = new THREE.DirectionalLight(
-    "#fff7f0",
-    2.2
-  );
-
-  mainLight.position.set(3, 8, 6);
-  mainLight.castShadow = true;
-  mainLight.shadow.mapSize.set(1024, 1024);
-  scene.add(mainLight);
-
-  const softLight = new THREE.PointLight(
-    "#ffd9e7",
-    65,
-    25
-  );
-
-  softLight.position.set(-4, 4, 1);
-  scene.add(softLight);
-
-  const backLight = new THREE.PointLight(
-    "#fff1d8",
-    45,
-    22
-  );
-
-  backLight.position.set(4, 4, -6);
-  scene.add(backLight);
-
-  /* OBJECT HELPERS */
-
-  function box(
-    width,
-    height,
-    depth,
-    x,
-    y,
-    z,
-    mat,
-    castShadow = true
-  ) {
-    const mesh = new THREE.Mesh(
-      new THREE.BoxGeometry(width, height, depth),
-      mat
-    );
-
-    mesh.position.set(x, y, z);
-    mesh.castShadow = castShadow;
-    mesh.receiveShadow = true;
-
-    scene.add(mesh);
-    return mesh;
+  if (qtyElement) {
+    qtyElement.textContent = currentQty;
   }
 
-  function cylinder(
-    radiusTop,
-    radiusBottom,
-    height,
-    x,
-    y,
-    z,
-    mat,
-    segments = 32
-  ) {
-    const mesh = new THREE.Mesh(
-      new THREE.CylinderGeometry(
-        radiusTop,
-        radiusBottom,
-        height,
-        segments
-      ),
-      mat
-    );
+  updateProductPrice();
+}
 
-    mesh.position.set(x, y, z);
-    mesh.castShadow = true;
-    mesh.receiveShadow = true;
+function updateCartQty(amount) {
+  changeQty(amount);
+}
 
-    scene.add(mesh);
-    return mesh;
-  }
+function applyCoupon() {
+  const input = document.getElementById("couponInput");
+  const message = document.getElementById("couponMessage");
 
-  function sphere(
-    radius,
-    x,
-    y,
-    z,
-    mat
-  ) {
-    const mesh = new THREE.Mesh(
-      new THREE.SphereGeometry(radius, 24, 16),
-      mat
-    );
+  if (!input || !message) return;
 
-    mesh.position.set(x, y, z);
-    mesh.castShadow = true;
+  const code = input.value.trim().toUpperCase();
 
-    scene.add(mesh);
-    return mesh;
-  }
-
-  /* FLOOR */
-
-  box(
-    24, 0.25, 30,
-    0, -0.14, -5,
-    materials.floor,
-    false
-  );
-
-  /* BACK WALL */
-
-  box(
-    18, 8, 0.3,
-    0, 3.8, -11,
-    materials.wall,
-    false
-  );
-
-  /* SIDE WALLS */
-
-  box(
-    0.3, 8, 22,
-    -9, 3.8, -1,
-    materials.wall,
-    false
-  );
-
-  box(
-    0.3, 8, 22,
-    9, 3.8, -1,
-    materials.wall,
-    false
-  );
-
-  /* DECORATIVE WALL PANELS */
-
-  for (let i = -3; i <= 3; i++) {
-    box(
-      1.9, 3.4, 0.08,
-      i * 2.3, 3.4, -10.78,
-      materials.cream,
-      false
-    );
-  }
-
-  /* CEILING LIGHT PANELS */
-
-  for (let i = -2; i <= 2; i++) {
-    box(
-      1.2, 0.08, 2.2,
-      i * 2.5, 7.4, -3,
-      materials.white,
-      false
-    );
-  }
-
-  /* DISPLAY SHELVES */
-
-  function createShelf(x, z, width) {
-    const shelfMat = materials.cream;
-
-    box(
-      width, 0.16, 1.1,
-      x, 1.5, z,
-      shelfMat
-    );
-
-    box(
-      width, 0.13, 1.1,
-      x, 3.1, z,
-      shelfMat
-    );
-
-    box(
-      0.13, 3.1, 0.9,
-      x - width / 2 + 0.08,
-      2.95, z,
-      materials.wood
-    );
-
-    box(
-      0.13, 3.1, 0.9,
-      x + width / 2 - 0.08,
-      2.95, z,
-      materials.wood
-    );
-
-    /* GOLD SHELF EDGES */
-
-    box(
-      width, 0.035, 0.04,
-      x, 1.59, z + 0.54,
-      materials.gold,
-      false
-    );
-
-    box(
-      width, 0.035, 0.04,
-      x, 3.19, z + 0.54,
-      materials.gold,
-      false
-    );
-  }
-
-  createShelf(-5.9, -5.4, 3.8);
-  createShelf(5.9, -5.4, 3.8);
-
-  createShelf(0, -9.7, 8.5);
-
-  /* DAZBERY SIGN */
-
-  box(
-    5.3, 1.25, 0.18,
-    0, 5.25, -10.55,
-    materials.cream
-  );
-
-  /* SIGN BORDER */
-
-  box(
-    5.4, 0.055, 0.22,
-    0, 5.91, -10.55,
-    materials.gold,
-    false
-  );
-
-  box(
-    5.4, 0.055, 0.22,
-    0, 4.59, -10.55,
-    materials.gold,
-    false
-  );
-
-  /* TEXTURE LABEL HELPER */
-
-  function createLabelTexture(
-    title,
-    subtitle,
-    background = "#fff7fa"
-  ) {
-    const canvas = document.createElement("canvas");
-
-    canvas.width = 512;
-    canvas.height = 256;
-
-    const ctx = canvas.getContext("2d");
-
-    ctx.fillStyle = background;
-    ctx.fillRect(0, 0, 512, 256);
-
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-
-    ctx.fillStyle = "#8d506b";
-    ctx.font = "bold 48px Georgia";
-
-    ctx.fillText(title, 256, 100);
-
-    ctx.fillStyle = "#8c737e";
-    ctx.font = "22px Arial";
-
-    ctx.fillText(subtitle, 256, 157);
-
-    const texture = new THREE.CanvasTexture(canvas);
-
-    texture.encoding = THREE.sRGBEncoding;
-
-    return texture;
-  }
-
-  function createWallSign() {
-    const signMaterial = new THREE.MeshBasicMaterial({
-      map: createLabelTexture(
-        "DAZBERY",
-        "THE HAIRCARE EDIT",
-        "#fff8fa"
-      )
-    });
-
-    const sign = new THREE.Mesh(
-      new THREE.PlaneGeometry(5.0, 1.1),
-      signMaterial
-    );
-
-    sign.position.set(0, 5.25, -10.43);
-
-    scene.add(sign);
-  }
-
-  createWallSign();
-
-  /* 3D PRODUCT BOTTLES */
-
-  const productObjects = [];
-
-  function createBottle(
-    x,
-    y,
-    z,
-    options = {}
-  ) {
-    const group = new THREE.Group();
-
-    const bottleColor = options.color || "#e8b8ca";
-
-    const bottleMaterial = new THREE.MeshPhysicalMaterial({
-      color: bottleColor,
-      roughness: 0.26,
-      metalness: 0.03,
-      clearcoat: 0.7,
-      clearcoatRoughness: 0.2
-    });
-
-    /* Rounded bottle body */
-
-    const body = new THREE.Mesh(
-      new THREE.CapsuleGeometry(0.43, 0.95, 8, 24),
-      bottleMaterial
-    );
-
-    body.scale.set(0.88, 0.78, 0.42);
-    body.position.y = 0.82;
-    body.castShadow = true;
-
-    group.add(body);
-
-    /* Neck */
-
-    const neck = new THREE.Mesh(
-      new THREE.CylinderGeometry(
-        0.19, 0.22, 0.22, 24
-      ),
-      bottleMaterial
-    );
-
-    neck.position.y = 1.49;
-    group.add(neck);
-
-    /* Cap */
-
-    const capMaterial = material(
-      options.capColor || "#fff7f5",
-      0.3,
-      0.05
-    );
-
-    const cap = new THREE.Mesh(
-      new THREE.CylinderGeometry(
-        0.24, 0.24, 0.33, 32
-      ),
-      capMaterial
-    );
-
-    cap.position.y = 1.76;
-    cap.castShadow = true;
-
-    group.add(cap);
-
-    /* Gold cap ring */
-
-    const ring = new THREE.Mesh(
-      new THREE.CylinderGeometry(
-        0.245, 0.245, 0.045, 32
-      ),
-      materials.gold
-    );
-
-    ring.position.y = 1.59;
-    group.add(ring);
-
-    /* Front label */
-
-    const labelMaterial = new THREE.MeshBasicMaterial({
-      map: createLabelTexture(
-        "DAZBERY",
-        options.subtitle || "HAIRCARE",
-        options.labelColor || "#fff7fa"
-      ),
-      side: THREE.DoubleSide
-    });
-
-    const label = new THREE.Mesh(
-      new THREE.PlaneGeometry(0.63, 0.44),
-      labelMaterial
-    );
-
-    label.position.set(0, 0.85, 0.19);
-    group.add(label);
-
-    /* Position */
-
-    group.position.set(x, y, z);
-
-    scene.add(group);
-
-    productObjects.push({
-      group: group,
-      originalY: y,
-      phase: Math.random() * Math.PI * 2
-    });
-
-    return group;
-  }
-
-  /* LEFT SHELF PRODUCTS */
-
-  createBottle(
-    -7.0, 1.65, -5.0,
-    {
-      color: "#e8b8ca",
-      subtitle: "SHAMPOO"
-    }
-  );
-
-  createBottle(
-    -5.9, 1.65, -5.0,
-    {
-      color: "#fff0f3",
-      subtitle: "CARE"
-    }
-  );
-
-  createBottle(
-    -4.8, 1.65, -5.0,
-    {
-      color: "#d99bb4",
-      subtitle: "SERUM"
-    }
-  );
-
-  createBottle(
-    -7.0, 3.25, -5.0,
-    {
-      color: "#fff0f3",
-      subtitle: "SHAMPOO"
-    }
-  );
-
-  createBottle(
-    -5.9, 3.25, -5.0,
-    {
-      color: "#e8b8ca",
-      subtitle: "CONDITIONER"
-    }
-  );
-
-  createBottle(
-    -4.8, 3.25, -5.0,
-    {
-      color: "#d99bb4",
-      subtitle: "SERUM"
-    }
-  );
-
-  /* RIGHT SHELF PRODUCTS */
-
-  createBottle(
-    4.8, 1.65, -5.0,
-    {
-      color: "#fff0f3",
-      subtitle: "SHAMPOO"
-    }
-  );
-
-  createBottle(
-    5.9, 1.65, -5.0,
-    {
-      color: "#d99bb4",
-      subtitle: "CONDITIONER"
-    }
-  );
-
-  createBottle(
-    7.0, 1.65, -5.0,
-    {
-      color: "#e8b8ca",
-      subtitle: "SERUM"
-    }
-  );
-
-  createBottle(
-    4.8, 3.25, -5.0,
-    {
-      color: "#e8b8ca",
-      subtitle: "SHAMPOO"
-    }
-  );
-
-  createBottle(
-    5.9, 3.25, -5.0,
-    {
-      color: "#fff0f3",
-      subtitle: "CARE"
-    }
-  );
-
-  createBottle(
-    7.0, 3.25, -5.0,
-    {
-      color: "#d99bb4",
-      subtitle: "SERUM"
-    }
-  );
-
-  /* BACK DISPLAY PRODUCTS */
-
-  createBottle(
-    -2.8, 3.25, -9.3,
-    {
-      color: "#e8b8ca",
-      subtitle: "SHAMPOO"
-    }
-  );
-
-  createBottle(
-    -0.9, 3.25, -9.3,
-    {
-      color: "#fff0f3",
-      subtitle: "CONDITIONER"
-    }
-  );
-
-  createBottle(
-    1.0, 3.25, -9.3,
-    {
-      color: "#d99bb4",
-      subtitle: "SERUM"
-    }
-  );
-
-  createBottle(
-    2.9, 3.25, -9.3,
-    {
-      color: "#e8b8ca",
-      subtitle: "HAIRCARE"
-    }
-  );
-
-  /* DECORATIVE PLANTS */
-
-  function createPlant(x, z) {
-    cylinder(
-      0.32, 0.24, 0.55,
-      x, 0.27, z,
-      materials.cream,
-      24
-    );
-
-    cylinder(
-      0.03, 0.04, 0.75,
-      x, 0.88, z,
-      material("#718b69"),
-      12
-    );
-
-    for (let i = 0; i < 7; i++) {
-      const angle = (i / 7) * Math.PI * 2;
-
-      const leaf = new THREE.Mesh(
-        new THREE.SphereGeometry(0.19, 12, 10),
-        material(i % 2 ? "#718b69" : "#8ca17a")
-      );
-
-      leaf.scale.set(0.65, 1.7, 0.45);
-
-      leaf.position.set(
-        x + Math.cos(angle) * 0.24,
-        0.85 + (i % 3) * 0.18,
-        z + Math.sin(angle) * 0.24
-      );
-
-      leaf.rotation.z = Math.cos(angle) * 0.6;
-
-      scene.add(leaf);
-    }
-  }
-
-  createPlant(-7.8, -9.3);
-  createPlant(7.8, -9.3);
-
-  /* CENTER DISPLAY TABLE */
-
-  cylinder(
-    1.35, 1.35, 0.18,
-    0, 0.8, -2.0,
-    materials.cream,
-    48
-  );
-
-  cylinder(
-    0.78, 0.95, 0.85,
-    0, 0.35, -2.0,
-    materials.wood,
-    48
-  );
-
-  cylinder(
-    1.36, 1.36, 0.045,
-    0, 0.91, -2.0,
-    materials.gold,
-    48
-  );
-
-  createBottle(
-    -0.55, 1.02, -2.0,
-    {
-      color: "#e8b8ca",
-      subtitle: "SHAMPOO"
-    }
-  );
-
-  createBottle(
-    0.55, 1.02, -2.0,
-    {
-      color: "#fff0f3",
-      subtitle: "CONDITIONER"
-    }
-  );
-
-  /* FIRST-PERSON CONTROLS: JOYSTICK + 360 LOOK */
-
-  const movement = { forward: 0, sideways: 0 };
-  let yaw = 0;
-  let pitch = -0.02;
-  const moveSpeed = 0.075;
-  const lookSpeed = 0.0045;
-  const keysDown = Object.create(null);
-
-  // Add the controls only once, inside the 3D showroom.
-  if (!document.getElementById("dazbery-control-style")) {
-    const style = document.createElement("style");
-    style.id = "dazbery-control-style";
-    style.textContent = `
-      #showroom{position:relative;overflow:hidden;touch-action:none;isolation:isolate}
-      #showroom canvas{display:block;width:100%;height:100%;touch-action:none}
-      #dazberyJoystick{position:absolute;left:18px;bottom:18px;width:116px;height:116px;border:2px solid rgba(255,255,255,.8);border-radius:50%;background:rgba(255,255,255,.20);box-shadow:0 4px 18px rgba(80,30,55,.16);z-index:20;touch-action:none;user-select:none;-webkit-user-select:none}
-      #dazberyKnob{position:absolute;left:50%;top:50%;width:48px;height:48px;transform:translate(-50%,-50%);border-radius:50%;background:rgba(184,112,143,.88);border:2px solid #fff;box-shadow:0 2px 8px rgba(60,20,40,.2);pointer-events:none}
-      #dazberyLookHint{position:absolute;right:12px;bottom:18px;padding:8px 11px;border-radius:20px;background:rgba(255,255,255,.72);color:#704456;font:12px/1.2 Arial,sans-serif;z-index:19;pointer-events:none}
-      @media(max-width:600px){#dazberyJoystick{width:104px;height:104px;left:12px;bottom:12px}#dazberyKnob{width:44px;height:44px}#dazberyLookHint{right:10px;bottom:14px;font-size:11px}}
-    `;
-    document.head.appendChild(style);
-  }
-
-  let joystick = document.getElementById("dazberyJoystick");
-  if (!joystick) {
-    joystick = document.createElement("div");
-    joystick.id = "dazberyJoystick";
-    joystick.setAttribute("aria-label", "Movement joystick");
-    joystick.innerHTML = '<div id="dazberyKnob"></div>';
-    showroom.appendChild(joystick);
-  }
-  const joystickKnob = document.getElementById("dazberyKnob");
-
-  let lookHint = document.getElementById("dazberyLookHint");
-  if (!lookHint) {
-    lookHint = document.createElement("div");
-    lookHint.id = "dazberyLookHint";
-    lookHint.textContent = "Swipe right side to look around";
-    showroom.appendChild(lookHint);
-  }
-
-  function stopMovement() {
-    movement.forward = 0;
-    movement.sideways = 0;
-    if (joystickKnob) joystickKnob.style.transform = "translate(-50%,-50%)";
-  }
-
-  let joystickPointerId = null;
-  function updateJoystick(event) {
-    const rect = joystick.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    let dx = event.clientX - centerX;
-    let dy = event.clientY - centerY;
-    const maxRadius = rect.width * 0.31;
-    const distance = Math.hypot(dx, dy);
-    if (distance > maxRadius) {
-      dx = dx / distance * maxRadius;
-      dy = dy / distance * maxRadius;
-    }
-    movement.sideways = dx / maxRadius;
-    movement.forward = -dy / maxRadius;
-    joystickKnob.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
-  }
-
-  joystick.addEventListener("pointerdown", function (event) {
-    event.preventDefault();
-    joystickPointerId = event.pointerId;
-    try { joystick.setPointerCapture(event.pointerId); } catch (error) {}
-    updateJoystick(event);
-  });
-  joystick.addEventListener("pointermove", function (event) {
-    if (event.pointerId !== joystickPointerId) return;
-    event.preventDefault();
-    updateJoystick(event);
-  });
-  function releaseJoystick(event) {
-    if (event && joystickPointerId !== null && event.pointerId !== joystickPointerId) return;
-    joystickPointerId = null;
-    stopMovement();
-  }
-  joystick.addEventListener("pointerup", releaseJoystick);
-  joystick.addEventListener("pointercancel", releaseJoystick);
-  joystick.addEventListener("lostpointercapture", releaseJoystick);
-  joystick.addEventListener("contextmenu", event => event.preventDefault());
-
-  // Desktop keyboard support (WASD / arrow keys).
-  window.addEventListener("keydown", function (event) {
-    if (event.target && ["INPUT", "TEXTAREA", "SELECT"].includes(event.target.tagName)) return;
-    const key = event.key.toLowerCase();
-    if (["w", "a", "s", "d", "arrowup", "arrowdown", "arrowleft", "arrowright"].includes(key)) {
-      keysDown[key] = true;
-      if (key.startsWith("arrow")) event.preventDefault();
-    }
-  });
-  window.addEventListener("keyup", function (event) { keysDown[event.key.toLowerCase()] = false; });
-  window.addEventListener("blur", function () { stopMovement(); Object.keys(keysDown).forEach(k => keysDown[k] = false); });
-  document.addEventListener("visibilitychange", function () { if (document.hidden) stopMovement(); });
-
-  // Drag/swipe on the canvas to rotate freely around 360 degrees.
-  let looking = false;
-  let lookPointerId = null;
-  let lastLookX = 0;
-  let lastLookY = 0;
-  renderer.domElement.style.touchAction = "none";
-  renderer.domElement.addEventListener("pointerdown", function (event) {
-    if (event.target === joystick || joystick.contains(event.target)) return;
-    if (event.pointerType === "mouse" && event.button !== 0) return;
-    const rect = renderer.domElement.getBoundingClientRect();
-    // On touch screens, the left side is reserved for the joystick.
-    if (event.pointerType !== "mouse" && event.clientX < rect.left + rect.width * 0.36) return;
-    looking = true;
-    lookPointerId = event.pointerId;
-    lastLookX = event.clientX;
-    lastLookY = event.clientY;
-    try { renderer.domElement.setPointerCapture(event.pointerId); } catch (error) {}
-  });
-  renderer.domElement.addEventListener("pointermove", function (event) {
-    if (!looking || event.pointerId !== lookPointerId) return;
-    event.preventDefault();
-    const dx = event.clientX - lastLookX;
-    const dy = event.clientY - lastLookY;
-    lastLookX = event.clientX;
-    lastLookY = event.clientY;
-    yaw -= dx * lookSpeed;
-    pitch = THREE.MathUtils.clamp(pitch - dy * lookSpeed, -1.15, 1.15);
-  });
-  function stopLooking(event) {
-    if (event && lookPointerId !== null && event.pointerId !== lookPointerId) return;
-    looking = false;
-    lookPointerId = null;
-  }
-  renderer.domElement.addEventListener("pointerup", stopLooking);
-  renderer.domElement.addEventListener("pointercancel", stopLooking);
-  renderer.domElement.addEventListener("lostpointercapture", stopLooking);
-
-  function updateCameraLook() {
-    const direction = new THREE.Vector3(
-      Math.sin(yaw) * Math.cos(pitch),
-      Math.sin(pitch),
-      -Math.cos(yaw) * Math.cos(pitch)
-    );
-    camera.lookAt(camera.position.clone().add(direction));
-  }
-
-  function updateMovement() {
-    let forwardInput = movement.forward;
-    let sideInput = movement.sideways;
-    if (keysDown["w"] || keysDown["arrowup"]) forwardInput = Math.max(forwardInput, 1);
-    if (keysDown["s"] || keysDown["arrowdown"]) forwardInput = Math.min(forwardInput, -1);
-    if (keysDown["a"] || keysDown["arrowleft"]) sideInput = Math.min(sideInput, -1);
-    if (keysDown["d"] || keysDown["arrowright"]) sideInput = Math.max(sideInput, 1);
-
-    const forward = new THREE.Vector3(Math.sin(yaw), 0, -Math.cos(yaw));
-    const right = new THREE.Vector3(Math.cos(yaw), 0, Math.sin(yaw));
-    camera.position.addScaledVector(forward, forwardInput * moveSpeed);
-    camera.position.addScaledVector(right, sideInput * moveSpeed);
-
-    camera.position.x = THREE.MathUtils.clamp(camera.position.x, -7.7, 7.7);
-    camera.position.z = THREE.MathUtils.clamp(camera.position.z, -10.0, 6.5);
-    camera.position.y = 1.65;
-    updateCameraLook();
-  }
-
-  /* HOME BUTTON */
-  const homeButton = document.getElementById("homeButton");
-  if (homeButton) {
-    homeButton.addEventListener("click", function () {
-      camera.position.set(0, 1.65, 7.5);
-      yaw = 0;
-      pitch = -0.02;
-      stopMovement();
-      updateCameraLook();
-    });
-  }
-
-  /* EXPLORE BUTTON */
-
-  const exploreButton = document.getElementById("exploreButton");
-
-  if (exploreButton) {
-    exploreButton.addEventListener("click", function () {
-      showroom.scrollIntoView({
-        behavior: "smooth",
-        block: "center"
-      });
-    });
-  }
-
-  /* RESPONSIVE RESIZE */
-
-  function resizeShowroom() {
-    const width = showroom.clientWidth;
-    const height = showroom.clientHeight;
-
-    if (!width || !height) return;
-
-    camera.aspect = width / height;
-    camera.updateProjectionMatrix();
-
-    renderer.setSize(width, height);
-  }
-
-  if ("ResizeObserver" in window) {
-    const resizeObserver = new ResizeObserver(resizeShowroom);
-    resizeObserver.observe(showroom);
+  if (code === "DAZBERY50") {
+    discountApplied = true;
+    message.textContent = "Coupon applied! 50% discount.";
+    message.style.color = "green";
   } else {
-    window.addEventListener("resize", resizeShowroom);
+    discountApplied = false;
+    message.textContent = "Invalid coupon code.";
+    message.style.color = "red";
   }
 
-  /* ANIMATION */
+  updateProductPrice();
+}
 
-  const clock = new THREE.Clock();
+function getOrderTotals() {
+  const subtotal = PRODUCT_PRICE * currentQty;
+  const discount = discountApplied
+    ? Math.round(subtotal * 0.5)
+    : 0;
 
-  function animate() {
-    requestAnimationFrame(animate);
+  return {
+    subtotal,
+    discount,
+    total: subtotal - discount
+  };
+}
 
-    const elapsed = clock.getElapsedTime();
+function updateProductPrice() {
+  const totals = getOrderTotals();
 
-    updateMovement();
+  const displayPrice = document.getElementById("displayPrice");
+  const oldPrice = document.getElementById("oldPrice");
+  const buyButton = document.getElementById("buyButton");
 
-    productObjects.forEach(function (item) {
-      item.group.position.y =
-        item.originalY +
-        Math.sin(elapsed * 1.15 + item.phase) * 0.025;
-    });
-
-    renderer.render(scene, camera);
+  if (displayPrice) {
+    displayPrice.textContent = "₹" + totals.total;
   }
 
-  resizeShowroom();
-
-  if (statusText) {
-    statusText.textContent = "Boutique ready";
+  if (oldPrice) {
+    oldPrice.style.display = discountApplied ? "inline" : "none";
+    oldPrice.textContent = "₹" + totals.subtotal;
   }
 
-  animate();
-
-})();
-</script>
-
-<!-- END OF PART 2 -->
-  
-<style>
-/* PRODUCT COLLECTION */
-
-.products-section {
-  padding: 55px 18px;
-  background: #fffafc;
-}
-
-.section-heading {
-  text-align: center;
-  margin: 0 auto 30px;
-}
-
-.section-heading .eyebrow {
-  margin-bottom: 10px;
-}
-
-.section-heading h2 {
-  font-family: 'Playfair Display', serif;
-  font-weight: 500;
-  font-size: clamp(28px, 5vw, 42px);
-}
-
-.section-heading p {
-  margin-top: 10px;
-  color: #8d7780;
-  font-size: 12px;
-  line-height: 1.8;
-}
-
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px;
-  max-width: 1050px;
-  margin: 0 auto;
-}
-
-.product-card {
-  overflow: hidden;
-  border: 1px solid rgba(152,85,111,0.13);
-  border-radius: 18px;
-  background: white;
-  box-shadow: 0 8px 25px rgba(104,54,75,0.05);
-  transition: transform 0.25s, box-shadow 0.25s;
-}
-
-.product-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 35px rgba(104,54,75,0.12);
-}
-
-.product-visual {
-  min-height: 220px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
-  background:
-    radial-gradient(ellipse at 50% 40%, #fff 0%, transparent 55%),
-    linear-gradient(145deg, #f8e7ed, #f0d5e0);
-}
-
-.product-visual::after {
-  content: "";
-  position: absolute;
-  bottom: 22px;
-  left: 20%;
-  width: 60%;
-  height: 15px;
-  border-radius: 50%;
-  background: rgba(111,67,84,0.12);
-  filter: blur(8px);
-}
-
-.product-bottle {
-  position: relative;
-  z-index: 1;
-  width: 75px;
-  height: 130px;
-  border-radius: 20px 20px 15px 15px;
-  background: linear-gradient(
-    100deg,
-    rgba(255,255,255,0.9),
-    var(--bottle-color),
-    rgba(255,255,255,0.65)
-  );
-  border: 1px solid rgba(153,92,115,0.15);
-  box-shadow:
-    inset 7px 0 10px rgba(255,255,255,0.6),
-    5px 10px 18px rgba(110,60,80,0.12);
-}
-
-.product-bottle::before {
-  content: "";
-  position: absolute;
-  top: -17px;
-  left: 25px;
-  width: 25px;
-  height: 19px;
-  border-radius: 5px 5px 2px 2px;
-  background: linear-gradient(90deg, #fff, #e6d6d9);
-  border: 1px solid rgba(130,80,100,0.1);
-}
-
-.product-bottle::after {
-  content: "";
-  position: absolute;
-  left: 7px;
-  right: 7px;
-  top: 43px;
-  height: 43px;
-  border-radius: 3px;
-  background: rgba(255,250,251,0.92);
-  border: 1px solid rgba(152,85,111,0.1);
-}
-
-.product-bottle.serum {
-  width: 55px;
-  height: 95px;
-  border-radius: 10px 10px 12px 12px;
-}
-
-.product-bottle.serum::before {
-  left: 18px;
-  width: 19px;
-  height: 15px;
-  top: -14px;
-}
-
-.product-bottle.serum::after {
-  top: 32px;
-  height: 32px;
-}
-
-.product-bottle-label {
-  position: absolute;
-  z-index: 2;
-  top: 49px;
-  left: 4px;
-  right: 4px;
-  text-align: center;
-  font-family: 'Playfair Display', serif;
-  font-size: 8px;
-  letter-spacing: 0.5px;
-  color: #925a71;
-  pointer-events: none;
-}
-
-.product-bottle.serum .product-bottle-label {
-  top: 37px;
-  font-size: 7px;
-}
-
-.product-bottle-label small {
-  display: block;
-  margin-top: 4px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 5px;
-  letter-spacing: 0.4px;
-}
-
-.product-info {
-  padding: 18px 15px 16px;
-}
-
-.product-tag {
-  color: #a56b83;
-  font-size: 9px;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-}
-
-.product-name {
-  margin-top: 8px;
-  font-family: 'Playfair Display', serif;
-  font-size: 19px;
-  font-weight: 500;
-  line-height: 1.35;
-}
-
-.product-description {
-  min-height: 48px;
-  margin-top: 8px;
-  color: #8d7780;
-  font-size: 11px;
-  line-height: 1.7;
-}
-
-.product-volume {
-  margin-top: 12px;
-  font-size: 10px;
-  color: #8d7780;
-}
-
-.product-price {
-  margin-top: 8px;
-  font-size: 19px;
-  font-weight: 700;
-  color: #734458;
-}
-
-.add-to-bag {
-  width: 100%;
-  min-height: 43px;
-  margin-top: 14px;
-  border: none;
-  border-radius: 9px;
-  background: #945a73;
-  color: white;
-  font-size: 12px;
-  font-weight: 600;
-  transition: background 0.2s;
-}
-
-.add-to-bag:hover {
-  background: #75445a;
-}
-
-.add-to-bag:active {
-  transform: scale(0.98);
-}
-
-/* SHOPPING BAG PANEL */
-
-.bag-overlay {
-  position: fixed;
-  z-index: 100;
-  inset: 0;
-  background: rgba(43,27,35,0.42);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.25s;
-}
-
-.bag-overlay.open {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.bag-panel {
-  position: fixed;
-  z-index: 101;
-  top: 0;
-  right: 0;
-  width: min(430px, 100%);
-  height: 100%;
-  height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  background: #fffafc;
-  box-shadow: -10px 0 40px rgba(50,20,35,0.12);
-  transform: translateX(105%);
-  transition: transform 0.3s ease;
-}
-
-.bag-panel.open {
-  transform: translateX(0);
-}
-
-.bag-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 22px 20px;
-  border-bottom: 1px solid rgba(152,85,111,0.15);
-}
-
-.bag-header h2 {
-  font-family: 'Playfair Display', serif;
-  font-size: 26px;
-  font-weight: 500;
-}
-
-.close-bag {
-  width: 38px;
-  height: 38px;
-  border: 1px solid rgba(152,85,111,0.2);
-  border-radius: 50%;
-  background: white;
-  color: #734458;
-  font-size: 22px;
-}
-
-.bag-items {
-  flex: 1;
-  overflow-y: auto;
-  padding: 15px 20px;
-}
-
-.empty-bag {
-  padding: 55px 12px;
-  text-align: center;
-  color: #8d7780;
-  font-size: 13px;
-  line-height: 2;
-}
-
-.bag-item {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 12px;
-  padding: 16px 0;
-  border-bottom: 1px solid rgba(152,85,111,0.12);
-}
-
-.bag-item h3 {
-  font-family: 'Playfair Display', serif;
-  font-size: 17px;
-  font-weight: 500;
-}
-
-.bag-item-price {
-  margin-top: 6px;
-  color: #734458;
-  font-size: 13px;
-  font-weight: 700;
-}
-
-.quantity-controls {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 12px;
-}
-
-.quantity-btn {
-  width: 31px;
-  height: 31px;
-  border: 1px solid rgba(152,85,111,0.2);
-  border-radius: 8px;
-  background: white;
-  color: #734458;
-  font-size: 17px;
-}
-
-.quantity-number {
-  min-width: 15px;
-  text-align: center;
-  font-size: 13px;
-}
-
-.remove-item {
-  margin-top: 10px;
-  border: none;
-  background: transparent;
-  color: #a25771;
-  text-decoration: underline;
-  font-size: 11px;
-}
-
-.bag-footer {
-  padding: 20px;
-  border-top: 1px solid rgba(152,85,111,0.15);
-  background: white;
-}
-
-.coupon-row {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 15px;
-}
-
-.coupon-row input {
-  min-width: 0;
-  flex: 1;
-  padding: 11px;
-  border: 1px solid rgba(152,85,111,0.25);
-  border-radius: 8px;
-  background: #fffafc;
-  font-size: 12px;
-}
-
-.coupon-row button {
-  padding: 10px 12px;
-  border: none;
-  border-radius: 8px;
-  background: #f1dce5;
-  color: #75445a;
-  font-size: 11px;
-  font-weight: 700;
-}
-
-.bag-total-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  margin-top: 10px;
-  font-size: 13px;
-}
-
-.bag-total-row.grand-total {
-  margin-top: 14px;
-  padding-top: 14px;
-  border-top: 1px solid rgba(152,85,111,0.15);
-  font-size: 17px;
-  font-weight: 700;
-}
-
-.coupon-message {
-  margin-top: 8px;
-  color: #5d8a66;
-  font-size: 11px;
-}
-
-.checkout-button {
-  width: 100%;
-  min-height: 48px;
-  margin-top: 18px;
-  border: none;
-  border-radius: 10px;
-  background: #34252c;
-  color: white;
-  font-size: 13px;
-  font-weight: 600;
-}
-
-.checkout-button:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
-.bag-note {
-  margin-top: 11px;
-  text-align: center;
-  color: #8d7780;
-  font-size: 10px;
-  line-height: 1.6;
-}
-
-/* MOBILE PRODUCTS */
-
-@media (max-width: 650px) {
-  .products-section {
-    padding: 40px 12px;
+  if (buyButton) {
+    buyButton.textContent =
+      "CONTINUE TO ORDER — ₹" + totals.total;
   }
 
-  .product-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 11px;
-  }
-
-  .product-visual {
-    min-height: 170px;
-  }
-
-  .product-bottle {
-    transform: scale(0.86);
-  }
-
-  .product-info {
-    padding: 14px 11px 12px;
-  }
-
-  .product-name {
-    font-size: 16px;
-  }
-
-  .product-description {
-    min-height: 60px;
-    font-size: 10px;
-  }
-
-  .product-price {
-    font-size: 17px;
-  }
-
-  .add-to-bag {
-    font-size: 11px;
-  }
+  updateCartDisplay();
 }
-</style>
 
-<section class="products-section" id="productsSection">
+function updateCartDisplay() {
+  const totals = getOrderTotals();
 
-  <div class="section-heading">
-    <p class="eyebrow">THE DAZBERY COLLECTION</p>
-
-    <h2>Your Haircare Favourites</h2>
-
-    <p>
-      Thoughtfully selected essentials for your daily haircare ritual.
-    </p>
-  </div>
-
-  <div class="product-grid">
-
-    <!-- SHAMPOO -->
-
-    <article class="product-card">
-
-      <div class="product-visual">
-        <div class="product-bottle" style="--bottle-color:#e7b5c9">
-          <div class="product-bottle-label">
-            DAZBERY
-            <small>SHAMPOO</small>
-          </div>
-        </div>
-      </div>
-
-      <div class="product-info">
-
-        <span class="product-tag">DAILY HAIRCARE</span>
-
-        <h3 class="product-name">Hair Shampoo</h3>
-
-        <p class="product-description">
-          A gentle everyday haircare essential for your wash-day ritual.
-        </p>
-
-        <p class="product-volume">200 ml</p>
-
-        <p class="product-price">₹499</p>
-
-        <button class="add-to-bag" data-product="shampoo">
-          Add to Bag
-        </button>
-
-      </div>
-    </article>
-
-    <!-- CONDITIONER -->
-
-    <article class="product-card">
-
-      <div class="product-visual">
-        <div class="product-bottle" style="--bottle-color:#f1dce4">
-          <div class="product-bottle-label">
-            DAZBERY
-            <small>CONDITIONER</small>
-          </div>
-        </div>
-      </div>
-
-      <div class="product-info">
-
-        <span class="product-tag">SOFTNESS & CARE</span>
-
-        <h3 class="product-name">Hair Conditioner</h3>
-
-        <p class="product-description">
-          A nourishing step to complement your hair-washing routine.
-        </p>
-
-        <p class="product-volume">200 ml</p>
-
-        <p class="product-price">₹499</p>
-
-        <button class="add-to-bag" data-product="conditioner">
-          Add to Bag
-        </button>
-
-      </div>
-    </article>
-
-    <!-- SERUM -->
-
-    <article class="product-card">
-
-      <div class="product-visual">
-        <div class="product-bottle serum" style="--bottle-color:#dca0b8">
-          <div class="product-bottle-label">
-            DAZBERY
-            <small>HAIR SERUM</small>
-          </div>
-        </div>
-      </div>
-
-      <div class="product-info">
-
-        <span class="product-tag">TARGETED HAIRCARE</span>
-
-        <h3 class="product-name">Hair Growth Serum</h3>
-
-        <p class="product-description">
-          Rosemary & Rice Water haircare serum for your daily routine.
-        </p>
-
-        <p class="product-volume">30 ml</p>
-
-        <p class="product-price">₹399</p>
-
-        <button class="add-to-bag" data-product="serum">
-          Add to Bag
-        </button>
-
-      </div>
-    </article>
-
-  </div>
-</section>
-
-<!-- SHOPPING BAG -->
-
-<div class="bag-overlay" id="bagOverlay"></div>
-
-<aside class="bag-panel" id="bagPanel" aria-label="Shopping bag">
-
-  <div class="bag-header">
-    <h2>Your Shopping Bag</h2>
-
-    <button class="close-bag" id="closeBag"
-      aria-label="Close shopping bag">×</button>
-  </div>
-
-  <div class="bag-items" id="bagItems">
-    <div class="empty-bag">
-      Your bag is waiting for something beautiful. 🌸
-    </div>
-  </div>
-
-  <div class="bag-footer">
-
-    <div class="coupon-row">
-      <input
-        id="couponInput"
-        type="text"
-        placeholder="Enter coupon code"
-        autocomplete="off"
-      >
-
-      <button id="applyCoupon">Apply</button>
-    </div>
-
-    <div class="coupon-message" id="couponMessage"></div>
-
-    <div class="bag-total-row">
-      <span>Subtotal</span>
-      <span id="bagSubtotal">₹0</span>
-    </div>
-
-    <div class="bag-total-row">
-      <span>Discount</span>
-      <span id="bagDiscount">₹0</span>
-    </div>
-
-    <div class="bag-total-row grand-total">
-      <span>Total</span>
-      <span id="bagTotal">₹0</span>
-    </div>
-
-    <button class="checkout-button" id="checkoutButton" disabled>
-      Continue to Checkout
-    </button>
-
-    <p class="bag-note">
-      Demo checkout · No payment will be collected on this step.
-    </p>
-
-  </div>
-
-</aside>
-
-<script>
-/* =================================
-   DAZBERY SHOPPING BAG
-================================= */
-
-(function () {
-  "use strict";
-
-  const products = {
-    shampoo: {
-      id: "shampoo",
-      name: "Hair Shampoo",
-      price: 499
-    },
-
-    conditioner: {
-      id: "conditioner",
-      name: "Hair Conditioner",
-      price: 499
-    },
-
-    serum: {
-      id: "serum",
-      name: "Hair Growth Serum",
-      price: 399
-    }
+  const values = {
+    cartQty: currentQty,
+    cartSubtotal: "₹" + totals.subtotal,
+    cartDiscount: "₹" + totals.discount,
+    cartTotal: "₹" + totals.total,
+    cartCount: currentQty
   };
 
-  const cart = {};
+  Object.entries(values).forEach(([id, value]) => {
+    const element = document.getElementById(id);
 
-  let couponApplied = false;
-
-  const bagPanel = document.getElementById("bagPanel");
-  const bagOverlay = document.getElementById("bagOverlay");
-  const bagButton = document.getElementById("bagButton");
-  const closeBagButton = document.getElementById("closeBag");
-  const bagItems = document.getElementById("bagItems");
-  const bagCount = document.getElementById("bagCount");
-
-  const subtotalElement = document.getElementById("bagSubtotal");
-  const discountElement = document.getElementById("bagDiscount");
-  const totalElement = document.getElementById("bagTotal");
-  const checkoutButton = document.getElementById("checkoutButton");
-
-  const couponInput = document.getElementById("couponInput");
-  const couponMessage = document.getElementById("couponMessage");
-
-  function formatPrice(amount) {
-    return "₹" + amount.toLocaleString("en-IN");
-  }
-
-  function openBag() {
-    bagPanel.classList.add("open");
-    bagOverlay.classList.add("open");
-
-    document.body.style.overflow = "hidden";
-
-    bagPanel.setAttribute("aria-modal", "true");
-    bagPanel.setAttribute("role", "dialog");
-  }
-
-  function closeBag() {
-    bagPanel.classList.remove("open");
-    bagOverlay.classList.remove("open");
-
-    document.body.style.overflow = "";
-
-    bagPanel.removeAttribute("aria-modal");
-    bagPanel.removeAttribute("role");
-  }
-
-  bagButton.addEventListener("click", openBag);
-  closeBagButton.addEventListener("click", closeBag);
-  bagOverlay.addEventListener("click", closeBag);
-
-  document.addEventListener("keydown", function (event) {
-    if (event.key === "Escape") {
-      closeBag();
+    if (element) {
+      element.textContent = value;
     }
   });
+}
 
-  document.querySelectorAll(".add-to-bag").forEach(function (button) {
-    button.addEventListener("click", function () {
-      const productId = button.dataset.product;
-      const product = products[productId];
+function addToCart() {
+  updateCartDisplay();
+  showPage("cart");
+}
 
-      if (!product) return;
+const checkoutForm = document.getElementById("checkoutForm");
 
-      if (!cart[productId]) {
-        cart[productId] = {
-          ...product,
-          quantity: 0
-        };
-      }
+if (checkoutForm) {
+  checkoutForm.addEventListener("submit", function(event) {
+    event.preventDefault();
 
-      cart[productId].quantity++;
-
-      renderBag();
-      openBag();
-    });
-  });
-
-  function calculateSubtotal() {
-    return Object.values(cart).reduce(function (sum, item) {
-      return sum + item.price * item.quantity;
-    }, 0);
-  }
-
-  function calculateQuantity() {
-    return Object.values(cart).reduce(function (sum, item) {
-      return sum + item.quantity;
-    }, 0);
-  }
-
-  function calculateDiscount(subtotal) {
-    if (!couponApplied || subtotal <= 0) return 0;
-
-    return Math.round(subtotal * 0.20);
-  }
-
-  function renderBag() {
-    const items = Object.values(cart);
-
-    bagCount.textContent = calculateQuantity();
-
-    if (items.length === 0) {
-      bagItems.innerHTML =
-        '<div class="empty-bag">' +
-        'Your bag is waiting for something beautiful. 🌸' +
-        '</div>';
-    } else {
-      bagItems.innerHTML = items.map(function (item) {
-        return `
-          <div class="bag-item">
-
-            <div>
-              <h3>${item.name}</h3>
-
-              <div class="bag-item-price">
-                ${formatPrice(item.price)} each
-              </div>
-
-              <div class="quantity-controls">
-
-                <button
-                  class="quantity-btn"
-                  data-action="decrease"
-                  data-id="${item.id}"
-                  aria-label="Decrease quantity"
-                >−</button>
-
-                <span class="quantity-number">
-                  ${item.quantity}
-                </span>
-
-                <button
-                  class="quantity-btn"
-                  data-action="increase"
-                  data-id="${item.id}"
-                  aria-label="Increase quantity"
-                >+</button>
-
-              </div>
-
-              <button
-                class="remove-item"
-                data-action="remove"
-                data-id="${item.id}"
-              >Remove</button>
-
-            </div>
-
-            <strong>
-              ${formatPrice(item.price * item.quantity)}
-            </strong>
-
-          </div>
-        `;
-      }).join("");
+    if (!checkoutForm.reportValidity()) {
+      return;
     }
 
-    const subtotal = calculateSubtotal();
-    const discount = calculateDiscount(subtotal);
-    const total = subtotal - discount;
+    const name = document.getElementById("customerName")?.value.trim();
+    const phone = document.getElementById("customerPhone")?.value.trim();
+    const address = document.getElementById("customerAddress")?.value.trim();
+    const pin = document.getElementById("customerPin")?.value.trim();
+    const city = document.getElementById("customerCity")?.value.trim();
+    const state = document.getElementById("customerState")?.value.trim();
 
-    subtotalElement.textContent = formatPrice(subtotal);
-    discountElement.textContent = formatPrice(discount);
-    totalElement.textContent = formatPrice(total);
-
-    checkoutButton.disabled = items.length === 0;
-
-    if (couponApplied && subtotal === 0) {
-      couponApplied = false;
-    }
-  }
-
-  bagItems.addEventListener("click", function (event) {
-    const button = event.target.closest("button[data-action]");
-
-    if (!button) return;
-
-    const id = button.dataset.id;
-    const action = button.dataset.action;
-
-    if (!cart[id]) return;
-
-    if (action === "increase") {
-      cart[id].quantity++;
+    if (!name || !phone || !address || !pin || !city || !state) {
+      alert("Please complete all delivery details.");
+      return;
     }
 
-    if (action === "decrease") {
-      cart[id].quantity--;
-
-      if (cart[id].quantity <= 0) {
-        delete cart[id];
-      }
-    }
-
-    if (action === "remove") {
-      delete cart[id];
-    }
-
-    renderBag();
-  });
-
-  document.getElementById("applyCoupon").addEventListener(
-    "click",
-    function () {
-      const code = couponInput.value.trim().toUpperCase();
-
-      if (calculateSubtotal() === 0) {
-        couponApplied = false;
-        couponMessage.style.color = "#a25771";
-        couponMessage.textContent =
-          "Add a product to your bag before applying a coupon.";
-
-        renderBag();
-        return;
-      }
-
-      if (code === "DAZBERY20") {
-        couponApplied = true;
-
-        couponMessage.style.color = "#5d8a66";
-        couponMessage.textContent =
-          "Coupon applied! 20% off your subtotal.";
-
-      } else {
-        couponApplied = false;
-
-        couponMessage.style.color = "#a25771";
-        couponMessage.textContent =
-          "Invalid coupon. Try DAZBERY20.";
-      }
-
-      renderBag();
-    }
-  );
-
-  checkoutButton.addEventListener("click", function () {
-    if (calculateSubtotal() <= 0) return;
+    const totals = getOrderTotals();
 
     alert(
-      "Your DAZBERY bag is ready! 🌸\n\n" +
-      "Checkout and payment options will be added in Part 4."
+      "Your details are filled in, but the order has NOT been placed.\n\n" +
+      "Product: Rosemary & Rice Water Hair Growth Spray\n" +
+      "Quantity: " + currentQty + "\n" +
+      "Total: ₹" + totals.total + "\n\n" +
+      "Order saving and online payment have not been connected yet."
     );
   });
+}
 
-  renderBag();
-
-})();
+updateProductPrice();
 </script>
+  <!-- DAZBERY FOOTER -->
+<footer style="
+  background:#f8f1f4;
+  padding:30px 20px;
+  text-align:center;
+  margin-top:40px;
+  color:#333;
+  border-top:1px solid #eadde3;
+">
+  <h2 style="
+    margin:0 0 10px;
+    letter-spacing:3px;
+    font-size:22px;
+  ">DAZBERY</h2>
 
-<!-- END OF PART 3 -->
-<!-- DAZBERY DEMO CHECKOUT - PART 4A -->
-<style>
-.payment-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 99999;
-  background: rgba(40, 20, 30, .65);
-  backdrop-filter: blur(8px);
-  overflow-y: auto;
-  padding: 20px;
-  align-items: center;
-  justify-content: center;
-  font-family: Arial, sans-serif;
-}
-.payment-overlay.open {
-  display: flex;
-}
-.payment-window {
-  width: 100%;
-  max-width: 850px;
-  background: #fffafd;
-  border-radius: 24px;
-  overflow: hidden;
-  box-shadow: 0 25px 90px #0004;
-  color: #35232c;
-}
-.payment-header {
-  padding: 22px 26px;
-  background: linear-gradient(120deg,#f8dce8,#fff7fb);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #f0dce5;
-}
-.payment-brand {
-  font-size: 22px;
-  font-weight: 800;
-  letter-spacing: 3px;
-}
-.payment-brand small {
-  display: block;
-  font-size: 10px;
-  letter-spacing: 2px;
-  margin-top: 4px;
-  font-weight: 500;
-}
-.payment-close {
-  border: 0;
-  background: #fff;
-  border-radius: 50%;
-  width: 38px;
-  height: 38px;
-  font-size: 22px;
-  cursor: pointer;
-}
-.payment-content {
-  padding: 25px;
-}
-.payment-demo-note {
-  background: #fff0f5;
-  border: 1px solid #f1cfdd;
-  color: #8c4261;
-  border-radius: 10px;
-  padding: 11px;
-  font-size: 12px;
-  text-align: center;
-  margin-bottom: 22px;
-}
-.payment-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-}
-.payment-section-title {
-  font-size: 17px;
-  font-weight: 700;
-  margin: 0 0 15px;
-}
-.payment-method {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 15px;
-  background: white;
-  border: 1px solid #eadbe2;
-  border-radius: 13px;
-  margin-bottom: 10px;
-  cursor: pointer;
-  transition: .2s;
-}
-.payment-method.selected {
-  border: 2px solid #bd6488;
-  background: #fff2f7;
-}
-.payment-method input {
-  accent-color: #bd6488;
-}
-.payment-method strong {
-  display: block;
-  font-size: 14px;
-}
-.payment-method small {
-  display: block;
-  color: #8c7a83;
-  font-size: 11px;
-  margin-top: 4px;
-}
-.payment-icon {
-  font-size: 24px;
-  width: 32px;
-  text-align: center;
-}
-.payment-order-box {
-  background: #fff;
-  border: 1px solid #efdee6;
-  border-radius: 16px;
-  padding: 20px;
-}
-.payment-total-label {
-  color: #86727c;
-  font-size: 12px;
-}
-.payment-total {
-  font-size: 30px;
-  font-weight: 800;
-  margin: 5px 0 15px;
-}
-.payment-divider {
-  border: 0;
-  border-top: 1px solid #f0e5ea;
-  margin: 14px 0;
-}
-.payment-summary-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  margin: 12px 0;
-  font-size: 13px;
-}
-.payment-primary-button {
-  width: 100%;
-  border: 0;
-  border-radius: 12px;
-  padding: 16px;
-  background: #bd6488;
-  color: white;
-  font-weight: 700;
-  font-size: 15px;
-  cursor: pointer;
-  margin-top: 15px;
-}
-.payment-primary-button:hover {
-  background: #a94c73;
-}
-.payment-secondary-button {
-  border: 1px solid #e8cbd8;
-  background: white;
-  color: #8b4160;
-  padding: 12px 16px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: 600;
-}
-.payment-input {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 13px;
-  border: 1px solid #e6d5de;
-  border-radius: 10px;
-  margin: 7px 0 12px;
-  background: white;
-  font-size: 14px;
-}
-.payment-detail-panel {
-  display: none;
-  background: white;
-  border: 1px solid #efdee6;
-  border-radius: 14px;
-  padding: 16px;
-  margin-top: 12px;
-}
-.payment-detail-panel.active {
-  display: block;
-}
-.payment-qr-placeholder {
-  width: 150px;
-  height: 150px;
-  margin: 14px auto;
-  background: white;
-  border: 1px solid #eadbe2;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 78px;
-}
-.payment-receipt {
-  display: none;
-  text-align: center;
-  padding: 30px 20px;
-}
-.payment-receipt.active {
-  display: block;
-}
-.payment-success-icon {
-  width: 66px;
-  height: 66px;
-  border-radius: 50%;
-  background: #e0f6e8;
-  color: #21834b;
-  display: grid;
-  place-items: center;
-  font-size: 35px;
-  margin: 0 auto 15px;
-}
-.payment-receipt-paper {
-  max-width: 420px;
-  margin: 20px auto;
-  padding: 24px;
-  background: white;
-  border: 1px dashed #d9b8c7;
-  text-align: left;
-  border-radius: 12px;
-}
-.payment-receipt-paper h3 {
-  text-align: center;
-  letter-spacing: 3px;
-}
-.payment-receipt-paper .receipt-note {
-  color: #a94c73;
-  font-size: 10px;
-  text-align: center;
-  font-weight: 700;
-}
-.payment-footer-note {
-  font-size: 11px;
-  color: #96838c;
-  text-align: center;
-  margin-top: 18px;
-}
-@media(max-width:650px) {
-  .payment-overlay { padding: 8px; align-items: flex-start; }
-  .payment-window { margin: 10px 0; border-radius: 17px; }
-  .payment-content { padding: 16px; }
-  .payment-grid { grid-template-columns: 1fr; gap: 18px; }
-  .payment-header { padding: 17px; }
-}
-</style>
+  <p style="margin:8px 0;">
+    Healthy Hair, Naturally.
+  </p>
 
-<div class="payment-overlay" id="dazberyPaymentOverlay">
-  <div class="payment-window">
-    <div class="payment-header">
-      <div class="payment-brand">
-        DAZBERY
-        <small>BEAUTY IN EVERY STRAND</small>
-      </div>
-      <button class="payment-close" id="dazberyPaymentClose"
-        aria-label="Close payment">×</button>
-    </div>
+  <p style="margin:15px 0;">
+    Premium Haircare for Everyday Beauty
+  </p>
 
-    <div class="payment-content" id="dazberyPaymentMain">
-      <div class="payment-demo-note">
-        DEMO MODE · No real money will be charged
-      </div>
+  <div style="
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:15px;
+    margin:20px 0;
+  ">
+    <a href="#shopPage" onclick="showPage('shop'); return false;"
+       style="color:#333;text-decoration:none;">Shop</a>
 
-      <div class="payment-grid">
-        <section>
-          <h3 class="payment-section-title">Choose payment method</h3>
+    <a href="mailto:supportdazbery@gmail.com"
+       style="color:#333;text-decoration:none;">Contact</a>
 
-          <label class="payment-method selected">
-            <span class="payment-icon">▦</span>
-            <span>
-              <strong>UPI / QR Code</strong>
-              <small>GPay · PhonePe · Paytm (Demo)</small>
-            </span>
-            <input type="radio" name="dazberyPayMethod"
-              value="UPI" checked>
-          </label>
+    <a href="#privacy"
+       onclick="alert('Privacy Policy page will be added in a later step.'); return false;"
+       style="color:#333;text-decoration:none;">Privacy Policy</a>
 
-          <label class="payment-method">
-            <span class="payment-icon">💳</span>
-            <span>
-              <strong>Credit / Debit Card</strong>
-              <small>Card machine style demo</small>
-            </span>
-            <input type="radio" name="dazberyPayMethod"
-              value="Card">
-          </label>
-
-          <label class="payment-method">
-            <span class="payment-icon">🚚</span>
-            <span>
-              <strong>Cash on Delivery</strong>
-              <small>Pay when your order arrives</small>
-            </span>
-            <input type="radio" name="dazberyPayMethod"
-              value="COD">
-          </label>
-
-          <div class="payment-detail-panel active" id="dazberyUPIPanel">
-            <strong>Scan to pay · Demo QR</strong>
-            <div class="payment-qr-placeholder">▦</div>
-            <p style="font-size:12px;text-align:center;color:#8c7a83">
-              Illustrative QR only. It cannot accept payment.
-            </p>
-            <div style="display:flex;gap:7px;justify-content:center;flex-wrap:wrap">
-              <button class="payment-secondary-button" type="button">GPay</button>
-              <button class="payment-secondary-button" type="button">PhonePe</button>
-              <button class="payment-secondary-button" type="button">Paytm</button>
-            </div>
-          </div>
-
-          <div class="payment-detail-panel" id="dazberyCardPanel">
-            <strong>Card machine · Demo</strong>
-            <div style="background:linear-gradient(135deg,#48293b,#bd6488);color:white;padding:22px;border-radius:15px;margin:14px 0">
-              <div style="font-size:12px;opacity:.8">DAZBERY PAYMENT TERMINAL</div>
-              <div style="font-size:25px;margin:22px 0">💳  TAP / INSERT</div>
-              <div style="font-size:11px;opacity:.8">DEMO TRANSACTION ONLY</div>
-            </div>
-            <label style="font-size:12px">Cardholder name (demo)</label>
-            <input class="payment-input" id="dazberyCardName"
-              placeholder="Name on card">
-            <label style="font-size:12px">Card number (demo only)</label>
-            <input class="payment-input" id="dazberyCardNumber"
-              inputmode="numeric" maxlength="19"
-              placeholder="0000 0000 0000 0000">
-            <label style="font-size:12px">Expiry (demo)</label>
-            <input class="payment-input" id="dazberyCardExpiry"
-              maxlength="5" placeholder="MM/YY">
-            <p style="font-size:11px;color:#a94c73">
-              Do not enter real card details. Use fictional demo details only.
-            </p>
-          </div>
-
-          <div class="payment-detail-panel" id="dazberyCODPanel">
-            <strong>Cash on Delivery</strong>
-            <p style="font-size:13px;line-height:1.6">
-              Place a demo COD order and pay upon delivery.
-              No payment is collected on this demo website.
-            </p>
-          </div>
-        </section>
-
-        <section>
-          <h3 class="payment-section-title">Order summary</h3>
-          <div class="payment-order-box">
-            <div class="payment-total-label">Total amount</div>
-            <div class="payment-total" id="dazberyPayTotal">₹0</div>
-            <hr class="payment-divider">
-            <div id="dazberyPaySummary"></div>
-            <hr class="payment-divider">
-            <div class="payment-summary-row">
-              <span>Payment mode</span>
-              <strong id="dazberyPayModeLabel">UPI Demo</strong>
-            </div>
-            <button class="payment-primary-button" id="dazberyPayNow"
-              type="button">Continue to demo payment →</button>
-            <div class="payment-footer-note">
-              Secure-style preview · Demo only · No real payment
-            </div>
-          </div>
-        </section>
-      </div>
-    </div>
-
-    <div class="payment-receipt" id="dazberyPaymentReceipt">
-      <div class="payment-success-icon">✓</div>
-      <h2 id="dazberyReceiptHeading">Order confirmed!</h2>
-      <p id="dazberyReceiptSubheading">
-        Your demo order has been created.
-      </p>
-      <div class="payment-receipt-paper" id="dazberyReceiptPaper"></div>
-      <button class="payment-primary-button" id="dazberyDownloadReceipt"
-        type="button" style="max-width:420px">
-        Download receipt
-      </button>
-      <br><br>
-      <button class="payment-secondary-button" id="dazberyPaymentDone"
-        type="button">Continue shopping</button>
-      <p class="payment-footer-note">
-        This is a demo receipt, not proof of an actual payment.
-      </p>
-    </div>
+    <a href="#terms"
+       onclick="alert('Terms and Conditions page will be added in a later step.'); return false;"
+       style="color:#333;text-decoration:none;">Terms & Conditions</a>
   </div>
-</div>
-<!-- END OF PART 4A -->
-  <!-- DAZBERY DEMO CHECKOUT - PART 4B -->
-<script>
-(function () {
-  const overlay = document.getElementById("dazberyPaymentOverlay");
-  const closeBtn = document.getElementById("dazberyPaymentClose");
-  const payNowBtn = document.getElementById("dazberyPayNow");
-  const doneBtn = document.getElementById("dazberyPaymentDone");
-  const downloadBtn = document.getElementById("dazberyDownloadReceipt");
 
-  if (!overlay || !payNowBtn) return;
-
-  let currentOrder = null;
-
-  function money(value) {
-    return "₹" + Number(value || 0).toLocaleString("en-IN", {
-      maximumFractionDigits: 2
-    });
-  }
-
-  function getSelectedMethod() {
-    const selected = document.querySelector(
-      'input[name="dazberyPayMethod"]:checked'
-    );
-    return selected ? selected.value : "UPI";
-  }
-
-  function updateMethod() {
-    const method = getSelectedMethod();
-
-    document.querySelectorAll(".payment-method").forEach(function (label) {
-      const radio = label.querySelector("input");
-      label.classList.toggle("selected", radio && radio.checked);
-    });
-
-    document.getElementById("dazberyUPIPanel").classList.toggle(
-      "active", method === "UPI"
-    );
-    document.getElementById("dazberyCardPanel").classList.toggle(
-      "active", method === "Card"
-    );
-    document.getElementById("dazberyCODPanel").classList.toggle(
-      "active", method === "COD"
-    );
-
-    const labels = {
-      UPI: "UPI Demo",
-      Card: "Card Demo",
-      COD: "Cash on Delivery"
-    };
-
-    document.getElementById("dazberyPayModeLabel").textContent =
-      labels[method];
-
-    payNowBtn.textContent = method === "COD"
-      ? "Confirm demo COD order →"
-      : "Pay " + document.getElementById("dazberyPayTotal").textContent +
-        " · Demo only →";
-  }
-
-  document.querySelectorAll(
-    'input[name="dazberyPayMethod"]'
-  ).forEach(function (radio) {
-    radio.addEventListener("change", updateMethod);
-  });
-
-  /*
-    Reads the cart displayed by Part 3.
-    This is a front-end demo total, not a secure payment amount.
-  */
-  function getCartData() {
-    const rows = document.querySelectorAll(
-      "#bagItems .bag-item, #cartItems .cart-item"
-    );
-
-    const items = [];
-
-    rows.forEach(function (row) {
-      const nameEl = row.querySelector(
-        ".bag-item-name, .cart-item-name, h3, h4"
-      );
-      const priceEl = row.querySelector(
-        ".bag-item-price, .cart-item-price"
-      );
-
-      const name = nameEl ? nameEl.textContent.trim() : "";
-      const priceText = priceEl ? priceEl.textContent : "";
-      const priceMatch = priceText.replace(/,/g, "").match(/₹\s*([\d.]+)/);
-
-      if (name && priceMatch) {
-        items.push({
-          name: name,
-          price: Number(priceMatch[1])
-        });
-      }
-    });
-
-    const subtotalEl = document.getElementById("bagSubtotal");
-    const discountEl = document.getElementById("bagDiscount");
-    const totalEl = document.getElementById("bagTotal");
-
-    function readAmount(el) {
-      if (!el) return null;
-      const match = el.textContent.replace(/,/g, "").match(/₹\s*([\d.]+)/);
-      return match ? Number(match[1]) : null;
-    }
-
-    let subtotal = readAmount(subtotalEl);
-    let discount = readAmount(discountEl);
-    let total = readAmount(totalEl);
-
-    if (total === null) {
-      const bagText = document.body.innerText;
-      const totalMatch = bagText.match(/Total\s*:?\s*₹\s*([\d,]+(?:\.\d{1,2})?)/i);
-      total = totalMatch ? Number(totalMatch[1].replace(/,/g, "")) : null;
-    }
-
-    if (total === null || !Number.isFinite(total)) {
-      subtotal = items.reduce(function (sum, item) {
-        return sum + item.price;
-      }, 0);
-      discount = 0;
-      total = subtotal;
-    }
-
-    return {
-      items: items,
-      subtotal: subtotal === null ? total : subtotal,
-      discount: discount || 0,
-      total: Math.max(0, total)
-    };
-  }
-
-  function renderSummary() {
-    const cart = getCartData();
-    document.getElementById("dazberyPayTotal").textContent =
-      money(cart.total);
-
-    const summary = document.getElementById("dazberyPaySummary");
-
-    if (cart.items.length) {
-      summary.innerHTML = cart.items.map(function (item) {
-        return '<div class="payment-summary-row"><span>' +
-          escapeHTML(item.name) +
-          '</span><span>' + money(item.price) + '</span></div>';
-      }).join("");
-    } else {
-      summary.innerHTML =
-        '<p style="font-size:13px;color:#8c7a83">' +
-        'Order total copied from your cart. Please verify it before continuing.' +
-        '</p>';
-    }
-
-    summary.innerHTML +=
-      '<div class="payment-summary-row"><span>Subtotal</span><span>' +
-      money(cart.subtotal) + '</span></div>' +
-      '<div class="payment-summary-row"><span>Discount</span><span>−' +
-      money(cart.discount) + '</span></div>';
-
-    updateMethod();
-  }
-
-  function escapeHTML(value) {
-    return String(value).replace(/[&<>"']/g, function (character) {
-      return {
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#39;"
-      }[character];
-    });
-  }
-
-  /*
-    Connect the existing checkout button to this demo payment window.
-  */
-  const checkoutButtons = [
-    document.getElementById("checkoutButton"),
-    document.getElementById("checkoutBtn")
-  ].filter(Boolean);
-
-  checkoutButtons.forEach(function (button) {
-    button.addEventListener("click", function (event) {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      renderSummary();
-      document.getElementById("dazberyPaymentMain").style.display = "block";
-      document.getElementById("dazberyPaymentReceipt").classList.remove("active");
-      overlay.classList.add("open");
-    }, true);
-  });
-
-  closeBtn.addEventListener("click", function () {
-    overlay.classList.remove("open");
-  });
-
-  overlay.addEventListener("click", function (event) {
-    if (event.target === overlay) overlay.classList.remove("open");
-  });
-
-  payNowBtn.addEventListener("click", function () {
-    const method = getSelectedMethod();
-
-    if (method === "Card") {
-      const name = document.getElementById("dazberyCardName").value.trim();
-      const number = document.getElementById("dazberyCardNumber").value.trim();
-      const expiry = document.getElementById("dazberyCardExpiry").value.trim();
-
-      if (!name || !number || !expiry) {
-        alert("Demo card screen: fill the fictional demo fields to continue. Do not use real card details.");
-        return;
-      }
-    }
-
-    if (method !== "COD") {
-      const proceed = confirm(
-        "DEMO PAYMENT ONLY\n\nNo money will be charged and no real payment will be made.\n\nShow the demo payment success screen?"
-      );
-      if (!proceed) return;
-    }
-
-    const cart = getCartData();
-    const orderNumber = "DAZ-" + Date.now().toString().slice(-8);
-    const status = method === "COD"
-      ? "DEMO ORDER · COD SELECTED"
-      : "DEMO SUCCESS · NOT A REAL PAYMENT";
-
-    currentOrder = {
-      orderNumber: orderNumber,
-      date: new Date().toLocaleString("en-IN"),
-      method: method === "UPI" ? "UPI (Demo)" :
-              method === "Card" ? "Card (Demo)" :
-              "Cash on Delivery (Demo)",
-      status: status,
-      items: cart.items,
-      subtotal: cart.subtotal,
-      discount: cart.discount,
-      total: cart.total
-    };
-
-    document.getElementById("dazberyReceiptHeading").textContent =
-      method === "COD" ? "Demo order placed!" : "Demo payment successful!";
-
-    document.getElementById("dazberyReceiptSubheading").textContent =
-      method === "COD"
-        ? "Your demo COD order confirmation is ready."
-        : "Your demo order confirmation is ready. No money was charged.";
-
-    const itemRows = currentOrder.items.length
-      ? currentOrder.items.map(function (item) {
-          return '<div class="payment-summary-row"><span>' +
-            escapeHTML(item.name) + '</span><span>' +
-            money(item.price) + '</span></div>';
-        }).join("")
-      : '<p style="font-size:12px">Cart item details were not available to the demo receipt.</p>';
-
-    document.getElementById("dazberyReceiptPaper").innerHTML =
-      '<h3>DAZBERY</h3>' +
-      '<p class="receipt-note">DEMO PAYMENT — NOT A REAL TRANSACTION</p>' +
-      '<hr class="payment-divider">' +
-      '<p><strong>Order ID:</strong> ' + currentOrder.orderNumber + '</p>' +
-      '<p><strong>Date:</strong> ' + escapeHTML(currentOrder.date) + '</p>' +
-      '<p><strong>Payment method:</strong> ' + escapeHTML(currentOrder.method) + '</p>' +
-      '<p><strong>Status:</strong> ' + escapeHTML(currentOrder.status) + '</p>' +
-      '<hr class="payment-divider">' +
-      itemRows +
-      '<hr class="payment-divider">' +
-      '<div class="payment-summary-row"><span>Subtotal</span><span>' +
-      money(currentOrder.subtotal) + '</span></div>' +
-      '<div class="payment-summary-row"><span>Discount</span><span>−' +
-      money(currentOrder.discount) + '</span></div>' +
-      '<div class="payment-summary-row" style="font-size:17px;font-weight:800">' +
-      '<span>Total</span><span>' + money(currentOrder.total) + '</span></div>' +
-      '<hr class="payment-divider">' +
-      '<p style="text-align:center;font-size:12px">Thank you for choosing DAZBERY 💗</p>';
-
-    document.getElementById("dazberyPaymentMain").style.display = "none";
-    document.getElementById("dazberyPaymentReceipt").classList.add("active");
-  });
-
-  downloadBtn.addEventListener("click", function () {
-    const receipt = document.getElementById("dazberyReceiptPaper");
-
-    if (!receipt) return;
-
-    const html = '<!DOCTYPE html><html><head><meta charset="UTF-8">' +
-      '<title>DAZBERY Demo Receipt</title>' +
-      '<style>body{font-family:Arial,sans-serif;max-width:520px;margin:30px auto;padding:20px;color:#35232c}' +
-      '.payment-summary-row{display:flex;justify-content:space-between;gap:12px;margin:12px 0}' +
-      '.receipt-note{text-align:center;color:#a94c73;font-size:11px;font-weight:bold}' +
-      '.payment-divider{border:0;border-top:1px solid #eee;margin:15px 0}' +
-      'h3{text-align:center;letter-spacing:3px}</style></head><body>' +
-      receipt.innerHTML + '</body></html>';
-
-    const blob = new Blob([html], { type: "text/html;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "DAZBERY-Demo-Receipt.html";
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    URL.revokeObjectURL(url);
-  });
-
-  doneBtn.addEventListener("click", function () {
-    overlay.classList.remove("open");
-    document.getElementById("dazberyPaymentMain").style.display = "block";
-    document.getElementById("dazberyPaymentReceipt").classList.remove("active");
-  });
-
-  /*
-    Format card number for the visual demo.
-    Do not enter genuine payment information.
-  */
-  document.getElementById("dazberyCardNumber").addEventListener("input", function () {
-    let digits = this.value.replace(/\D/g, "").slice(0, 16);
-    this.value = digits.replace(/(.{4})/g, "$1 ").trim();
-  });
-
-  document.getElementById("dazberyCardExpiry").addEventListener("input", function () {
-    let digits = this.value.replace(/\D/g, "").slice(0, 4);
-    if (digits.length >= 3) digits = digits.slice(0, 2) + "/" + digits.slice(2);
-    this.value = digits;
-  });
-
-  updateMethod();
-})();
-</script>
-<!-- END OF PART 4B -->
+  <p style="font-size:13px;color:#777;margin-top:20px;">
+    © 2026 DAZBERY. All Rights Reserved.
+  </p>
+</footer>
+  </body>
+</html>
   
+
