@@ -7,6 +7,9 @@
 
   <!-- Supabase JS Library -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
+  <!-- Razorpay Standard Checkout SDK -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -340,7 +343,7 @@
   <div class="container">
 
     <!-- SHOP / PRODUCT PAGE -->
-    <div id="shopPage" class="page-section">
+    <div id="shopPage" class="page-section active">
       <div class="hero-card" id="product">
         <div class="product-gallery">
           <span class="badge-tag">BEST SELLER</span>
@@ -440,7 +443,7 @@
     </div>
 
     <!-- GOOGLE SIGN-IN & PROFILE PAGE -->
-    <div id="loginPage" class="page-section active">
+    <div id="loginPage" class="page-section">
       
       <div class="auth-card" id="loginCard">
         <h2>Customer Sign In</h2>
@@ -631,7 +634,6 @@
         document.getElementById('dashboardCard').style.display = 'block';
         document.getElementById('navAccountText').innerText = 'My Account';
 
-        // Load profile and orders from Supabase Database
         await loadUserProfile(currentUser.id);
         fetchUserOrders(currentUser.id);
       }
@@ -684,7 +686,6 @@
         document.getElementById('profCity').value = data.city || '';
         document.getElementById('profState').value = data.state || '';
 
-        // Auto fill checkout fields on product page
         document.getElementById('checkoutName').value = data.full_name || '';
         document.getElementById('checkoutPhone').value = data.phone || '';
         document.getElementById('checkoutAddress').value = data.address || '';
@@ -692,7 +693,6 @@
         document.getElementById('checkoutCity').value = data.city || '';
         document.getElementById('checkoutState').value = data.state || '';
       } else {
-        // Fallback Google account name
         document.getElementById('profName').value = currentUser.user_metadata?.full_name || '';
         document.getElementById('checkoutName').value = currentUser.user_metadata?.full_name || '';
       }
@@ -755,7 +755,7 @@
         html += `
           <div class="order-history-item">
             <strong>Qty:</strong> ${order.quantity} | <strong>Total:</strong> ₹${order.total_price}<br>
-            <strong>Address:</strong> ${order.address}, ${order.city} - ${order.pin}
+            <strong>Address:</strong> ${order.address}
           </div>
         `;
       });
@@ -780,8 +780,10 @@
       switchPage('login');
     }
 
+    // Integrated Razorpay Checkout Logic
     async function handleOrder(e) {
       e.preventDefault();
+
       const name = document.getElementById('checkoutName').value;
       const phone = document.getElementById('checkoutPhone').value;
       const address = document.getElementById('checkoutAddress').value;
@@ -790,23 +792,59 @@
       const state = document.getElementById('checkoutState').value;
       const finalPrice = isDiscountApplied ? (currentQty * 299) : (currentQty * 599);
 
-      if (supabaseClient) {
-        const { data: { session } } = await supabaseClient.auth.getSession();
-        
-        await supabaseClient.from('orders').insert([
-          {
-            user_id: session ? session.user.id : null,
-            customer_name: name,
-            phone: phone,
-            address: address + ', ' + city + ' - ' + pin + ', ' + state,
-            quantity: currentQty,
-            total_price: finalPrice
-          }
-        ]);
-      }
+      var options = {
+        "key": "rzp_test_TxGax1WaYX5vvT",
+        "amount": finalPrice * 100,
+        "currency": "INR",
+        "name": "DAZBERY",
+        "description": "Rosemary & Rice Water Hair Growth Spray (100ml)",
+        "prefill": {
+          "name": name,
+          "contact": phone,
+          "email": currentUser ? currentUser.email : ""
+        },
+        "theme": {
+          "color": "#111111"
+        },
+        "handler": async function (response) {
+          showToast('✓ Payment Successful! Saving order...');
 
-      showToast('✓ Order Placed Successfully!');
-      alert(`Order Confirmed for ₹${finalPrice}! Order details saved.`);
+          if (supabaseClient) {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+
+            await supabaseClient.from('orders').insert([
+              {
+                user_id: session ? session.user.id : null,
+                customer_name: name,
+                phone: phone,
+                address: address + ', ' + city + ' - ' + pin + ', ' + state,
+                quantity: currentQty,
+                total_price: finalPrice,
+                payment_id: response.razorpay_payment_id
+              }
+            ]);
+          }
+
+          showToast('✓ Order Placed Successfully!');
+          alert(`Payment Success!\nPayment ID: ${response.razorpay_payment_id}\nOrder confirmed for ₹${finalPrice}.`);
+        },
+        "modal": {
+          "ondismiss": function() {
+            showToast('❌ Payment Cancelled');
+          }
+        }
+      };
+
+      var rzp = new Razorpay(options);
+      rzp.on('payment.failed', function (response){
+        alert('Payment Failed: ' + response.error.description);
+      });
+      rzp.open();
+    }
+
+    function submitUserReview(e) {
+      e.preventDefault();
+      showToast('✓ Review submitted for verification!');
     }
 
     window.addEventListener('DOMContentLoaded', () => {
