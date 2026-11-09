@@ -256,7 +256,6 @@
       border-radius: 8px;
     }
 
-    /* Clean Profile & Account Dashboard UI */
     .dashboard-container {
       max-width: 600px;
       margin: 0 auto;
@@ -550,7 +549,7 @@
         </button>
       </div>
 
-      <!-- DASHBOARD STRUCTURE split into clean sections -->
+      <!-- DASHBOARD STRUCTURE -->
       <div class="dashboard-container" id="dashboardCard" style="display: none;">
         
         <!-- SECTION 1: PROFILE & DELIVERY ADDRESS -->
@@ -561,17 +560,15 @@
           </div>
           <p id="userEmailDisplay" style="font-size: 12px; font-weight: 500; color: var(--text-muted); margin-bottom: 16px;"></p>
 
-          <!-- SAVED ADDRESS DISPLAY (Default View) -->
+          <!-- SAVED ADDRESS DISPLAY -->
           <div id="profileSavedView" class="profile-card-display" style="display: none;">
-            <button class="edit-pencil-btn" onclick="enableProfileEdit()" title="Edit Address">
-              ✏️
-            </button>
+            <button class="edit-pencil-btn" onclick="enableProfileEdit()" title="Edit Address">✏️</button>
             <h4 id="dispName" style="font-size: 15px; font-weight: 700; color: #1a202c; margin-bottom: 4px;"></h4>
             <p id="dispPhone" style="font-size: 13px; color: #4a5568; font-weight: 500; margin-bottom: 8px;"></p>
             <p id="dispAddress" style="font-size: 13px; color: #718096; line-height: 1.5;"></p>
           </div>
 
-          <!-- EDIT FORM VIEW (Hidden after saving) -->
+          <!-- EDIT FORM VIEW -->
           <form id="profileEditForm" onsubmit="saveProfileDetails(event)" style="display: flex; flex-direction: column; gap: 10px;">
             <div class="form-group"><input type="text" id="profName" placeholder="Full Name" required></div>
             <div class="form-group"><input type="tel" id="profPhone" placeholder="Mobile / WhatsApp Number" required></div>
@@ -800,7 +797,6 @@
         .single();
 
       if (data && data.full_name && data.address) {
-        // Form Values
         document.getElementById('profName').value = data.full_name || '';
         document.getElementById('profPhone').value = data.phone || '';
         document.getElementById('profAddress').value = data.address || '';
@@ -808,7 +804,6 @@
         document.getElementById('profCity').value = data.city || '';
         document.getElementById('profState').value = data.state || '';
 
-        // Checkout Auto-fill Values
         document.getElementById('checkoutName').value = data.full_name || '';
         document.getElementById('checkoutPhone').value = data.phone || '';
         document.getElementById('checkoutAddress').value = data.address || '';
@@ -816,7 +811,6 @@
         document.getElementById('checkoutCity').value = data.city || '';
         document.getElementById('checkoutState').value = data.state || '';
 
-        // Render Clean Card View
         document.getElementById('dispName').innerText = data.full_name;
         document.getElementById('dispPhone').innerText = '📞 ' + data.phone;
         document.getElementById('dispAddress').innerText = `${data.address}, ${data.city} - ${data.pin}, ${data.state}`;
@@ -892,8 +886,9 @@
       orders.forEach(order => {
         const currentStatus = order.status || 'Confirmed';
         const isCancelled = currentStatus === 'Cancelled';
-        const isShipped = currentStatus === 'Shipped' || currentStatus === 'Delivered';
-        const canCancel = !isCancelled && !isShipped;
+        
+        // Cancel can only happen if status is 'Confirmed' (Packed, Shipped, Delivered, Cancelled-ൽ ചെയ്യാൻ പറ്റില്ല)
+        const canCancel = (currentStatus === 'Confirmed');
 
         const steps = ['Confirmed', 'Packed', 'Shipped', 'Delivered'];
         const currentStepIndex = steps.indexOf(currentStatus);
@@ -914,6 +909,7 @@
 
         let badgeBg = '#eef2ff';
         let badgeColor = '#4338ca';
+        if (currentStatus === 'Packed') { badgeBg = '#fef3c7'; badgeColor = '#d97706'; }
         if (currentStatus === 'Shipped') { badgeBg = '#e0f2fe'; badgeColor = '#0369a1'; }
         if (currentStatus === 'Delivered') { badgeBg = '#dcfce7'; badgeColor = '#15803d'; }
         if (isCancelled) { badgeBg = '#fee2e2'; badgeColor = '#b91c1c'; }
