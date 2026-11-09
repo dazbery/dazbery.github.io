@@ -25,7 +25,7 @@
       --radius: 16px;
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; scroll-behavior: smooth; }
     body { background-color: var(--bg-main); color: var(--text-main); line-height: 1.6; }
 
     .announcement-bar {
@@ -527,6 +527,7 @@
     </div>
     <nav class="nav-links">
       <a onclick="switchPage('shop')">Shop</a>
+      <a href="#rewardsSection" style="color: #2d5a27; font-weight: 700;">🎁 Creator Program</a>
       <a onclick="switchPage('cart')" style="font-weight: 700;">Cart <span id="cartBadge" class="cart-badge">0</span></a>
       <a onclick="switchPage('login')" id="navAccountText">My Account</a>
     </nav>
@@ -596,8 +597,8 @@
         </div>
       </div>
 
-      <!-- REWARDS BANNER & LAUNCHING TERMS -->
-      <div class="rewards-banner">
+      <!-- REWARDS BANNER & LAUNCHING TERMS (DEDICATED SECTION) -->
+      <div class="rewards-banner" id="rewardsSection">
         <span class="rewards-pill">Creator & Customer Rewards</span>
         
         <h2 class="rewards-title">Post Your Before & After Review &<br>Get Free Products & Gift Hampers! 🎁 ✨</h2>
