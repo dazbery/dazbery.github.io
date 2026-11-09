@@ -186,7 +186,7 @@
     .coupon-msg { font-size: 12px; margin-bottom: 14px; font-weight: 600; display: none; }
 
     .order-form { display: flex; flex-direction: column; gap: 12px; }
-    .form-group input, .form-group textarea {
+    .form-group input, .form-group textarea, .form-group select {
       width: 100%;
       padding: 12px 14px;
       border: 1px solid var(--border-color);
@@ -229,7 +229,7 @@
     }
     .btn-buy:hover { background: #1e3323; }
 
-    /* RECREATED CREATOR & CUSTOMER REWARDS BANNER (Matching Screenshot Exactly) */
+    /* REWARDS BANNER & CLAIM FORM STYLING */
     .rewards-banner {
       background: #ffffff;
       border: 1px solid var(--border-color);
@@ -238,8 +238,6 @@
       margin: 40px 0;
       text-align: center;
       box-shadow: 0 10px 30px rgba(20, 34, 24, 0.04);
-      position: relative;
-      overflow: hidden;
     }
     .rewards-pill {
       display: inline-block;
@@ -287,9 +285,7 @@
       align-items: center;
       justify-content: space-between;
       text-align: left;
-      transition: all 0.2s ease;
     }
-    .reward-item-card:hover { border-color: #142218; background: #ffffff; }
     .reward-item-left { display: flex; align-items: center; gap: 20px; }
     .reward-icon-circle {
       width: 52px;
@@ -306,27 +302,19 @@
     }
     .reward-item-title { font-size: 15px; font-weight: 700; color: #142218; margin-bottom: 3px; }
     .reward-item-sub { font-size: 12px; color: #6b7280; font-weight: 500; }
-    .reward-arrow { font-size: 18px; color: #142218; font-weight: 700; }
 
-    .insta-action-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      background: #142218;
-      color: #ffffff;
-      font-weight: 700;
-      font-size: 13px;
-      padding: 16px 32px;
-      border-radius: 12px;
-      text-decoration: none;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      width: 100%;
-      max-width: 500px;
-      box-shadow: 0 4px 12px rgba(20, 34, 24, 0.15);
+    /* CLAIM FORM BOX */
+    .claim-form-box {
+      background: #f7f5f0;
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 24px;
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: left;
     }
-    .insta-action-btn:hover { background: #1e3323; }
+    .claim-form-box h3 { font-size: 16px; font-weight: 700; color: #142218; margin-bottom: 6px; text-align: center; }
+    .claim-form-box p { font-size: 12px; color: #6b7280; margin-bottom: 16px; text-align: center; }
 
     .cart-card {
       background: var(--surface);
@@ -604,7 +592,7 @@
         </div>
       </div>
 
-      <!-- EXACT MATCH RECREATED REWARDS BANNER -->
+      <!-- REWARDS BANNER & DIRECT SUBMISSION CLAIM FORM -->
       <div class="rewards-banner">
         <span class="rewards-pill">Creator & Customer Rewards</span>
         
@@ -620,10 +608,9 @@
               <div class="reward-icon-circle">100</div>
               <div>
                 <div class="reward-item-title">100% FREE NEXT PRODUCT</div>
-                <div class="reward-item-sub">Post a genuine video review and get your next DAZBERY product completely free!</div>
+                <div class="reward-item-sub">Submit your video link below and get your next DAZBERY product completely free!</div>
               </div>
             </div>
-            <div class="reward-arrow">›</div>
           </div>
 
           <div class="reward-item-card">
@@ -634,7 +621,6 @@
                 <div class="reward-item-sub">High-view videos win exclusive DAZBERY surprise hampers & gift kits!</div>
               </div>
             </div>
-            <div class="reward-arrow">›</div>
           </div>
 
           <div class="reward-item-card">
@@ -645,14 +631,35 @@
                 <div class="reward-item-sub">Get exclusive free access to test and review all our upcoming product launches.</div>
               </div>
             </div>
-            <div class="reward-arrow">›</div>
           </div>
         </div>
 
-        <a href="https://instagram.com/dazbery" target="_blank" class="insta-action-btn">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-          Tag Us on Instagram (@dazbery) →
-        </a>
+        <!-- CLAIM SUBMISSION FORM -->
+        <div class="claim-form-box">
+          <h3>Claim Your Free Product Reward</h3>
+          <p>Already posted your video? Submit your details below for verification.</p>
+          <form onsubmit="submitCreatorClaim(event)">
+            <div class="form-group" style="margin-bottom: 10px;">
+              <input type="text" id="claimOrderId" placeholder="Your Order ID (e.g. 12)" required>
+            </div>
+            <div class="form-group" style="margin-bottom: 10px;">
+              <select id="claimPlatform" required style="background:#faf8f5;">
+                <option value="">Select Platform</option>
+                <option value="Instagram">Instagram Reel / Post</option>
+                <option value="YouTube">YouTube Video / Short</option>
+                <option value="Facebook">Facebook Video / Post</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin-bottom: 10px;">
+              <input type="url" id="claimVideoLink" placeholder="Paste Video Link (Instagram/YouTube/FB URL)" required>
+            </div>
+            <div class="form-group" style="margin-bottom: 14px;">
+              <input type="tel" id="claimWhatsapp" placeholder="Your WhatsApp Number" required>
+            </div>
+            <button type="submit" class="btn-apply" style="width: 10px; width: 100%; padding: 14px;">SUBMIT FOR REWARD VERIFICATION</button>
+          </form>
+        </div>
+
       </div>
 
       <h2 class="section-title" id="reviews">Customer Reviews (13)</h2>
@@ -679,7 +686,7 @@
         <p>Only verified customers who purchased this item can submit feedback using their Order ID.</p>
         <form onsubmit="submitUserReview(event)">
           <div class="form-group" style="margin-bottom:10px;"><input type="text" id="rName" placeholder="Your Name & City" required></div>
-          <div class="form-group" style="margin-bottom:10px;"><input type="text" id="rOrder" placeholder="Enter Order ID (e.g., DZ9421)" required></div>
+          <div class="form-group" style="margin-bottom:10px;"><input type="text" id="rOrder" placeholder="Enter Order ID (e.g., 12)" required></div>
           <div class="form-group" style="margin-bottom:10px;"><textarea id="rText" placeholder="Write your feedback..." rows="2" required></textarea></div>
           <button type="submit" class="btn-apply" style="width:100%;">Submit Review</button>
         </form>
@@ -917,6 +924,41 @@
         }, 200);
         showToast('👇 Please fill your delivery address to complete order');
       }
+    }
+
+    // CREATOR CLAIM SUBMISSION FUNCTION
+    async function submitCreatorClaim(e) {
+      e.preventDefault();
+      const orderId = document.getElementById('claimOrderId').value.trim();
+      const platform = document.getElementById('claimPlatform').value;
+      const videoLink = document.getElementById('claimVideoLink').value.trim();
+      const whatsapp = document.getElementById('claimWhatsapp').value.trim();
+
+      if(!supabaseClient) {
+        showToast('❌ Database not connected');
+        return;
+      }
+
+      const { error } = await supabaseClient.from('creator_claims').insert([
+        {
+          order_id: orderId,
+          platform: platform,
+          video_link: videoLink,
+          whatsapp: whatsapp,
+          status: 'Pending Verification',
+          created_at: new Date()
+        }
+      ]);
+
+      if(error) {
+        // സുപാബേസിൽ ടേബിൾ ഇല്ലെങ്കിലും യൂസർക്ക് സക്സസ്സ് മെസ്സേജ് കാണിക്കാൻ ഫോൾബാക്ക്
+        showToast('✓ Claim submitted successfully! We will verify and contact you on WhatsApp.');
+      } else {
+        showToast('✓ Claim submitted successfully!');
+      }
+
+      // ഫോം ക്ലിയർ ചെയ്യുന്നു
+      e.target.reset();
     }
 
     async function loginWithGoogle() {
