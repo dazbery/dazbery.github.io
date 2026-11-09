@@ -528,7 +528,7 @@
             <span>Total Amount:</span>
             <span id="cartTotalPrice">₹599</span>
           </div>
-          <button onclick="switchPage('shop')" class="btn-apply" style="width: 100%; padding: 12px; font-size: 13px;">PROCEED TO CHECKOUT</button>
+          <button onclick="proceedCartCheckout()" class="btn-apply" style="width: 100%; padding: 12px; font-size: 13px;">PROCEED TO CHECKOUT</button>
         </div>
       </div>
     </div>
@@ -717,6 +717,18 @@
         summaryBox.style.display = 'block';
         document.getElementById('cartTotalPrice').innerText = '₹' + finalPrice;
       }
+    }
+
+    // Cart-ൽ നിന്ന് നേരിട്ട് Checkout / Payment പേജിലേക്ക് പോകുന്ന ഫങ്ഷൻ
+    function proceedCartCheckout() {
+      if(cartCount === 0) {
+        showToast('❌ Your cart is empty');
+        return;
+      }
+      switchPage('shop');
+      // ഫോമിലേക്ക് സ്ക്രോൾ ചെയ്യുന്നു
+      document.getElementById('orderForm').scrollIntoView({ behavior: 'smooth' });
+      showToast('👇 Please fill your delivery details below to checkout');
     }
 
     async function loginWithGoogle() {
@@ -990,7 +1002,7 @@
         "currency": "INR",
         "name": "DAZBERY",
         "description": "Rosemary & Rice Water Hair Growth Spray (100ml)",
-        "prefixed": {
+        "prefill": {
           "name": name,
           "contact": phone,
           "email": currentUser ? currentUser.email : ""
