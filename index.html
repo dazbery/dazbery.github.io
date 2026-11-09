@@ -25,7 +25,7 @@
       --radius: 16px;
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; scroll-behavior: smooth; }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
     body { background-color: var(--bg-main); color: var(--text-main); line-height: 1.6; }
 
     .announcement-bar {
@@ -229,97 +229,78 @@
     }
     .btn-buy:hover { background: #1e3323; }
 
-    /* REWARDS BANNER & RULES STYLING */
-    .rewards-banner {
-      background: #ffffff;
-      border: 1px solid var(--border-color);
-      border-radius: 20px;
-      padding: 40px 32px;
-      margin: 40px 0;
-      text-align: center;
-      box-shadow: 0 10px 30px rgba(20, 34, 24, 0.04);
-    }
-    .rewards-pill {
-      display: inline-block;
-      background: #e8ede8;
-      color: #142218;
-      font-size: 11px;
+    /* FLOATING CREATOR WIDGET BUTTON */
+    .creator-float-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #142218;
+      color: #ffffff;
+      padding: 12px 20px;
+      border-radius: 30px;
+      font-size: 12px;
       font-weight: 700;
-      padding: 6px 16px;
-      border-radius: 20px;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      margin-bottom: 16px;
-    }
-    .rewards-title {
-      font-size: 28px;
-      font-weight: 800;
-      color: #142218;
-      margin-bottom: 12px;
-      line-height: 1.25;
-    }
-    .rewards-desc {
-      font-size: 14px;
-      color: #555555;
-      max-width: 680px;
-      margin: 0 auto 30px;
-      line-height: 1.6;
-    }
-    .rewards-desc strong { color: #142218; font-weight: 700; }
-
-    /* TERMS BOX CONTAINER */
-    .terms-box {
-      background: #fbf9f5;
-      border: 1px solid #eadecf;
-      border-radius: 14px;
-      padding: 22px;
-      margin-bottom: 30px;
-      text-align: left;
-      max-width: 800px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    .terms-box h4 {
-      font-size: 14px;
-      font-weight: 700;
-      color: #142218;
-      margin-bottom: 12px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(20, 34, 24, 0.3);
+      z-index: 99;
       display: flex;
       align-items: center;
       gap: 8px;
+      transition: transform 0.2s;
+      border: 1px solid rgba(255,255,255,0.2);
     }
-    .terms-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+    .creator-float-btn:hover { transform: scale(1.05); }
+
+    /* POPUP MODAL STYLING */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(4px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      padding: 16px;
     }
-    .terms-list li {
+    .modal-card {
+      background: #ffffff;
+      border-radius: 16px;
+      max-width: 500px;
+      width: 100%;
+      padding: 28px;
+      position: relative;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+    .modal-close {
+      position: absolute;
+      top: 16px; right: 16px;
+      background: #f7f5f0;
+      border: none;
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* SIMPLE SIMPLIFIED RULES LIST */
+    .simple-rules {
+      background: #fbf9f5;
+      border: 1px solid #eadecf;
+      border-radius: 10px;
+      padding: 14px;
+      margin: 14px 0 20px;
       font-size: 12px;
       color: #4a5568;
       display: flex;
-      align-items: flex-start;
-      gap: 8px;
-      line-height: 1.5;
+      flex-direction: column;
+      gap: 6px;
     }
-    .terms-list li::before {
-      content: "✔";
-      color: #2d5a27;
-      font-weight: bold;
-      flex-shrink: 0;
-    }
-
-    .claim-form-box {
-      background: #f7f5f0;
-      border: 1px solid var(--border-color);
-      border-radius: 14px;
-      padding: 24px;
-      max-width: 600px;
-      margin: 0 auto;
-      text-align: left;
-    }
-    .claim-form-box h3 { font-size: 16px; font-weight: 700; color: #142218; margin-bottom: 6px; text-align: center; }
-    .claim-form-box p { font-size: 12px; color: #6b7280; margin-bottom: 16px; text-align: center; }
+    .simple-rules div { display: flex; align-items: center; gap: 8px; }
+    .simple-rules div span { color: #2d5a27; font-weight: bold; }
 
     .cart-card {
       background: var(--surface);
@@ -511,8 +492,6 @@
     @media (max-width: 768px) {
       .hero-card { flex-direction: column; }
       .product-gallery { width: 100%; max-width: 100%; }
-      .rewards-title { font-size: 22px; }
-      .rewards-banner { padding: 28px 16px; }
     }
   </style>
 </head>
@@ -521,13 +500,59 @@
   <div id="toastNotification"></div>
   <div class="announcement-bar">COMPLIMENTARY SHIPPING ON ALL PREPAID ORDERS</div>
 
+  <!-- FLOATING CREATOR PROGRAM BUTTON -->
+  <div class="creator-float-btn" onclick="openCreatorModal()">
+    🎥 Creator Program
+  </div>
+
+  <!-- POPUP MODAL FOR CREATOR PROGRAM -->
+  <div class="modal-overlay" id="creatorModal">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeCreatorModal()">✕</button>
+      
+      <div style="text-align: center; margin-bottom: 16px;">
+        <span style="background: #e8ede8; color: #142218; font-size: 10px; font-weight: 700; padding: 4px 12px; border-radius: 20px; letter-spacing: 1px; text-transform: uppercase;">Creator Rewards</span>
+        <h2 style="font-size: 20px; font-weight: 800; color: #142218; margin-top: 6px;">Post & Get Free Products! ✨</h2>
+      </div>
+
+      <!-- SIMPLIFIED RULES -->
+      <div class="simple-rules">
+        <div><span>1.</span> Post 1 Before & After review video on IG / YouTube / FB.</div>
+        <div><span>2.</span> Keep it live for 30 days (then it's your choice to keep or delete!).</div>
+        <div><span>3.</span> Viral videos get extra gift hampers & free new product launches.</div>
+      </div>
+
+      <!-- SUBMISSION FORM -->
+      <form onsubmit="submitCreatorClaim(event)">
+        <h4 style="font-size: 13px; font-weight: 700; margin-bottom: 10px; color: #142218;">Submit Your Video Link</h4>
+        <div class="form-group" style="margin-bottom: 10px;">
+          <input type="text" id="claimOrderId" placeholder="Your Order ID (e.g. 12)" required>
+        </div>
+        <div class="form-group" style="margin-bottom: 10px;">
+          <select id="claimPlatform" required style="background:#faf8f5;">
+            <option value="">Select Platform</option>
+            <option value="Instagram">Instagram</option>
+            <option value="YouTube">YouTube</option>
+            <option value="Facebook">Facebook</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom: 10px;">
+          <input type="url" id="claimVideoLink" placeholder="Paste Video URL" required>
+        </div>
+        <div class="form-group" style="margin-bottom: 14px;">
+          <input type="tel" id="claimWhatsapp" placeholder="Your WhatsApp Number" required>
+        </div>
+        <button type="submit" class="btn-apply" style="width: 100%; padding: 12px;">SUBMIT FOR REWARD</button>
+      </form>
+    </div>
+  </div>
+
   <header>
     <div class="logo-area" onclick="switchPage('shop')">
       <div class="logo">DAZBERY</div>
     </div>
     <nav class="nav-links">
       <a onclick="switchPage('shop')">Shop</a>
-      <a href="#rewardsSection" style="color: #2d5a27; font-weight: 700;">🎁 Creator Program</a>
       <a onclick="switchPage('cart')" style="font-weight: 700;">Cart <span id="cartBadge" class="cart-badge">0</span></a>
       <a onclick="switchPage('login')" id="navAccountText">My Account</a>
     </nav>
@@ -595,56 +620,6 @@
             </div>
           </form>
         </div>
-      </div>
-
-      <!-- REWARDS BANNER & LAUNCHING TERMS (DEDICATED SECTION) -->
-      <div class="rewards-banner" id="rewardsSection">
-        <span class="rewards-pill">Creator & Customer Rewards</span>
-        
-        <h2 class="rewards-title">Post Your Before & After Review &<br>Get Free Products & Gift Hampers! 🎁 ✨</h2>
-        
-        <p class="rewards-desc">
-          Buy & use our Hair Growth Spray, share your genuine <strong>Before & After Review Video</strong> on <strong>Instagram, Facebook, or YouTube</strong>, and tag <strong>@dazbery</strong>!
-        </p>
-
-        <!-- CLEAR TERMS & GUIDELINES BOX -->
-        <div class="terms-box">
-          <h4>📌 Dazbery Creator Program Guidelines & Perks:</h4>
-          <ul class="terms-list">
-            <li><strong>1 Video is Enough:</strong> Post 1 genuine Before & After review video on Instagram, Facebook, or YouTube.</li>
-            <li><strong>30-Day Rule:</strong> Keep the review video live on your account for at least 30 days (after that, deleting it is completely your choice!).</li>
-            <li><strong>Viral Reach & Gift Hampers:</strong> If your video gets great organic reach/views, we will surprise you with extra gift hampers alongside your next free product.</li>
-            <li><strong>Free New Product Access:</strong> If we love your content and style, you will be onboarded as our permanent creator to receive all upcoming DAZBERY new product launches completely free!</li>
-            <li><strong>Instant Claim:</strong> As soon as you publish your video, submit your details using the form below right away.</li>
-          </ul>
-        </div>
-
-        <!-- CLAIM SUBMISSION FORM -->
-        <div class="claim-form-box">
-          <h3>Submit Your Video Link for Verification</h3>
-          <p>Already posted your review video? Fill in your details below.</p>
-          <form onsubmit="submitCreatorClaim(event)">
-            <div class="form-group" style="margin-bottom: 10px;">
-              <input type="text" id="claimOrderId" placeholder="Your Order ID (e.g. 12)" required>
-            </div>
-            <div class="form-group" style="margin-bottom: 10px;">
-              <select id="claimPlatform" required style="background:#faf8f5;">
-                <option value="">Select Platform</option>
-                <option value="Instagram">Instagram Reel / Post</option>
-                <option value="YouTube">YouTube Video / Short</option>
-                <option value="Facebook">Facebook Video / Post</option>
-              </select>
-            </div>
-            <div class="form-group" style="margin-bottom: 10px;">
-              <input type="url" id="claimVideoLink" placeholder="Paste Video Link (Instagram/YouTube/FB URL)" required>
-            </div>
-            <div class="form-group" style="margin-bottom: 14px;">
-              <input type="tel" id="claimWhatsapp" placeholder="Your WhatsApp Number" required>
-            </div>
-            <button type="submit" class="btn-apply" style="width: 100%; padding: 14px;">SUBMIT FOR REWARD VERIFICATION</button>
-          </form>
-        </div>
-
       </div>
 
       <h2 class="section-title" id="reviews">Customer Reviews</h2>
@@ -774,6 +749,14 @@
     let currentQty = 1;
     let cartCount = 0;
     let isDiscountApplied = false;
+
+    // MODAL OPEN / CLOSE FUNCTIONS
+    function openCreatorModal() {
+      document.getElementById('creatorModal').style.display = 'flex';
+    }
+    function closeCreatorModal() {
+      document.getElementById('creatorModal').style.display = 'none';
+    }
 
     function showToast(message) {
       const toast = document.getElementById('toastNotification');
@@ -930,8 +913,9 @@
       if(error) {
         showToast('❌ Claim submission failed: ' + error.message);
       } else {
-        showToast('✓ Claim submitted successfully! We will verify and contact you.');
+        showToast('✓ Claim submitted successfully! We will contact you.');
         e.target.reset();
+        closeCreatorModal();
       }
     }
 
