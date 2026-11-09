@@ -468,13 +468,22 @@
 
     .section-title { font-size: 20px; font-weight: 700; margin: 40px 0 16px; color: #142218; }
     
-    .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+    .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; }
     .review-item { background: var(--surface); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); }
-    .review-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+    .review-header { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 6px; }
     .review-user { font-weight: 700; font-size: 13px; color: #142218; }
     .verified-badge { color: #2d5a27; font-size: 10px; font-weight: 700; }
-    .stars { color: #d4af37; font-size: 12px; margin-bottom: 8px; }
-    .review-text { font-size: 12px; color: #555; }
+    .review-language { color: #7b817a; font-size: 10px; font-weight: 600; margin-bottom: 7px; }
+    .stars { color: #b38b32; font-size: 12px; margin-bottom: 8px; letter-spacing: 1px; }
+    .review-text { font-size: 13px; color: #555; line-height: 1.7; }
+    .reviews-toggle-wrap { display: flex; justify-content: center; margin: 18px 0 4px; }
+    .reviews-toggle-btn { background: #fff; color: #142218; border: 1px solid #d9ded8; border-radius: 30px; padding: 11px 20px; font-size: 12px; font-weight: 700; cursor: pointer; transition: background .2s ease; }
+    .reviews-toggle-btn:hover { background: #f2f4ef; }
+    .review-item.review-hidden { display: none; }
+    @media (max-width: 640px) {
+      .reviews-grid { grid-template-columns: 1fr; }
+      .review-item { padding: 17px; }
+    }
 
     .add-review-box { background: var(--surface); border: 1px solid var(--border-color); padding: 24px; border-radius: var(--radius); margin-top: 36px; }
     .add-review-box h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; color: #142218; }
@@ -1009,45 +1018,96 @@
       }
     }
 
+    function renderReviews(reviewList) {
+      const grid = document.getElementById('reviewsGrid');
+      if (!grid) return;
+
+      const escapeHTML = (value) => String(value ?? '').replace(/[&<>"']/g, ch => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[ch]));
+
+      if (!reviewList || reviewList.length === 0) {
+        grid.innerHTML = '<p class="review-text" style="text-align:center; padding:24px 12px;">No customer reviews yet. Be the first to share your DAZBERY experience.</p>';
+        const oldToggle = document.getElementById('reviewsToggleWrap');
+        if (oldToggle) oldToggle.remove();
+        return;
+      }
+
+      grid.innerHTML = reviewList.map((r, index) => {
+        const rating = Math.max(0, Math.min(5, Number(r.rating) || 0));
+        const starsStr = '★'.repeat(rating) + '☆'.repeat(5 - rating);
+        const hiddenClass = index >= 3 ? ' review-hidden' : '';
+        const rawOrderId = String(r.order_id || '');
+        const maskedOrderId = rawOrderId.length > 4
+          ? '••••' + rawOrderId.slice(-4)
+          : '••••';
+        const language = r.language
+          ? `<div class="review-language">${escapeHTML(r.language)}</div>`
+          : '';
+
+        return `
+          <article class="review-item${hiddenClass}">
+            <div class="review-header">
+              <span class="review-user">${escapeHTML(r.customer_name)}</span>
+              <span class="verified-badge">✔ Verified Purchase</span>
+            </div>
+            <div class="review-language">Order ID: ${escapeHTML(maskedOrderId)}</div>
+            ${language}
+            <div class="stars" aria-label="${rating} out of 5 stars">${starsStr}</div>
+            <div class="review-text">${escapeHTML(r.review_text)}</div>
+          </article>
+        `;
+      }).join('');
+
+      const oldToggle = document.getElementById('reviewsToggleWrap');
+      if (oldToggle) oldToggle.remove();
+
+      if (reviewList.length > 3) {
+        const wrap = document.createElement('div');
+        wrap.className = 'reviews-toggle-wrap';
+        wrap.id = 'reviewsToggleWrap';
+        const button = document.createElement('button');
+        button.className = 'reviews-toggle-btn';
+        button.type = 'button';
+        button.textContent = `View all reviews (${reviewList.length})`;
+        button.setAttribute('aria-expanded', 'false');
+        button.addEventListener('click', () => {
+          const expanded = button.getAttribute('aria-expanded') === 'true';
+          grid.querySelectorAll('.review-hidden').forEach(card => {
+            card.style.display = expanded ? 'none' : 'block';
+          });
+          button.setAttribute('aria-expanded', String(!expanded));
+          button.textContent = expanded
+            ? `View all reviews (${reviewList.length})`
+            : 'Show fewer reviews';
+        });
+        wrap.appendChild(button);
+        grid.insertAdjacentElement('afterend', wrap);
+      }
+    }
+
     async function fetchReviews() {
       const grid = document.getElementById('reviewsGrid');
-      if(!grid || !supabaseClient) return;
+      if (!grid) return;
+
+      if (!supabaseClient) {
+        renderReviews([]);
+        return;
+      }
 
       const { data: reviews, error } = await supabaseClient
         .from('reviews')
         .select('*')
+        .eq('is_verified', true)
         .order('created_at', { ascending: false });
 
-      if (error || !reviews || reviews.length === 0) {
-        grid.innerHTML = `
-          <div class="review-item">
-            <div class="review-header"><span class="review-user">Sneha (Kochi)</span><span class="verified-badge">✔ Verified</span></div>
-            <div class="stars">★★★★★</div>
-            <div class="review-text">Amazing product! Noticed visible reduction in hair fall within 3 weeks of consistent use. Highly recommended.</div>
-          </div>
-          <div class="review-item">
-            <div class="review-header"><span class="review-user">Favas (Kozhikode)</span><span class="verified-badge">✔ Verified</span></div>
-            <div class="stars">★★★★★</div>
-            <div class="review-text">Super natural fragrance and non-sticky formula. Very easy to apply before heading out to work.</div>
-          </div>
-        `;
+      if (error) {
+        console.error('Could not load customer reviews:', error);
+        renderReviews([]);
         return;
       }
 
-      grid.innerHTML = '';
-      reviews.forEach(r => {
-        const starsStr = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
-        grid.innerHTML += `
-          <div class="review-item">
-            <div class="review-header">
-              <span class="review-user">${r.customer_name}</span>
-              <span class="verified-badge">✔ Verified (ID: ${r.order_id})</span>
-            </div>
-            <div class="stars">${starsStr}</div>
-            <div class="review-text">${r.review_text}</div>
-          </div>
-        `;
-      });
+      renderReviews(reviews || []);
     }
 
     async function submitUserReview(e) {
