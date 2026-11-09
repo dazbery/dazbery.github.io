@@ -229,7 +229,7 @@
     }
     .btn-buy:hover { background: #1e3323; }
 
-    /* FLOATING CREATOR WIDGET BUTTON */
+    /* FLOATING CREATOR PROGRAM BUTTON */
     .creator-float-btn {
       position: fixed;
       bottom: 24px;
@@ -286,7 +286,6 @@
       display: flex; align-items: center; justify-content: center;
     }
 
-    /* SIMPLE SIMPLIFIED RULES LIST */
     .simple-rules {
       background: #fbf9f5;
       border: 1px solid #eadecf;
@@ -515,14 +514,12 @@
         <h2 style="font-size: 20px; font-weight: 800; color: #142218; margin-top: 6px;">Post & Get Free Products! ✨</h2>
       </div>
 
-      <!-- SIMPLIFIED RULES -->
       <div class="simple-rules">
         <div><span>1.</span> Post 1 Before & After review video on IG / YouTube / FB.</div>
         <div><span>2.</span> Keep it live for 30 days (then it's your choice to keep or delete!).</div>
         <div><span>3.</span> Viral videos get extra gift hampers & free new product launches.</div>
       </div>
 
-      <!-- SUBMISSION FORM -->
       <form onsubmit="submitCreatorClaim(event)">
         <h4 style="font-size: 13px; font-weight: 700; margin-bottom: 10px; color: #142218;">Submit Your Video Link</h4>
         <div class="form-group" style="margin-bottom: 10px;">
@@ -593,7 +590,6 @@
           </div>
           <div class="coupon-msg" id="couponMsg"></div>
 
-          <!-- SMART CHECKOUT: SAVED ADDRESS DISPLAY VS INPUT FORM -->
           <div id="savedAddressCheckoutBox" style="display: none; background: #f7f5f0; border: 1px solid var(--border-color); padding: 16px; border-radius: 10px; margin-bottom: 14px;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
               <span style="font-size: 11px; font-weight: 700; color: #142218; text-transform: uppercase; letter-spacing: 0.5px;">Delivering to Saved Address</span>
@@ -679,10 +675,8 @@
         </button>
       </div>
 
-      <!-- DASHBOARD CONTAINER -->
       <div class="dashboard-container" id="dashboardCard" style="display: none;">
         
-        <!-- SECTION 1: MY PROFILE & SAVED DELIVERY ADDRESS -->
         <div class="auth-card">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
             <h2 style="font-size: 18px; color: #142218;">My Profile</h2>
@@ -690,7 +684,6 @@
           </div>
           <p id="userEmailDisplay" style="font-size: 12px; font-weight: 600; color: #6b7280; margin-bottom: 16px;"></p>
 
-          <!-- SAVED ADDRESS DISPLAY CARD -->
           <div id="profileSavedView" class="profile-card-display" style="display: none;">
             <button class="edit-pencil-btn" onclick="enableProfileEdit()" title="Edit Address">✏️</button>
             <h4 id="dispName" style="font-size: 15px; font-weight: 700; color: #142218; margin-bottom: 4px;"></h4>
@@ -698,7 +691,6 @@
             <p id="dispAddress" style="font-size: 13px; color: #6b7280; line-height: 1.5;"></p>
           </div>
 
-          <!-- EDIT FORM VIEW -->
           <form id="profileEditForm" onsubmit="saveProfileDetails(event)" style="display: flex; flex-direction: column; gap: 10px;">
             <div class="form-group"><input type="text" id="profName" placeholder="Full Name" required></div>
             <div class="form-group"><input type="tel" id="profPhone" placeholder="Mobile / WhatsApp Number" required></div>
@@ -710,7 +702,6 @@
           </form>
         </div>
 
-        <!-- SECTION 2: TRACK & MANAGE YOUR ORDERS -->
         <div class="auth-card">
           <h2 style="font-size: 18px; font-weight: 700; margin-bottom: 16px; color: #142218;">Track & Manage Your Orders</h2>
           <div id="orderHistoryList">
@@ -750,7 +741,6 @@
     let cartCount = 0;
     let isDiscountApplied = false;
 
-    // MODAL OPEN / CLOSE FUNCTIONS
     function openCreatorModal() {
       document.getElementById('creatorModal').style.display = 'flex';
     }
@@ -1291,7 +1281,7 @@
       const fullAddress = address ? `${address}, ${city} - ${pin}, ${state}` : document.getElementById('savedCheckoutAddress').innerText;
 
       var options = {
-        "key": "rzp_test_TxGax1WaYX5vvT",
+        "key": "rzp_live_Ty5lX0G7dUQdbn", // Updated Live API Key
         "amount": finalPrice * 100,
         "currency": "INR",
         "name": "DAZBERY",
