@@ -229,7 +229,7 @@
     }
     .btn-buy:hover { background: #1e3323; }
 
-    /* REWARDS BANNER & CLAIM FORM STYLING */
+    /* REWARDS BANNER & RULES STYLING */
     .rewards-banner {
       background: #ffffff;
       border: 1px solid var(--border-color);
@@ -261,47 +261,53 @@
     .rewards-desc {
       font-size: 14px;
       color: #555555;
-      max-width: 650px;
-      margin: 0 auto 32px;
+      max-width: 680px;
+      margin: 0 auto 30px;
       line-height: 1.6;
     }
     .rewards-desc strong { color: #142218; font-weight: 700; }
 
-    .reward-cards-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      margin-bottom: 32px;
+    /* TERMS BOX CONTAINER */
+    .terms-box {
+      background: #fbf9f5;
+      border: 1px solid #eadecf;
+      border-radius: 14px;
+      padding: 22px;
+      margin-bottom: 30px;
+      text-align: left;
       max-width: 800px;
       margin-left: auto;
       margin-right: auto;
     }
-    .reward-item-card {
-      background: #fbf9f5;
-      border: 1px solid #eadecf;
-      border-radius: 14px;
-      padding: 18px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      text-align: left;
-    }
-    .reward-item-left { display: flex; align-items: center; gap: 20px; }
-    .reward-icon-circle {
-      width: 52px;
-      height: 52px;
-      border-radius: 50%;
-      background: #eaf0eb;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      font-weight: 800;
+    .terms-box h4 {
+      font-size: 14px;
+      font-weight: 700;
       color: #142218;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .terms-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .terms-list li {
+      font-size: 12px;
+      color: #4a5568;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      line-height: 1.5;
+    }
+    .terms-list li::before {
+      content: "✔";
+      color: #2d5a27;
+      font-weight: bold;
       flex-shrink: 0;
     }
-    .reward-item-title { font-size: 15px; font-weight: 700; color: #142218; margin-bottom: 3px; }
-    .reward-item-sub { font-size: 12px; color: #6b7280; font-weight: 500; }
 
     .claim-form-box {
       background: #f7f5f0;
@@ -590,52 +596,32 @@
         </div>
       </div>
 
-      <!-- REWARDS BANNER & DIRECT SUBMISSION CLAIM FORM -->
+      <!-- REWARDS BANNER & LAUNCHING TERMS -->
       <div class="rewards-banner">
         <span class="rewards-pill">Creator & Customer Rewards</span>
         
-        <h2 class="rewards-title">Post Your Review &<br>Get Free Products! 🎁 ✨</h2>
+        <h2 class="rewards-title">Post Your Before & After Review &<br>Get Free Products & Gift Hampers! 🎁 ✨</h2>
         
         <p class="rewards-desc">
           Buy & use our Hair Growth Spray, share your genuine <strong>Before & After Review Video</strong> on <strong>Instagram, Facebook, or YouTube</strong>, and tag <strong>@dazbery</strong>!
         </p>
 
-        <div class="reward-cards-grid">
-          <div class="reward-item-card">
-            <div class="reward-item-left">
-              <div class="reward-icon-circle">100</div>
-              <div>
-                <div class="reward-item-title">100% FREE NEXT PRODUCT</div>
-                <div class="reward-item-sub">Submit your video link below and get your next DAZBERY product completely free!</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="reward-item-card">
-            <div class="reward-item-left">
-              <div class="reward-icon-circle">▶</div>
-              <div>
-                <div class="reward-item-title">VIRAL REACH REWARDS</div>
-                <div class="reward-item-sub">High-view videos win exclusive DAZBERY surprise hampers & gift kits!</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="reward-item-card">
-            <div class="reward-item-left">
-              <div class="reward-icon-circle">★</div>
-              <div>
-                <div class="reward-item-title">VIP EARLY TESTER CLUB</div>
-                <div class="reward-item-sub">Get exclusive free access to test and review all our upcoming product launches.</div>
-              </div>
-            </div>
-          </div>
+        <!-- CLEAR TERMS & GUIDELINES BOX -->
+        <div class="terms-box">
+          <h4>📌 Dazbery Creator Program Guidelines & Perks:</h4>
+          <ul class="terms-list">
+            <li><strong>1 Video is Enough:</strong> Post 1 genuine Before & After review video on Instagram, Facebook, or YouTube.</li>
+            <li><strong>30-Day Rule:</strong> Keep the review video live on your account for at least 30 days (after that, deleting it is completely your choice!).</li>
+            <li><strong>Viral Reach & Gift Hampers:</strong> If your video gets great organic reach/views, we will surprise you with extra gift hampers alongside your next free product.</li>
+            <li><strong>Free New Product Access:</strong> If we love your content and style, you will be onboarded as our permanent creator to receive all upcoming DAZBERY new product launches completely free!</li>
+            <li><strong>Instant Claim:</strong> As soon as you publish your video, submit your details using the form below right away.</li>
+          </ul>
         </div>
 
         <!-- CLAIM SUBMISSION FORM -->
         <div class="claim-form-box">
-          <h3>Claim Your Free Product Reward</h3>
-          <p>Already posted your video? Submit your details below for verification.</p>
+          <h3>Submit Your Video Link for Verification</h3>
+          <p>Already posted your review video? Fill in your details below.</p>
           <form onsubmit="submitCreatorClaim(event)">
             <div class="form-group" style="margin-bottom: 10px;">
               <input type="text" id="claimOrderId" placeholder="Your Order ID (e.g. 12)" required>
@@ -670,7 +656,7 @@
         <p>Only verified customers who purchased this item can submit feedback using their Order ID.</p>
         <form onsubmit="submitUserReview(event)">
           <div class="form-group" style="margin-bottom:10px;"><input type="text" id="rName" placeholder="Your Name & City" required></div>
-          <div class="form-group" style="margin-bottom:10px;"><input type="text" id="rOrder" placeholder="Enter Order ID (e.g., 12)" required></div>
+          <div class="form-group" style="margin-bottom:10px;"><input type="text" id="rOrder" placeholder="Enter Order ID (e.g. 12)" required></div>
           <div class="form-group" style="margin-bottom:10px;">
             <select id="rRating" style="background:#faf8f5;" required>
               <option value="5">★★★★★ (5 Stars)</option>
@@ -917,7 +903,6 @@
       }
     }
 
-    // CREATOR CLAIM SUBMISSION
     async function submitCreatorClaim(e) {
       e.preventDefault();
       const orderId = document.getElementById('claimOrderId').value.trim();
@@ -949,7 +934,6 @@
       }
     }
 
-    // FETCH & RENDER LIVE REVIEWS FROM SUPABASE
     async function fetchReviews() {
       const grid = document.getElementById('reviewsGrid');
       if(!grid || !supabaseClient) return;
@@ -991,7 +975,6 @@
       });
     }
 
-    // SUBMIT USER REVIEW (WITH ORDER ID CHECK)
     async function submitUserReview(e) {
       e.preventDefault();
       const name = document.getElementById('rName').value.trim();
@@ -1001,7 +984,6 @@
 
       if(!supabaseClient) return;
 
-      // Check if order exists in orders table
       const { data: orderData, error: orderErr } = await supabaseClient
         .from('orders')
         .select('id')
@@ -1013,7 +995,6 @@
         return;
       }
 
-      // Insert review into reviews table
       const { error } = await supabaseClient.from('reviews').insert([
         {
           order_id: orderId,
