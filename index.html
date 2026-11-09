@@ -284,6 +284,42 @@
       display: flex; align-items: center; justify-content: center;
     }
 
+
+    .rewards-modal-card { max-width: 560px; padding: 24px; }
+    .rewards-hero { text-align: center; padding: 10px 8px 20px; }
+    .rewards-kicker { color: #54705b; font-size: 9px; font-weight: 800; letter-spacing: 2px; }
+    .rewards-hero h2 { color: #142218; font-family: Georgia, serif; font-size: clamp(25px, 5vw, 34px); line-height: 1.16; margin: 10px 0; }
+    .rewards-prize { color: #142218; font-size: clamp(42px, 10vw, 58px); font-weight: 800; letter-spacing: -2px; line-height: 1.1; }
+    .rewards-prize-caption { color: #526356; font-size: 11px; font-weight: 700; }
+    .rewards-intro { color: #62645f; font-size: 12px; line-height: 1.7; max-width: 420px; margin: 14px auto 0; }
+    .rewards-steps { display: grid; gap: 10px; margin: 8px 0 16px; }
+    .rewards-steps > div { display: flex; gap: 13px; align-items: flex-start; background: #f7f5f0; border: 1px solid #e9e5dd; border-radius: 10px; padding: 12px; }
+    .rewards-steps > div > span { color: #49664f; font-size: 11px; font-weight: 800; letter-spacing: 1px; padding-top: 2px; }
+    .rewards-steps p { display: grid; gap: 2px; }
+    .rewards-steps strong { color: #142218; font-size: 12px; }
+    .rewards-steps small { color: #62645f; font-size: 11px; line-height: 1.5; }
+    .rewards-voucher-note { background: #142218; color: #fff; border-radius: 11px; padding: 15px; margin: 14px 0 20px; }
+    .rewards-voucher-note strong { font-size: 13px; }
+    .rewards-voucher-note p { color: #e8ece7; font-size: 11px; line-height: 1.65; margin-top: 5px; }
+    .rewards-form { display: grid; gap: 8px; }
+    .rewards-form h3, .participants-heading h3 { color: #142218; font-size: 17px; margin-bottom: 4px; }
+    .rewards-form > label:not(.rewards-consent) { color: #35483a; font-size: 11px; font-weight: 700; margin-top: 4px; }
+    .rewards-form input:not([type="checkbox"]), .rewards-form select { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; background: #faf8f5; font-size: 13px; }
+    .rewards-consent { display: flex; align-items: flex-start; gap: 9px; color: #62645f; font-size: 10px; line-height: 1.55; margin-top: 7px; }
+    .rewards-consent input { margin-top: 2px; accent-color: #142218; flex: 0 0 auto; }
+    .rewards-submit { width: 100%; margin-top: 7px; padding: 14px; }
+    .rewards-smallprint { color: #777; font-size: 10px; line-height: 1.6; text-align: center; }
+    .participants-panel { border-top: 1px solid #e6e2dc; margin-top: 22px; padding-top: 20px; }
+    .participants-heading { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+    .participants-live { color: #46634d; background: #edf2ec; border-radius: 30px; padding: 5px 9px; font-size: 9px; font-weight: 700; white-space: nowrap; }
+    .participants-note { color: #777; font-size: 10px; line-height: 1.6; margin: 7px 0 12px; }
+    .participants-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    .participant-name { border: 1px solid #e8e5dd; background: #fbfaf7; color: #24382a; border-radius: 8px; padding: 9px 11px; font-size: 11px; font-weight: 700; }
+    .participants-empty { grid-column: 1 / -1; color: #777; text-align: center; padding: 16px; font-size: 11px; }
+    .rewards-footer-note { background: #f7f5f0; border-radius: 10px; padding: 14px; margin-top: 18px; }
+    .rewards-footer-note strong { color: #142218; font-size: 12px; }
+    .rewards-footer-note p { color: #62645f; font-size: 10px; line-height: 1.6; margin: 5px 0 8px; }
+    .rewards-footer-note a { color: #244a30; font-size: 11px; font-weight: 700; text-decoration: underline; }
     .simple-rules {
       background: #fbf9f5;
       border: 1px solid #eadecf;
@@ -553,48 +589,89 @@
   <div id="toastNotification"></div>
   <div class="announcement-bar">COMPLIMENTARY SHIPPING ON ALL PREPAID ORDERS</div>
 
-  <!-- FLOATING CREATOR PROGRAM BUTTON -->
-  <div class="creator-float-btn" onclick="openCreatorModal()">
-    🎥 Creator Program
-  </div>
+  <!-- DAZBERY CUSTOMER REWARDS -->
+  <button class="creator-float-btn" type="button" onclick="openCustomerRewards()">
+    ✨ Customer Rewards
+  </button>
 
-  <!-- POPUP MODAL FOR CREATOR PROGRAM -->
-  <div class="modal-overlay" id="creatorModal">
-    <div class="modal-card">
-      <button class="modal-close" onclick="closeCreatorModal()">✕</button>
-      
-      <div style="text-align: center; margin-bottom: 16px;">
-        <span style="background: #e8ede8; color: #142218; font-size: 10px; font-weight: 700; padding: 4px 12px; border-radius: 20px; letter-spacing: 1px; text-transform: uppercase;">Creator Rewards</span>
-        <h2 style="font-size: 20px; font-weight: 800; color: #142218; margin-top: 6px;">Post & Get Free Products! ✨</h2>
+  <div class="modal-overlay" id="customerRewardsModal" aria-hidden="true">
+    <div class="modal-card rewards-modal-card" role="dialog" aria-modal="true" aria-labelledby="rewardsTitle">
+      <button class="modal-close" type="button" onclick="closeCustomerRewards()" aria-label="Close">✕</button>
+
+      <div class="rewards-hero">
+        <span class="rewards-kicker">DAZBERY CUSTOMER REWARDS</span>
+        <h2 id="rewardsTitle">Your Experience.<br>Your Chance to Win.</h2>
+        <div class="rewards-prize">₹1,000</div>
+        <p class="rewards-prize-caption">Shopping voucher · One lucky winner every month</p>
+        <p class="rewards-intro">Bought and tried a DAZBERY product? Share your honest experience in a video and enter our monthly lucky draw.</p>
       </div>
 
-      <div class="simple-rules">
-        <div><span>1.</span> Post your honest & genuine review video on IG / YouTube / FB.</div>
-        <div><span>2.</span> Keep it live for 30 days (then it's your choice to keep or delete!).</div>
-        <div><span>3.</span> Viral videos get extra gift hampers & free new product launches.</div>
+      <div class="rewards-steps">
+        <div><span>01</span><p><strong>Use your product</strong><small>Share your real experience, whether positive or negative.</small></p></div>
+        <div><span>02</span><p><strong>Post a video</strong><small>Upload it publicly on Instagram, YouTube or Facebook.</small></p></div>
+        <div><span>03</span><p><strong>Submit your entry</strong><small>Share your video link, platform, Order ID and WhatsApp number.</small></p></div>
+        <div><span>04</span><p><strong>Join the monthly draw</strong><small>Eligible Order IDs go into a random spin-wheel draw at month-end.</small></p></div>
       </div>
 
-      <form onsubmit="submitCreatorClaim(event)">
-        <h4 style="font-size: 13px; font-weight: 700; margin-bottom: 10px; color: #142218;">Submit Your Video Link</h4>
-        <div class="form-group" style="margin-bottom: 10px;">
-          <input type="text" id="claimOrderId" placeholder="Your Order ID (e.g. DZ-8492-X9)" required>
-        </div>
-        <div class="form-group" style="margin-bottom: 10px;">
-          <select id="claimPlatform" required style="background:#faf8f5;">
-            <option value="">Select Platform</option>
-            <option value="Instagram">Instagram</option>
-            <option value="YouTube">YouTube</option>
-            <option value="Facebook">Facebook</option>
-          </select>
-        </div>
-        <div class="form-group" style="margin-bottom: 10px;">
-          <input type="url" id="claimVideoLink" placeholder="Paste Video URL" required>
-        </div>
-        <div class="form-group" style="margin-bottom: 14px;">
-          <input type="tel" id="claimWhatsapp" placeholder="Your WhatsApp Number" required>
-        </div>
-        <button type="submit" class="btn-apply" style="width: 100%; padding: 12px;">SUBMIT FOR REWARD</button>
+      <div class="rewards-voucher-note">
+        <strong>The monthly reward</strong>
+        <p>One eligible participant wins a ₹1,000 shopping voucher for the DAZBERY website. The voucher is valid for 30 days and can be used once. Any amount above ₹1,000 is paid by the customer. Unused balance cannot be carried forward or exchanged for cash.</p>
+      </div>
+
+      <form id="customerRewardsForm" onsubmit="submitCustomerRewardEntry(event)" class="rewards-form">
+        <h3>Submit Your Video</h3>
+        <label for="rewardCustomerName">Your name</label>
+        <input type="text" id="rewardCustomerName" maxlength="80" placeholder="Enter your name" required>
+
+        <label for="claimOrderId">Order ID</label>
+        <input type="text" id="claimOrderId" maxlength="40" placeholder="Enter your DAZBERY Order ID" required>
+
+        <label for="claimPlatform">Where did you post your video?</label>
+        <select id="claimPlatform" required>
+          <option value="">Select a platform</option>
+          <option value="Instagram">Instagram</option>
+          <option value="YouTube">YouTube</option>
+          <option value="Facebook">Facebook</option>
+        </select>
+
+        <label for="claimVideoLink">Video link</label>
+        <input type="url" id="claimVideoLink" placeholder="Paste your public video link" required>
+
+        <label for="claimWhatsapp">WhatsApp number</label>
+        <input type="tel" id="claimWhatsapp" inputmode="numeric" pattern="[6-9][0-9]{9}" maxlength="10" placeholder="10-digit WhatsApp number" required>
+
+        <label class="rewards-consent">
+          <input type="checkbox" id="rewardNameConsent" required>
+          <span>I agree that my first name and last initial may appear on the DAZBERY Participants Board after my entry is verified. My phone number and full Order ID will never be shown publicly.</span>
+        </label>
+        <label class="rewards-consent">
+          <input type="checkbox" id="rewardDisclosureConsent" required>
+          <span>I confirm this is my own honest experience video, and I will clearly disclose that I am participating in DAZBERY's rewards programme.</span>
+        </label>
+
+        <button type="submit" class="btn-apply rewards-submit">SUBMIT MY ENTRY</button>
+        <p class="rewards-smallprint">Entries are subject to Order ID and video verification. One entry per eligible Order ID. Keep your video public for at least 30 days after submission. A positive review is not required.</p>
       </form>
+
+      <section class="participants-panel" aria-labelledby="participantsTitle">
+        <div class="participants-heading">
+          <div>
+            <span class="rewards-kicker">THE DAZBERY COMMUNITY</span>
+            <h3 id="participantsTitle">Participants Board</h3>
+          </div>
+          <span class="participants-live">Verified entries</span>
+        </div>
+        <p class="participants-note">Names appear here only after the entry is checked and approved, and only when the customer has agreed to public display.</p>
+        <div id="participantsBoard" class="participants-list">
+          <p class="participants-empty">Loading verified participants…</p>
+        </div>
+      </section>
+
+      <div class="rewards-footer-note">
+        <strong>Winner announcement</strong>
+        <p>The lucky winner will be selected at the end of each month using a random spin-wheel draw from eligible entries and announced on the same day on our official Instagram page.</p>
+        <a href="https://instagram.com/dazbery" target="_blank" rel="noopener">Follow @dazbery on Instagram</a>
+      </div>
     </div>
   </div>
 
@@ -691,7 +768,16 @@
               <option value="3">★★★☆☆ (3 Stars)</option>
             </select>
           </div>
-          <div class="form-group" style="margin-bottom:10px;"><textarea id="rText" placeholder="Write your feedback..." rows="2" required></textarea></div>
+          <div class="form-group" style="margin-bottom:10px;">
+            <select id="rLanguage" required style="background:#faf8f5;">
+              <option value="">Select review language</option>
+              <option value="English">English</option>
+              <option value="Hindi">Hindi</option>
+              <option value="Malayalam">Malayalam</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin-bottom:10px;"><textarea id="rText" placeholder="Write your honest feedback..." rows="2" required></textarea></div>
           <button type="submit" class="btn-apply" style="width:100%;">Submit Review</button>
         </form>
       </div>
@@ -850,11 +936,16 @@
       panel.hidden = isExpanded;
     }
 
-    function openCreatorModal() {
-      document.getElementById('creatorModal').style.display = 'flex';
+    function openCustomerRewards() {
+      const modal = document.getElementById('customerRewardsModal');
+      modal.style.display = 'flex';
+      modal.setAttribute('aria-hidden', 'false');
+      loadParticipantsBoard();
     }
-    function closeCreatorModal() {
-      document.getElementById('creatorModal').style.display = 'none';
+    function closeCustomerRewards() {
+      const modal = document.getElementById('customerRewardsModal');
+      modal.style.display = 'none';
+      modal.setAttribute('aria-hidden', 'true');
     }
 
     function showToast(message) {
@@ -986,36 +1077,91 @@
       }
     }
 
-    async function submitCreatorClaim(e) {
+    async function submitCustomerRewardEntry(e) {
       e.preventDefault();
+
+      const customerName = document.getElementById('rewardCustomerName').value.trim();
       const orderId = document.getElementById('claimOrderId').value.trim();
       const platform = document.getElementById('claimPlatform').value;
       const videoLink = document.getElementById('claimVideoLink').value.trim();
       const whatsapp = document.getElementById('claimWhatsapp').value.trim();
+      const publicConsent = document.getElementById('rewardNameConsent').checked;
+      const disclosureConsent = document.getElementById('rewardDisclosureConsent').checked;
 
-      if(!supabaseClient) {
-        showToast('❌ Database connecting...');
+      if (!/^[6-9]\d{9}$/.test(whatsapp)) {
+        showToast('Please enter a valid 10-digit WhatsApp number.');
+        return;
+      }
+      if (!publicConsent || !disclosureConsent) {
+        showToast('Please confirm both statements to submit.');
+        return;
+      }
+      if (!supabaseClient) {
+        showToast('Database is not available. Please try again later.');
         return;
       }
 
-      const { error } = await supabaseClient.from('creator_claims').insert([
-        {
-          order_id: orderId,
-          platform: platform,
-          video_link: videoLink,
-          whatsapp: whatsapp,
-          status: 'Pending Verification',
-          created_at: new Date()
-        }
-      ]);
+      const firstName = customerName.split(/\s+/)[0].slice(0, 24);
+      const parts = customerName.trim().split(/\s+/);
+      const publicName = parts.length > 1
+        ? `${firstName} ${parts[parts.length - 1].charAt(0).toUpperCase()}.`
+        : firstName;
 
-      if(error) {
-        showToast('❌ Claim submission failed: ' + error.message);
-      } else {
-        showToast('✓ Claim submitted successfully! We will contact you.');
-        e.target.reset();
-        closeCreatorModal();
+      const { error } = await supabaseClient.from('customer_reward_entries').insert([{
+        customer_name: customerName,
+        public_name: publicName,
+        public_consent: true,
+        order_code: orderId,
+        platform: platform,
+        video_link: videoLink,
+        whatsapp: whatsapp,
+        status: 'pending'
+      }]);
+
+      if (error) {
+        console.error('Customer rewards entry error:', error);
+        showToast('Entry could not be submitted. Please check your Order ID or try again.');
+        return;
       }
+
+      showToast('Thank you! Your entry has been received for verification.');
+      e.target.reset();
+      loadParticipantsBoard();
+    }
+
+    async function loadParticipantsBoard() {
+      const board = document.getElementById('participantsBoard');
+      if (!board) return;
+      if (!supabaseClient) {
+        board.innerHTML = '<p class="participants-empty">Participant entries will appear here after the rewards database is connected.</p>';
+        return;
+      }
+
+      const { data, error } = await supabaseClient
+        .from('customer_reward_entries')
+        .select('public_name')
+        .eq('status', 'approved')
+        .eq('public_consent', true)
+        .order('created_at', { ascending: false })
+        .limit(30);
+
+      if (error) {
+        console.error('Could not load participants:', error);
+        board.innerHTML = '<p class="participants-empty">The Participants Board is temporarily unavailable.</p>';
+        return;
+      }
+
+      if (!data || data.length === 0) {
+        board.innerHTML = '<p class="participants-empty">Be among the first verified DAZBERY participants. Approved entries will appear here.</p>';
+        return;
+      }
+
+      board.innerHTML = data.map(item => {
+        const safeName = String(item.public_name || 'DAZBERY Customer').replace(/[&<>"']/g, ch => ({
+          '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+        }[ch]));
+        return `<div class="participant-name">${safeName} <span aria-label="verified">✓</span></div>`;
+      }).join('');
     }
 
     function renderReviews(reviewList) {
@@ -1033,7 +1179,16 @@
         return;
       }
 
-      grid.innerHTML = reviewList.map((r, index) => {
+      const languagePriority = { english: 0, hindi: 1, malayalam: 2 };
+      const sortedReviews = [...reviewList].sort((a, b) => {
+        const aLang = String(a.language || '').toLowerCase();
+        const bLang = String(b.language || '').toLowerCase();
+        const aPriority = languagePriority[aLang] ?? 3;
+        const bPriority = languagePriority[bLang] ?? 3;
+        return aPriority - bPriority;
+      });
+
+      grid.innerHTML = sortedReviews.map((r, index) => {
         const rating = Math.max(0, Math.min(5, Number(r.rating) || 0));
         const starsStr = '★'.repeat(rating) + '☆'.repeat(5 - rating);
         const hiddenClass = index >= 3 ? ' review-hidden' : '';
@@ -1069,7 +1224,7 @@
         const button = document.createElement('button');
         button.className = 'reviews-toggle-btn';
         button.type = 'button';
-        button.textContent = `View all reviews (${reviewList.length})`;
+        button.textContent = `View all reviews (${sortedReviews.length})`;
         button.setAttribute('aria-expanded', 'false');
         button.addEventListener('click', () => {
           const expanded = button.getAttribute('aria-expanded') === 'true';
@@ -1078,7 +1233,7 @@
           });
           button.setAttribute('aria-expanded', String(!expanded));
           button.textContent = expanded
-            ? `View all reviews (${reviewList.length})`
+            ? `View all reviews (${sortedReviews.length})`
             : 'Show fewer reviews';
         });
         wrap.appendChild(button);
@@ -1116,6 +1271,7 @@
       const orderId = document.getElementById('rOrder').value.trim();
       const rating = parseInt(document.getElementById('rRating').value);
       const text = document.getElementById('rText').value.trim();
+      const language = document.getElementById('rLanguage').value;
 
       if(!supabaseClient) return;
 
@@ -1136,7 +1292,8 @@
           customer_name: name,
           rating: rating,
           review_text: text,
-          is_verified: true,
+          language: language,
+          is_verified: false,
           created_at: new Date()
         }
       ]);
@@ -1144,7 +1301,7 @@
       if (error) {
         showToast('❌ Failed to post review: ' + error.message);
       } else {
-        showToast('✓ Review posted successfully!');
+        showToast('Thank you! Your review was submitted for verification.');
         e.target.reset();
         fetchReviews();
       }
