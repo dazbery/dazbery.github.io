@@ -256,6 +256,7 @@
       border-radius: 8px;
     }
 
+    /* Dashboard Layout & Card Styles */
     .dashboard-container {
       max-width: 600px;
       margin: 0 auto;
@@ -549,10 +550,10 @@
         </button>
       </div>
 
-      <!-- DASHBOARD STRUCTURE -->
+      <!-- DASHBOARD STRUCTURE SPLIT INTO TWO SEPARATE SECTIONS -->
       <div class="dashboard-container" id="dashboardCard" style="display: none;">
         
-        <!-- SECTION 1: PROFILE & DELIVERY ADDRESS -->
+        <!-- SECTION 1: MY PROFILE & DELIVERY ADDRESS CARD -->
         <div class="auth-card">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
             <h2 style="font-size: 18px; color: var(--text-main);">My Profile</h2>
@@ -560,7 +561,7 @@
           </div>
           <p id="userEmailDisplay" style="font-size: 12px; font-weight: 500; color: var(--text-muted); margin-bottom: 16px;"></p>
 
-          <!-- SAVED ADDRESS DISPLAY -->
+          <!-- SAVED ADDRESS DISPLAY (Clean View) -->
           <div id="profileSavedView" class="profile-card-display" style="display: none;">
             <button class="edit-pencil-btn" onclick="enableProfileEdit()" title="Edit Address">✏️</button>
             <h4 id="dispName" style="font-size: 15px; font-weight: 700; color: #1a202c; margin-bottom: 4px;"></h4>
@@ -580,7 +581,7 @@
           </form>
         </div>
 
-        <!-- SECTION 2: TRACK & MANAGE ORDERS -->
+        <!-- SECTION 2: TRACK & MANAGE ORDERS CARD -->
         <div class="auth-card">
           <h2 style="font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--text-main);">Track & Manage Your Orders</h2>
           <div id="orderHistoryList">
@@ -866,6 +867,7 @@
       }
     }
 
+    // Dynamic Order Management & Tracking Logic
     async function fetchUserOrders(userId) {
       const historyList = document.getElementById('orderHistoryList');
       if (!historyList || !supabaseClient) return;
@@ -885,9 +887,9 @@
 
       orders.forEach(order => {
         const currentStatus = order.status || 'Confirmed';
-        const isCancelled = currentStatus === 'Cancelled';
+        const isCancelled = (currentStatus.toLowerCase() === 'cancelled');
         
-        // Cancel can only happen if status is 'Confirmed' (Packed, Shipped, Delivered, Cancelled-ൽ ചെയ്യാൻ പറ്റില്ല)
+        // Cancel Order is ONLY visible during 'Confirmed' stage
         const canCancel = (currentStatus === 'Confirmed');
 
         const steps = ['Confirmed', 'Packed', 'Shipped', 'Delivered'];
@@ -909,13 +911,19 @@
 
         let badgeBg = '#eef2ff';
         let badgeColor = '#4338ca';
+        let displayStatus = currentStatus;
+
         if (currentStatus === 'Packed') { badgeBg = '#fef3c7'; badgeColor = '#d97706'; }
-        if (currentStatus === 'Shipped') { badgeBg = '#e0f2fe'; badgeColor = '#0369a1'; }
-        if (currentStatus === 'Delivered') { badgeBg = '#dcfce7'; badgeColor = '#15803d'; }
-        if (isCancelled) { badgeBg = '#fee2e2'; badgeColor = '#b91c1c'; }
+        else if (currentStatus === 'Shipped') { badgeBg = '#e0f2fe'; badgeColor = '#0369a1'; }
+        else if (currentStatus === 'Delivered') { badgeBg = '#dcfce7'; badgeColor = '#15803d'; }
+        else if (isCancelled) { 
+          badgeBg = '#fee2e2'; 
+          badgeColor = '#b91c1c'; 
+          displayStatus = 'CANCELLED'; 
+        }
 
         const orderCard = `
-          <div class="order-card">
+          <div class="order-card" style="${isCancelled ? 'background: #fffcfc;' : ''}">
             <div class="order-header">
               <div>
                 <strong style="font-size: 13px; color: var(--text-main);">Order #${order.id}</strong>
@@ -923,7 +931,7 @@
                   ${new Date(order.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
                 </div>
               </div>
-              <span class="status-badge" style="background: ${badgeBg}; color: ${badgeColor};">${currentStatus}</span>
+              <span class="status-badge" style="background: ${badgeBg}; color: ${badgeColor};">${displayStatus}</span>
             </div>
 
             <div style="margin: 14px 0;">
