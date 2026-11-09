@@ -256,7 +256,7 @@
       border-radius: 8px;
     }
 
-    /* Dashboard Layout & Card Styles */
+    /* Account Dashboard Layout */
     .dashboard-container {
       max-width: 600px;
       margin: 0 auto;
@@ -317,7 +317,7 @@
     }
     .google-btn:hover { background: #f8f8f8; }
 
-    /* Order Management Styles */
+    /* Premium Order Cards & Timeline */
     .order-card {
       border: 1px solid #e2e8f0;
       border-radius: 12px;
@@ -382,18 +382,14 @@
     }
     .step-label { font-size: 10px; color: #4a5568; font-weight: 600; }
 
-    .cancel-btn {
-      background-color: #ef4444;
-      color: white;
-      border: none;
-      padding: 6px 14px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 12px;
+    .support-link-btn {
+      color: #555555;
+      font-size: 11px;
       font-weight: 600;
-      transition: background 0.2s;
+      text-decoration: underline;
+      cursor: pointer;
     }
-    .cancel-btn:hover { background-color: #dc2626; }
+    .support-link-btn:hover { color: #111111; }
 
     .section-title { font-size: 18px; font-weight: 700; margin: 40px 0 16px; }
     
@@ -550,10 +546,10 @@
         </button>
       </div>
 
-      <!-- DASHBOARD STRUCTURE SPLIT INTO TWO SEPARATE SECTIONS -->
+      <!-- DASHBOARD CONTAINER: SEPARATE PROFILE AND ORDER TRACKING SECTIONS -->
       <div class="dashboard-container" id="dashboardCard" style="display: none;">
         
-        <!-- SECTION 1: MY PROFILE & DELIVERY ADDRESS CARD -->
+        <!-- SECTION 1: MY PROFILE & SAVED DELIVERY ADDRESS -->
         <div class="auth-card">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
             <h2 style="font-size: 18px; color: var(--text-main);">My Profile</h2>
@@ -561,7 +557,7 @@
           </div>
           <p id="userEmailDisplay" style="font-size: 12px; font-weight: 500; color: var(--text-muted); margin-bottom: 16px;"></p>
 
-          <!-- SAVED ADDRESS DISPLAY (Clean View) -->
+          <!-- SAVED ADDRESS DISPLAY CARD -->
           <div id="profileSavedView" class="profile-card-display" style="display: none;">
             <button class="edit-pencil-btn" onclick="enableProfileEdit()" title="Edit Address">✏️</button>
             <h4 id="dispName" style="font-size: 15px; font-weight: 700; color: #1a202c; margin-bottom: 4px;"></h4>
@@ -581,7 +577,7 @@
           </form>
         </div>
 
-        <!-- SECTION 2: TRACK & MANAGE ORDERS CARD -->
+        <!-- SECTION 2: TRACK & MANAGE YOUR ORDERS -->
         <div class="auth-card">
           <h2 style="font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--text-main);">Track & Manage Your Orders</h2>
           <div id="orderHistoryList">
@@ -867,7 +863,7 @@
       }
     }
 
-    // Dynamic Order Management & Tracking Logic
+    // Dynamic Order Management & Tracking Logic (Without Direct Cancel Button)
     async function fetchUserOrders(userId) {
       const historyList = document.getElementById('orderHistoryList');
       if (!historyList || !supabaseClient) return;
@@ -888,9 +884,6 @@
       orders.forEach(order => {
         const currentStatus = order.status || 'Confirmed';
         const isCancelled = (currentStatus.toLowerCase() === 'cancelled');
-        
-        // Cancel Order is ONLY visible during 'Confirmed' stage
-        const canCancel = (currentStatus === 'Confirmed');
 
         const steps = ['Confirmed', 'Packed', 'Shipped', 'Delivered'];
         const currentStepIndex = steps.indexOf(currentStatus);
@@ -953,32 +946,13 @@
 
             ${timelineHTML}
 
-            ${canCancel ? `
-              <div style="text-align: right; margin-top: 10px;">
-                <button class="cancel-btn" onclick="handleCancelOrder(${order.id})">Cancel Order</button>
-              </div>
-            ` : ''}
+            <div style="text-align: right; margin-top: 10px;">
+              <a href="mailto:supportdazbery@gmail.com?subject=Help with Order %23${order.id}" class="support-link-btn">Need Help with Order?</a>
+            </div>
           </div>
         `;
         historyList.innerHTML += orderCard;
       });
-    }
-
-    async function handleCancelOrder(orderId) {
-      const confirmCancel = confirm("Are you sure you want to cancel this order?");
-      if (!confirmCancel) return;
-
-      const { data, error } = await supabaseClient
-        .from('orders')
-        .update({ status: 'Cancelled' })
-        .eq('id', orderId);
-
-      if (error) {
-        alert("Failed to cancel the order. Please try again.");
-      } else {
-        alert("Order cancelled successfully.");
-        if (currentUser) fetchUserOrders(currentUser.id);
-      }
     }
 
     async function handleLogout() {
