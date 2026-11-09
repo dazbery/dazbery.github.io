@@ -256,7 +256,7 @@
       border-radius: 8px;
     }
 
-    /* Dashboard Layout */
+    /* Dashboard & Quick Address Card */
     .dashboard-container {
       max-width: 600px;
       margin: 0 auto;
@@ -317,7 +317,6 @@
     }
     .google-btn:hover { background: #f8f8f8; }
 
-    /* Order Management Styles */
     .order-card {
       border: 1px solid #e2e8f0;
       border-radius: 12px;
@@ -466,13 +465,26 @@
           </div>
           <div class="coupon-msg" id="couponMsg"></div>
 
+          <!-- SMART CHECKOUT: SAVED ADDRESS DISPLAY VS INPUT FORM -->
+          <div id="savedAddressCheckoutBox" style="display: none; background: #f8fafc; border: 1px solid #cbd5e1; padding: 16px; border-radius: 8px; margin-bottom: 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <span style="font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase;">Delivering to Saved Address</span>
+              <button type="button" onclick="switchPage('login')" style="background: none; border: none; color: #2563eb; font-size: 11px; font-weight: 600; cursor: pointer;">Change Address</button>
+            </div>
+            <p id="savedCheckoutName" style="font-size: 13px; font-weight: 700; color: #0f172a;"></p>
+            <p id="savedCheckoutPhone" style="font-size: 12px; color: #475569;"></p>
+            <p id="savedCheckoutAddress" style="font-size: 12px; color: #64748b; margin-top: 2px;"></p>
+          </div>
+
           <form class="order-form" id="orderForm" onsubmit="handleOrder(event)">
-            <div class="form-group"><input type="text" id="checkoutName" placeholder="Full Name" required></div>
-            <div class="form-group"><input type="tel" id="checkoutPhone" placeholder="Mobile / WhatsApp Number" required></div>
-            <div class="form-group"><textarea id="checkoutAddress" placeholder="House/Flat No, Street Name" rows="2" required></textarea></div>
-            <div class="form-group"><input type="text" id="checkoutPin" placeholder="6-Digit PIN Code" maxlength="6" oninput="fetchLocationByPin(this.value)" required></div>
-            <div class="form-group"><input type="text" id="checkoutCity" placeholder="City / District" required></div>
-            <div class="form-group"><input type="text" id="checkoutState" placeholder="State" required></div>
+            <div id="manualAddressFields">
+              <div class="form-group" style="margin-bottom: 10px;"><input type="text" id="checkoutName" placeholder="Full Name" required></div>
+              <div class="form-group" style="margin-bottom: 10px;"><input type="tel" id="checkoutPhone" placeholder="Mobile / WhatsApp Number" required></div>
+              <div class="form-group" style="margin-bottom: 10px;"><textarea id="checkoutAddress" placeholder="House/Flat No, Street Name" rows="2" required></textarea></div>
+              <div class="form-group" style="margin-bottom: 10px;"><input type="text" id="checkoutPin" placeholder="6-Digit PIN Code" maxlength="6" oninput="fetchLocationByPin(this.value)" required></div>
+              <div class="form-group" style="margin-bottom: 10px;"><input type="text" id="checkoutCity" placeholder="City / District" required></div>
+              <div class="form-group" style="margin-bottom: 10px;"><input type="text" id="checkoutState" placeholder="State" required></div>
+            </div>
             
             <div class="btn-group">
               <button type="button" class="btn-cart" onclick="addToCart()">Add to Cart</button>
@@ -480,6 +492,34 @@
             </div>
           </form>
         </div>
+      </div>
+
+      <!-- DAZBERY CREATOR & REVIEWS REWARD BANNER -->
+      <div style="background: linear-gradient(135deg, #111111 0%, #2a2a2a 100%); color: #ffffff; padding: 28px 24px; border-radius: 12px; margin: 36px 0; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.08);">
+        <span style="background: #ffffff; color: #111111; font-size: 10px; font-weight: 700; padding: 4px 12px; border-radius: 20px; letter-spacing: 1px; text-transform: uppercase;">Creator & Customer Rewards</span>
+        
+        <h2 style="font-size: 20px; font-weight: 700; margin: 12px 0 8px;">Post Your Review & Get Free Products! 🎁✨</h2>
+        
+        <p style="font-size: 13px; color: #cccccc; max-width: 650px; margin: 0 auto 18px; line-height: 1.6;">
+          Buy & use our Hair Growth Spray, share your genuine <strong>Before & After Review Video</strong> on <strong>Instagram, Facebook, or YouTube</strong>, and tag <strong>@dazbery</strong>!
+        </p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 20px; text-align: left;">
+          <div style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); padding: 14px; border-radius: 8px;">
+            <div style="font-size: 14px; font-weight: 700; margin-bottom: 4px;">💯 100% FREE NEXT PRODUCT</div>
+            <div style="font-size: 11px; color: #bbbbbb;">Post a genuine video review and get your next DAZBERY product completely free!</div>
+          </div>
+          <div style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); padding: 14px; border-radius: 8px;">
+            <div style="font-size: 14px; font-weight: 700; margin-bottom: 4px;">🚀 VIRAL REACH REWARDS</div>
+            <div style="font-size: 11px; color: #bbbbbb;">High-view videos win exclusive DAZBERY surprise hampers & gift kits!</div>
+          </div>
+          <div style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); padding: 14px; border-radius: 8px;">
+            <div style="font-size: 14px; font-weight: 700; margin-bottom: 4px;">🌟 VIP EARLY TESTER CLUB</div>
+            <div style="font-size: 11px; color: #bbbbbb;">Get exclusive free access to test and review all our upcoming product launches.</div>
+          </div>
+        </div>
+
+        <a href="https://instagram.com/dazbery" target="_blank" style="display: inline-block; background: #ffffff; color: #111111; font-weight: 700; font-size: 12px; padding: 12px 24px; border-radius: 6px; text-decoration: none; text-transform: uppercase; letter-spacing: 0.5px;">Tag Us on Instagram (@dazbery)</a>
       </div>
 
       <h2 class="section-title" id="reviews">Customer Reviews (13)</h2>
@@ -612,6 +652,7 @@
     }
 
     let currentUser = null;
+    let hasSavedAddress = false;
     let currentQty = 1;
     let cartCount = 0;
     let isDiscountApplied = false;
@@ -635,18 +676,20 @@
       const strikeElement = document.getElementById('strikePrice');
       const submitBtn = document.getElementById('submitBtn');
 
+      const activeQty = (cartCount > 0) ? cartCount : currentQty;
+
       if (isDiscountApplied) {
-        const offerPrice = currentQty * 299;
-        const originalPrice = currentQty * 599;
+        const offerPrice = activeQty * 299;
+        const originalPrice = activeQty * 599;
         priceElement.innerText = '₹' + offerPrice;
         strikeElement.innerText = '₹' + originalPrice;
         strikeElement.style.display = 'inline';
-        submitBtn.innerText = `BUY NOW — ₹${offerPrice} (PREPAID)`;
+        submitBtn.innerText = `PROCEED TO PAY — ₹${offerPrice} (PREPAID)`;
       } else {
-        const originalPrice = currentQty * 599;
+        const originalPrice = activeQty * 599;
         priceElement.innerText = '₹' + originalPrice;
         strikeElement.style.display = 'none';
-        submitBtn.innerText = `BUY NOW — ₹${originalPrice} (PREPAID)`;
+        submitBtn.innerText = `PROCEED TO PAY — ₹${originalPrice} (PREPAID)`;
       }
     }
 
@@ -685,12 +728,14 @@
     function addToCart() {
       cartCount += currentQty;
       document.getElementById('cartBadge').innerText = cartCount;
+      updatePriceDisplay();
       showToast(`✓ Added ${currentQty} item(s) to cart`);
     }
 
     function removeFromCart() {
       cartCount = 0;
       document.getElementById('cartBadge').innerText = cartCount;
+      updatePriceDisplay();
       renderCart();
       showToast('✓ Product removed from cart');
     }
@@ -698,7 +743,7 @@
     function renderCart() {
       const container = document.getElementById('cartItemsContainer');
       const summaryBox = document.getElementById('cartSummaryBox');
-      const finalPrice = isDiscountApplied ? (currentQty * 299) : (currentQty * 599);
+      const finalPrice = isDiscountApplied ? (cartCount * 299) : (cartCount * 599);
       
       if(cartCount === 0) {
         container.innerHTML = `<p style="font-size:13px; color:var(--text-muted); text-align:center; padding: 20px;">Your cart is currently empty.</p>`;
@@ -708,7 +753,7 @@
           <div class="cart-item-row">
             <div>
               <div style="font-weight: 700; font-size: 13px;">Rosemary & Rice Water Hair Growth Spray (100ml)</div>
-              <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Qty: ${currentQty} ${isDiscountApplied ? '| 50% OFF Applied' : ''}</div>
+              <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Qty: <strong>${cartCount}</strong> ${isDiscountApplied ? '| 50% OFF Applied' : ''}</div>
               <button class="btn-remove" onclick="removeFromCart()">Remove from Cart</button>
             </div>
             <div style="font-weight: 700; font-size: 14px;">₹${finalPrice}</div>
@@ -719,16 +764,28 @@
       }
     }
 
-    // Cart-ൽ നിന്ന് നേരിട്ട് Checkout / Payment പേജിലേക്ക് പോകുന്ന ഫങ്ഷൻ
+    // SMART CART CHECKOUT ROUTING
     function proceedCartCheckout() {
       if(cartCount === 0) {
         showToast('❌ Your cart is empty');
         return;
       }
-      switchPage('shop');
-      // ഫോമിലേക്ക് സ്ക്രോൾ ചെയ്യുന്നു
-      document.getElementById('orderForm').scrollIntoView({ behavior: 'smooth' });
-      showToast('👇 Please fill your delivery details below to checkout');
+
+      // സേവ് ചെയ്ത അഡ്രസ്സ് ഉള്ള ആളാണെങ്കിൽ നേരെ Razorpay ഗേറ്റ്‌വേ തുറക്കുന്നു
+      if (hasSavedAddress) {
+        triggerRazorpayCheckout();
+      } else {
+        switchPage('shop');
+        setTimeout(() => {
+          const formElem = document.getElementById('orderForm');
+          if(formElem) {
+            formElem.scrollIntoView({ behavior: 'smooth' });
+            const firstInput = document.getElementById('checkoutName');
+            if(firstInput) firstInput.focus();
+          }
+        }, 200);
+        showToast('👇 Please fill your delivery address to complete order');
+      }
     }
 
     async function loginWithGoogle() {
@@ -806,6 +863,8 @@
         .single();
 
       if (data && data.full_name && data.address) {
+        hasSavedAddress = true;
+
         document.getElementById('profName').value = data.full_name || '';
         document.getElementById('profPhone').value = data.phone || '';
         document.getElementById('profAddress').value = data.address || '';
@@ -813,6 +872,7 @@
         document.getElementById('profCity').value = data.city || '';
         document.getElementById('profState').value = data.state || '';
 
+        // Form inputs
         document.getElementById('checkoutName').value = data.full_name || '';
         document.getElementById('checkoutPhone').value = data.phone || '';
         document.getElementById('checkoutAddress').value = data.address || '';
@@ -820,15 +880,34 @@
         document.getElementById('checkoutCity').value = data.city || '';
         document.getElementById('checkoutState').value = data.state || '';
 
+        // UI Displays
         document.getElementById('dispName').innerText = data.full_name;
         document.getElementById('dispPhone').innerText = '📞 ' + data.phone;
         document.getElementById('dispAddress').innerText = `${data.address}, ${data.city} - ${data.pin}, ${data.state}`;
         
         document.getElementById('profileSavedView').style.display = 'block';
         document.getElementById('profileEditForm').style.display = 'none';
+
+        // Show Saved Address card on checkout UI and hide manual fields
+        document.getElementById('savedAddressCheckoutBox').style.display = 'block';
+        document.getElementById('manualAddressFields').style.display = 'none';
+        
+        document.getElementById('savedCheckoutName').innerText = data.full_name;
+        document.getElementById('savedCheckoutPhone').innerText = '📞 ' + data.phone;
+        document.getElementById('savedCheckoutAddress').innerText = `${data.address}, ${data.city} - ${data.pin}, ${data.state}`;
+
+        // Disable input requirements since address is pre-filled
+        ['checkoutName','checkoutPhone','checkoutAddress','checkoutPin','checkoutCity','checkoutState'].forEach(id => {
+          document.getElementById(id).removeAttribute('required');
+        });
+
       } else {
+        hasSavedAddress = false;
         document.getElementById('profileSavedView').style.display = 'none';
         document.getElementById('profileEditForm').style.display = 'flex';
+        document.getElementById('savedAddressCheckoutBox').style.display = 'none';
+        document.getElementById('manualAddressFields').style.display = 'block';
+
         if (currentUser) {
           document.getElementById('profName').value = currentUser.user_metadata?.full_name || '';
           document.getElementById('checkoutName').value = currentUser.user_metadata?.full_name || '';
@@ -863,19 +942,11 @@
       if (error) {
         showToast('❌ Failed to save profile: ' + error.message);
       } else {
-        document.getElementById('checkoutName').value = name;
-        document.getElementById('checkoutPhone').value = phone;
-        document.getElementById('checkoutAddress').value = address;
-        document.getElementById('checkoutPin').value = pin;
-        document.getElementById('checkoutCity').value = city;
-        document.getElementById('checkoutState').value = state;
-
         showToast('✓ Profile saved successfully!');
         loadUserProfile(currentUser.id);
       }
     }
 
-    // Dynamic Order Management & Tracking Logic (Without Cancel Button, With Support Link)
     async function fetchUserOrders(userId) {
       const historyList = document.getElementById('orderHistoryList');
       if (!historyList || !supabaseClient) return;
@@ -970,6 +1041,7 @@
     async function handleLogout() {
       if (supabaseClient) await supabaseClient.auth.signOut();
       currentUser = null;
+      hasSavedAddress = false;
       document.getElementById('dashboardCard').style.display = 'none';
       document.getElementById('loginCard').style.display = 'block';
       document.getElementById('navAccountText').innerText = 'Account / Login';
@@ -980,21 +1052,36 @@
       document.getElementById('checkoutPin').value = '';
       document.getElementById('checkoutCity').value = '';
       document.getElementById('checkoutState').value = '';
+
+      document.getElementById('savedAddressCheckoutBox').style.display = 'none';
+      document.getElementById('manualAddressFields').style.display = 'block';
+
+      ['checkoutName','checkoutPhone','checkoutAddress','checkoutPin','checkoutCity','checkoutState'].forEach(id => {
+        document.getElementById(id).setAttribute('required', 'true');
+      });
       
       showToast('✓ Logged out successfully');
       switchPage('login');
     }
 
-    async function handleOrder(e) {
+    function handleOrder(e) {
       e.preventDefault();
+      triggerRazorpayCheckout();
+    }
 
+    // DIRECT RAZORPAY PAYMENT TRIGGER
+    function triggerRazorpayCheckout() {
       const name = document.getElementById('checkoutName').value;
       const phone = document.getElementById('checkoutPhone').value;
       const address = document.getElementById('checkoutAddress').value;
       const pin = document.getElementById('checkoutPin').value;
       const city = document.getElementById('checkoutCity').value;
       const state = document.getElementById('checkoutState').value;
-      const finalPrice = isDiscountApplied ? (currentQty * 299) : (currentQty * 599);
+      
+      const orderQty = (cartCount > 0) ? cartCount : currentQty;
+      const finalPrice = isDiscountApplied ? (orderQty * 299) : (orderQty * 599);
+
+      const fullAddress = address ? `${address}, ${city} - ${pin}, ${state}` : document.getElementById('savedCheckoutAddress').innerText;
 
       var options = {
         "key": "rzp_test_TxGax1WaYX5vvT",
@@ -1003,8 +1090,8 @@
         "name": "DAZBERY",
         "description": "Rosemary & Rice Water Hair Growth Spray (100ml)",
         "prefill": {
-          "name": name,
-          "contact": phone,
+          "name": name || document.getElementById('savedCheckoutName').innerText,
+          "contact": phone || document.getElementById('savedCheckoutPhone').innerText.replace('📞 ', ''),
           "email": currentUser ? currentUser.email : ""
         },
         "theme": {
@@ -1019,10 +1106,10 @@
             await supabaseClient.from('orders').insert([
               {
                 user_id: session ? session.user.id : null,
-                customer_name: name,
-                phone: phone,
-                address: address + ', ' + city + ' - ' + pin + ', ' + state,
-                quantity: currentQty,
+                customer_name: name || document.getElementById('savedCheckoutName').innerText,
+                phone: phone || document.getElementById('savedCheckoutPhone').innerText.replace('📞 ', ''),
+                address: fullAddress,
+                quantity: orderQty,
                 total_price: finalPrice,
                 payment_id: response.razorpay_payment_id,
                 status: 'Confirmed',
@@ -1031,6 +1118,9 @@
               }
             ]);
           }
+
+          cartCount = 0;
+          document.getElementById('cartBadge').innerText = cartCount;
 
           showToast('✓ Order Placed Successfully!');
           alert(`Payment Success!\nPayment ID: ${response.razorpay_payment_id}\nOrder confirmed for ₹${finalPrice}.`);
