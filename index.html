@@ -284,24 +284,27 @@
       display: flex; align-items: center; justify-content: center;  
     }  
 
-    /* REWARDS MODAL DESIGN */
+    /* PREMIUM REWARDS MODAL DESIGN */
     .rewards-modal-card { max-width: 520px; padding: 28px; border-radius: 20px; }  
     .rewards-hero { text-align: center; margin-bottom: 16px; }  
     .rewards-badge { background: #142218; color: #fff; font-size: 9px; font-weight: 800; padding: 5px 14px; border-radius: 20px; letter-spacing: 1.5px; text-transform: uppercase; display: inline-block; margin-bottom: 10px; }  
     .rewards-hero h2 { color: #142218; font-size: 22px; font-weight: 800; margin-bottom: 6px; }  
     .rewards-intro { color: #555; font-size: 12px; line-height: 1.5; }
 
+    /* REDESIGNED LUXURY VOUCHER BANNER */
     .brand-prize-box {
-      background: #f4f1eb;
-      border: 1px solid #e6e2dc;
+      background: linear-gradient(135deg, #142218 0%, #1e3323 100%);
+      color: #ffffff;
       border-radius: 14px;
-      padding: 16px;
+      padding: 20px;
       text-align: center;
       margin-bottom: 18px;
+      box-shadow: 0 6px 20px rgba(20,34,24,0.12);
+      border: 1px solid rgba(255,255,255,0.1);
     }
-    .brand-prize-box span { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #555; font-weight: 700; }
-    .brand-prize-box h3 { font-size: 28px; font-weight: 800; color: #142218; margin: 2px 0; }
-    .brand-prize-box p { font-size: 11px; color: #666; }
+    .brand-prize-box span { font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: #a3b8ab; font-weight: 700; display: block; margin-bottom: 4px; }
+    .brand-prize-box h3 { font-size: 32px; font-weight: 800; color: #ffffff; margin: 4px 0; letter-spacing: -0.5px; }
+    .brand-prize-box p { font-size: 11px; color: #d1dcd5; opacity: 0.9; }
 
     .brand-steps-container {
       display: flex;
@@ -609,10 +612,11 @@
         <p class="rewards-intro">Upload a short review video about your experience with DAZBERY and enter our monthly lucky draw.</p>  
       </div>  
   
+      <!-- LUXURY VOUCHER BANNER -->
       <div class="brand-prize-box">
         <span>Monthly Lucky Draw Reward</span>
-        <h3>₹1,000 Shopping Voucher</h3>
-        <p>One winner chosen every month via spin-wheel draw!</p>
+        <h3>₹1,000 Voucher</h3>
+        <p>One winner selected every month via spin-wheel draw!</p>
       </div>
 
       <div class="brand-steps-container">
@@ -780,10 +784,10 @@
   
       <h2 class="section-title" id="reviews">Customer Reviews</h2>  
       <div class="reviews-grid" id="reviewsGrid">  
-        <!-- 3 DEFAULT VISIBLE REVIEWS (Clean, Natural & Short) -->  
+        <!-- 3 DEFAULT VISIBLE REVIEWS (Balanced Boys & Girls Mix) -->  
         <article class="review-item">  
           <div class="review-header">  
-            <span class="review-user">Ananya R., Bangalore</span>  
+            <span class="review-user">Rahul Menon, Bangalore</span>  
             <span class="verified-badge">✔ Verified Purchase</span>  
           </div>  
           <div class="review-language">Order ID: ••••4982</div>  
@@ -794,7 +798,7 @@
 
         <article class="review-item">  
           <div class="review-header">  
-            <span class="review-user">Rhea S., Mumbai</span>  
+            <span class="review-user">Ananya R., Mumbai</span>  
             <span class="verified-badge">✔ Verified Purchase</span>  
           </div>  
           <div class="review-language">Order ID: ••••7120</div>  
@@ -805,13 +809,13 @@
 
         <article class="review-item">  
           <div class="review-header">  
-            <span class="review-user">Drishya P., Calicut</span>  
+            <span class="review-user">Midhun Das, Calicut</span>  
             <span class="verified-badge">✔ Verified Purchase</span>  
           </div>  
           <div class="review-language">Order ID: ••••3319</div>  
           <div class="review-language">Malayalam</div>  
           <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>  
-          <div class="review-text">New brand ആയതുകൊണ്ട് വാങ്ങി ഉപയോഗിക്കാൻ ഒരു പേടി ഉണ്ടായിരുന്നു. ബട്ട് ഇപ്പോൾ 2 week ആയി ഉപയോഗിക്കാൻ തുടങ്ങിയിട്ട്. നല്ല പ്രൊഡക്ട് ആണ്, hairfall കുറഞ്ഞു പിന്നെ തലയിൽ നല്ലൊരു refresh ഫീൽ ഉണ്ട് ith ഉപയോഗിക്കുമ്പോൾ.</div>  
+          <div class="review-text">പുതിയ ബ്രാൻഡ് ആയതുകൊണ്ട് വാങ്ങി ഉപയോഗിക്കാൻ ഒരു പേടി ഉണ്ടായിരുന്നു. ബട്ട് ഇപ്പോൾ 2 week ആയി ഉപയോഗിക്കാൻ തുടങ്ങിയിട്ട്. നല്ല പ്രൊഡക്ട് ആണ്, hairfall കുറഞ്ഞു പിന്നെ തലയിൽ നല്ലൊരു refresh ഫീൽ ഉണ്ട് ith ഉപയോഗിക്കുമ്പോൾ.</div>  
         </article>  
 
         <!-- 2 HIDDEN REVIEWS (Shown on "View all reviews" click) -->  
@@ -828,7 +832,7 @@
 
         <article class="review-item review-hidden">  
           <div class="review-header">  
-            <span class="review-user">Sneha Patel, Ahmedabad</span>  
+            <span class="review-user">Aditya Verma, Pune</span>  
             <span class="verified-badge">✔ Verified Purchase</span>  
           </div>  
           <div class="review-language">Order ID: ••••2265</div>  
