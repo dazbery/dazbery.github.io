@@ -256,7 +256,7 @@
       border-radius: 8px;
     }
 
-    /* Account Dashboard Layout */
+    /* Dashboard Layout */
     .dashboard-container {
       max-width: 600px;
       margin: 0 auto;
@@ -317,7 +317,7 @@
     }
     .google-btn:hover { background: #f8f8f8; }
 
-    /* Premium Order Cards & Timeline */
+    /* Order Management Styles */
     .order-card {
       border: 1px solid #e2e8f0;
       border-radius: 12px;
@@ -863,7 +863,7 @@
       }
     }
 
-    // Dynamic Order Management & Tracking Logic (Without Direct Cancel Button)
+    // Dynamic Order Management & Tracking Logic (Without Cancel Button, With Support Link)
     async function fetchUserOrders(userId) {
       const historyList = document.getElementById('orderHistoryList');
       if (!historyList || !supabaseClient) return;
@@ -990,7 +990,7 @@
         "currency": "INR",
         "name": "DAZBERY",
         "description": "Rosemary & Rice Water Hair Growth Spray (100ml)",
-        "prefill": {
+        "prefixed": {
           "name": name,
           "contact": phone,
           "email": currentUser ? currentUser.email : ""
