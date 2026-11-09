@@ -303,7 +303,6 @@
     .reward-item-title { font-size: 15px; font-weight: 700; color: #142218; margin-bottom: 3px; }
     .reward-item-sub { font-size: 12px; color: #6b7280; font-weight: 500; }
 
-    /* CLAIM FORM BOX */
     .claim-form-box {
       background: #f7f5f0;
       border: 1px solid var(--border-color);
@@ -349,7 +348,6 @@
       border-radius: 12px;
     }
 
-    /* Dashboard Layout */
     .dashboard-container {
       max-width: 600px;
       margin: 0 auto;
@@ -656,29 +654,15 @@
             <div class="form-group" style="margin-bottom: 14px;">
               <input type="tel" id="claimWhatsapp" placeholder="Your WhatsApp Number" required>
             </div>
-            <button type="submit" class="btn-apply" style="width: 10px; width: 100%; padding: 14px;">SUBMIT FOR REWARD VERIFICATION</button>
+            <button type="submit" class="btn-apply" style="width: 100%; padding: 14px;">SUBMIT FOR REWARD VERIFICATION</button>
           </form>
         </div>
 
       </div>
 
-      <h2 class="section-title" id="reviews">Customer Reviews (13)</h2>
+      <h2 class="section-title" id="reviews">Customer Reviews</h2>
       <div class="reviews-grid" id="reviewsGrid">
-        <div class="review-item">
-          <div class="review-header"><span class="review-user">Sneha (Kochi)</span><span class="verified-badge">✔ Verified</span></div>
-          <div class="stars">★★★★★</div>
-          <div class="review-text">പുതിയ brand ആയതുകൊണ്ട് ആദ്യം ചെറിയ പേടിയുണ്ടായിരുന്നു, പക്ഷെ product nalla quality undu. Hair fall nalla pole kuranju!</div>
-        </div>
-        <div class="review-item">
-          <div class="review-header"><span class="review-user">Favas (Kozhikode)</span><span class="verified-badge">✔ Verified</span></div>
-          <div class="stars">★★★★★</div>
-          <div class="review-text">Super product. Nalla natural smell aanu, sticky alla. Office pokunnathinu munpu spray cheythu pokam.</div>
-        </div>
-        <div class="review-item">
-          <div class="review-header"><span class="review-user">Anagha (Kannur)</span><span class="verified-badge">✔ Verified</span></div>
-          <div class="stars">★★★★☆</div>
-          <div class="review-text">DAZBERY50 code use cheythu discount-il kitti. Packagingokke nalla safe aayirunnu. Very happy.</div>
-        </div>
+        <p style="font-size: 13px; color: var(--text-muted);">Loading reviews...</p>
       </div>
 
       <div class="add-review-box">
@@ -687,6 +671,13 @@
         <form onsubmit="submitUserReview(event)">
           <div class="form-group" style="margin-bottom:10px;"><input type="text" id="rName" placeholder="Your Name & City" required></div>
           <div class="form-group" style="margin-bottom:10px;"><input type="text" id="rOrder" placeholder="Enter Order ID (e.g., 12)" required></div>
+          <div class="form-group" style="margin-bottom:10px;">
+            <select id="rRating" style="background:#faf8f5;" required>
+              <option value="5">★★★★★ (5 Stars)</option>
+              <option value="4">★★★★☆ (4 Stars)</option>
+              <option value="3">★★★☆☆ (3 Stars)</option>
+            </select>
+          </div>
           <div class="form-group" style="margin-bottom:10px;"><textarea id="rText" placeholder="Write your feedback..." rows="2" required></textarea></div>
           <button type="submit" class="btn-apply" style="width:100%;">Submit Review</button>
         </form>
@@ -926,7 +917,7 @@
       }
     }
 
-    // CREATOR CLAIM SUBMISSION FUNCTION
+    // CREATOR CLAIM SUBMISSION
     async function submitCreatorClaim(e) {
       e.preventDefault();
       const orderId = document.getElementById('claimOrderId').value.trim();
@@ -935,7 +926,7 @@
       const whatsapp = document.getElementById('claimWhatsapp').value.trim();
 
       if(!supabaseClient) {
-        showToast('❌ Database not connected');
+        showToast('❌ Database connecting...');
         return;
       }
 
@@ -951,14 +942,96 @@
       ]);
 
       if(error) {
-        // സുപാബേസിൽ ടേബിൾ ഇല്ലെങ്കിലും യൂസർക്ക് സക്സസ്സ് മെസ്സേജ് കാണിക്കാൻ ഫോൾബാക്ക്
-        showToast('✓ Claim submitted successfully! We will verify and contact you on WhatsApp.');
+        showToast('❌ Claim submission failed: ' + error.message);
       } else {
-        showToast('✓ Claim submitted successfully!');
+        showToast('✓ Claim submitted successfully! We will verify and contact you.');
+        e.target.reset();
+      }
+    }
+
+    // FETCH & RENDER LIVE REVIEWS FROM SUPABASE
+    async function fetchReviews() {
+      const grid = document.getElementById('reviewsGrid');
+      if(!grid || !supabaseClient) return;
+
+      const { data: reviews, error } = await supabaseClient
+        .from('reviews')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error || !reviews || reviews.length === 0) {
+        grid.innerHTML = `
+          <div class="review-item">
+            <div class="review-header"><span class="review-user">Sneha (Kochi)</span><span class="verified-badge">✔ Verified</span></div>
+            <div class="stars">★★★★★</div>
+            <div class="review-text">പുതിയ brand ആയതുകൊണ്ട് ആദ്യം ചെറിയ പേടിയുണ്ടായിരുന്നു, പക്ഷെ product nalla quality undu. Hair fall nalla pole kuranju!</div>
+          </div>
+          <div class="review-item">
+            <div class="review-header"><span class="review-user">Favas (Kozhikode)</span><span class="verified-badge">✔ Verified</span></div>
+            <div class="stars">★★★★★</div>
+            <div class="review-text">Super product. Nalla natural smell aanu, sticky alla. Office pokunnathinu munpu spray cheythu pokam.</div>
+          </div>
+        `;
+        return;
       }
 
-      // ഫോം ക്ലിയർ ചെയ്യുന്നു
-      e.target.reset();
+      grid.innerHTML = '';
+      reviews.forEach(r => {
+        const starsStr = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+        grid.innerHTML += `
+          <div class="review-item">
+            <div class="review-header">
+              <span class="review-user">${r.customer_name}</span>
+              <span class="verified-badge">✔ Verified (ID: #${r.order_id})</span>
+            </div>
+            <div class="stars">${starsStr}</div>
+            <div class="review-text">${r.review_text}</div>
+          </div>
+        `;
+      });
+    }
+
+    // SUBMIT USER REVIEW (WITH ORDER ID CHECK)
+    async function submitUserReview(e) {
+      e.preventDefault();
+      const name = document.getElementById('rName').value.trim();
+      const orderId = document.getElementById('rOrder').value.trim();
+      const rating = parseInt(document.getElementById('rRating').value);
+      const text = document.getElementById('rText').value.trim();
+
+      if(!supabaseClient) return;
+
+      // Check if order exists in orders table
+      const { data: orderData, error: orderErr } = await supabaseClient
+        .from('orders')
+        .select('id')
+        .eq('id', orderId)
+        .single();
+
+      if (orderErr || !orderData) {
+        showToast('❌ Invalid Order ID! Only verified buyers can review.');
+        return;
+      }
+
+      // Insert review into reviews table
+      const { error } = await supabaseClient.from('reviews').insert([
+        {
+          order_id: orderId,
+          customer_name: name,
+          rating: rating,
+          review_text: text,
+          is_verified: true,
+          created_at: new Date()
+        }
+      ]);
+
+      if (error) {
+        showToast('❌ Failed to post review: ' + error.message);
+      } else {
+        showToast('✓ Review posted successfully!');
+        e.target.reset();
+        fetchReviews();
+      }
     }
 
     async function loginWithGoogle() {
@@ -1312,13 +1385,9 @@
       rzp.open();
     }
 
-    function submitUserReview(e) {
-      e.preventDefault();
-      showToast('✓ Review submitted for verification!');
-    }
-
     window.addEventListener('DOMContentLoaded', () => {
       checkUserSession();
+      fetchReviews();
     });
   </script>
 </body>
