@@ -486,9 +486,56 @@
     .insta-link { color: #ffffff; font-weight: 700; text-decoration: none; }
     .insta-link:hover { text-decoration: underline; }
 
+    /* Delivery Protection & Customer Care */
+    .support-section {
+      margin-top: 40px; background: #fff; border: 1px solid var(--border-color);
+      padding: 34px 28px; border-radius: 18px; text-align: center;
+      box-shadow: 0 4px 20px rgba(20, 34, 24, 0.03);
+    }
+    .support-title { font-family: Georgia, serif; font-size: clamp(22px, 3vw, 30px); line-height: 1.15; color: #142218; margin-bottom: 8px; }
+    .support-tagline { color: #2d5a3b; font-size: 11px; font-weight: 700; letter-spacing: 2px; margin-bottom: 12px; }
+    .support-intro { color: var(--text-muted); max-width: 620px; margin: 0 auto 26px; font-size: 13px; line-height: 1.7; }
+    .support-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-bottom: 24px; align-items: start; }
+    .support-item { background: #fcf9f5; border: 1px solid #e6e2dc; border-radius: 13px; overflow: hidden; min-width: 0; }
+    .support-toggle { appearance: none; width: 100%; min-height: 150px; border: 0; background: transparent; color: inherit; cursor: pointer; padding: 18px 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+    .support-toggle:hover { background: #f7f4ed; }
+    .support-icon { width: 38px; height: 38px; margin-bottom: 10px; fill: none; stroke: #183d28; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: 0 0 auto; }
+    .support-item-title { display: block; color: #142218; font-size: 13px; font-weight: 700; line-height: 1.35; }
+    .support-item-subtitle { display: block; color: #62645f; font-size: 11px; line-height: 1.5; margin-top: 5px; }
+    .support-chevron { color: #183d28; font-size: 21px; line-height: 1; margin-top: 7px; transition: transform .2s ease; }
+    .support-toggle[aria-expanded="true"] .support-chevron { transform: rotate(180deg); }
+    .support-details { padding: 0 16px 17px; text-align: left; color: #555; font-size: 12px; line-height: 1.65; }
+    .support-details p { margin: 0 0 9px; }
+    .support-details strong { color: #183d28; }
+    .support-detail-link { display: inline-block; margin-top: 3px; color: #183d28; font-weight: 700; text-decoration: underline; }
+    .support-static-content { min-height: 150px; padding: 18px 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .support-help-banner { background: #f4f1eb; padding: 18px 22px; border-radius: 13px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; text-align: left; }
+    .support-help-copy { display: flex; align-items: center; gap: 14px; }
+    .support-help-icon { width: 38px; height: 38px; fill: none; stroke: #183d28; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: 0 0 auto; }
+    .support-help-copy h4 { font-size: 15px; color: #142218; margin-bottom: 3px; }
+    .support-help-copy p { font-size: 12px; color: #555; }
+    .support-email-link { background: #142218; color: #fff; padding: 12px 17px; border-radius: 8px; font-size: 12px; font-weight: 700; text-decoration: none; overflow-wrap: anywhere; }
+
     @media (max-width: 768px) {
+      .support-section { padding: 26px 16px; }
+      .support-grid { gap: 8px; }
+      .support-toggle, .support-static-content { min-height: 140px; padding: 14px 7px; }
+      .support-icon { width: 31px; height: 31px; }
+      .support-item-title { font-size: 11px; }
+      .support-item-subtitle { font-size: 10px; }
+      .support-details { grid-column: 1 / -1; font-size: 11px; }
+      .support-help-banner { justify-content: center; text-align: center; }
+      .support-help-copy { text-align: left; }
+      .support-email-link { width: 100%; text-align: center; }
       .hero-card { flex-direction: column; }
       .product-gallery { width: 100%; max-width: 100%; }
+    }
+    @media (max-width: 380px) {
+      .support-section { padding-left: 11px; padding-right: 11px; }
+      .support-grid { gap: 6px; }
+      .support-toggle, .support-static-content { padding-left: 4px; padding-right: 4px; }
+      .support-item-title { font-size: 10px; }
+      .support-item-subtitle { font-size: 9px; }
     }
   </style>
 </head>
@@ -640,52 +687,56 @@
         </form>
       </div>
 
-      <!-- DELIVERY PROTECTION & CUSTOMER CARE SECTION (EXACT IMAGE MATCH WITH SIDE-BY-SIDE CARDS & 24 HRS) -->
-      <div id="support" style="margin-top: 40px; background: #ffffff; border: 1px solid var(--border-color); padding: 36px 28px; border-radius: var(--radius); text-align: center; box-shadow: 0 4px 20px rgba(20, 34, 24, 0.02);">
-        
-        <h3 style="font-size: 24px; font-weight: 700; color: #142218; margin-bottom: 6px;">Delivery Protection & Customer Care</h3>
-        <p style="font-size: 13px; font-weight: 700; color: #2d5a27; letter-spacing: 1px; margin-bottom: 14px; text-transform: uppercase;">— Your Order. Our Responsibility. —</p>
-        
-        <p style="font-size: 13px; color: var(--text-muted); max-width: 600px; margin: 0 auto 30px; line-height: 1.6;">
-          At DAZBERY, your satisfaction matters. Every order is carefully packed and handled with care.
-        </p>
+      <!-- DELIVERY PROTECTION & CUSTOMER CARE -->
+      <section id="support" class="support-section" aria-labelledby="supportTitle">
+        <h3 id="supportTitle" class="support-title">Delivery Protection &amp; Customer Care</h3>
+        <p class="support-tagline">YOUR ORDER. OUR RESPONSIBILITY.</p>
+        <p class="support-intro">At DAZBERY, your satisfaction matters. Every order is carefully packed and handled with care.</p>
 
-        <!-- 3 Side-by-Side Grid Containers -->
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 30px;" class="support-grid-desktop">
-          
-          <div style="background: #fcf9f5; border: 1px solid #e6e2dc; padding: 22px 16px; border-radius: 12px; text-align: center;">
-            <div style="font-size: 28px; margin-bottom: 8px;">🛡️</div>
-            <h4 style="font-size: 14px; font-weight: 700; color: #142218; margin-bottom: 6px;">100% Replacement</h4>
-            <p style="font-size: 11px; color: #555; line-height: 1.5;">for eligible issues with an unboxing video within 24 hours.</p>
-          </div>
-
-          <div style="background: #fcf9f5; border: 1px solid #e6e2dc; padding: 22px 16px; border-radius: 12px; text-align: center;">
-            <div style="font-size: 28px; margin-bottom: 8px;">🚚</div>
-            <h4 style="font-size: 14px; font-weight: 700; color: #142218; margin-bottom: 6px;">Safe & Secure Delivery</h4>
-            <p style="font-size: 11px; color: #555; line-height: 1.5;">Dispatched securely via trusted delivery partners.</p>
-          </div>
-
-          <div style="background: #fcf9f5; border: 1px solid #e6e2dc; padding: 22px 16px; border-radius: 12px; text-align: center;">
-            <div style="font-size: 28px; margin-bottom: 8px;">🎧</div>
-            <h4 style="font-size: 14px; font-weight: 700; color: #142218; margin-bottom: 6px;">Dedicated Support Team</h4>
-            <p style="font-size: 11px; color: #555; line-height: 1.5;">Always ready to assist you with your queries.</p>
-          </div>
-
-        </div>
-
-        <!-- Help Bottom Banner -->
-        <div style="background: #f4f1eb; padding: 20px 24px; border-radius: 12px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; text-align: left;">
-          <div style="display: flex; align-items: center; gap: 14px;">
-            <div style="font-size: 26px;">🎧</div>
-            <div>
-              <div style="font-size: 14px; font-weight: 700; color: #142218;">We're Here to Help</div>
-              <div style="font-size: 12px; color: #555;">For any assistance, reach out to our support team.</div>
+        <div class="support-grid">
+          <div class="support-item">
+            <button type="button" class="support-toggle" aria-expanded="false" aria-controls="replacementDetails" onclick="toggleSupportDetails(this, 'replacementDetails')">
+              <svg class="support-icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 4 40 10v12c0 10-6.8 17.5-16 22C14.8 39.5 8 32 8 22V10L24 4Z"/><path d="m17 23 5 5 10-11"/></svg>
+              <span class="support-item-title">100% Free Replacement</span>
+              <span class="support-item-subtitle">For damaged or defective products</span>
+              <span class="support-chevron" aria-hidden="true">⌄</span>
+            </button>
+            <div class="support-details" id="replacementDetails" hidden>
+              <p>If your order arrives damaged, defective, or with a delivery-related issue, we're here to help.</p>
+              <p>Please record a clear unboxing video while opening your package and share it with our support team within <strong>24 hours of delivery</strong>.</p>
+              <p>Once the issue is reviewed and verified, we'll arrange a <strong>100% free replacement</strong> for the affected product, at no additional cost to you.</p>
+              <a href="mailto:supportdazbery@gmail.com?subject=Replacement%20Request" class="support-detail-link">Request help with a replacement</a>
             </div>
           </div>
-          <a href="mailto:supportdazbery@gmail.com" style="background: #142218; color: #fff; padding: 12px 20px; border-radius: 8px; font-size: 12px; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 8px;">✉ supportdazbery@gmail.com</a>
+
+          <div class="support-item support-static">
+            <div class="support-static-content">
+              <svg class="support-icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M4 13h25v23H4zM29 20h8l7 8v8H29z"/><circle cx="14" cy="38" r="4"/><circle cx="36" cy="38" r="4"/><path d="M8 19h15M8 25h10"/></svg>
+              <span class="support-item-title">Safe &amp; Secure Delivery</span>
+              <span class="support-item-subtitle">Carefully packed and shipped across India</span>
+            </div>
+          </div>
+
+          <div class="support-item support-static">
+            <div class="support-static-content">
+              <svg class="support-icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 27v-5a16 16 0 0 1 32 0v5"/><rect x="5" y="24" width="8" height="13" rx="3"/><rect x="35" y="24" width="8" height="13" rx="3"/><path d="M39 37c-2 5-7 7-14 7h-4"/><rect x="17" y="41" width="7" height="4" rx="2"/></svg>
+              <span class="support-item-title">Dedicated Support Team</span>
+              <span class="support-item-subtitle">We're always here to help</span>
+            </div>
+          </div>
         </div>
 
-      </div>
+        <div class="support-help-banner">
+          <div class="support-help-copy">
+            <svg class="support-help-icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 27v-5a16 16 0 0 1 32 0v5"/><rect x="5" y="24" width="8" height="13" rx="3"/><rect x="35" y="24" width="8" height="13" rx="3"/><path d="M39 37c-2 5-7 7-14 7h-4"/><rect x="17" y="41" width="7" height="4" rx="2"/></svg>
+            <div>
+              <h4>We're Here to Help</h4>
+              <p>For any assistance, reach out to our support team.</p>
+            </div>
+          </div>
+          <a href="mailto:supportdazbery@gmail.com" class="support-email-link">✉ supportdazbery@gmail.com</a>
+        </div>
+      </section>
 
     </div>
 
@@ -782,6 +833,13 @@
     let currentQty = 1;
     let cartCount = 0;
     let isDiscountApplied = false;
+
+    function toggleSupportDetails(button, panelId) {
+      const panel = document.getElementById(panelId);
+      const isExpanded = button.getAttribute('aria-expanded') === 'true';
+      button.setAttribute('aria-expanded', String(!isExpanded));
+      panel.hidden = isExpanded;
+    }
 
     function openCreatorModal() {
       document.getElementById('creatorModal').style.display = 'flex';
