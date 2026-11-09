@@ -1,1674 +1,1716 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DAZBERY | Rosemary & Rice Water Hair Growth Spray</title>
-
-  <!-- Supabase JS Library -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+  <meta charset="UTF-8">  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+  <title>DAZBERY | Rosemary & Rice Water Hair Growth Spray</title>  
   
-  <!-- Razorpay Standard Checkout SDK -->
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <!-- Supabase JS Library -->  
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>  
+    
+  <!-- Razorpay Standard Checkout SDK -->  
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>  
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>  
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">  
+    
+  <style>  
+    :root {  
+      --bg-main: #fcf9f5;  
+      --surface: #ffffff;  
+      --text-main: #142218;  
+      --text-muted: #555555;  
+      --border-color: #e6e2dc;  
+      --radius: 16px;  
+    }  
   
-  <style>
-    :root {
-      --bg-main: #fcf9f5;
-      --surface: #ffffff;
-      --text-main: #142218;
-      --text-muted: #555555;
-      --border-color: #e6e2dc;
-      --radius: 16px;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }  
+    body { background-color: var(--bg-main); color: var(--text-main); line-height: 1.6; }  
+  
+    .announcement-bar {  
+      background: #142218;  
+      color: #fcf9f5;  
+      text-align: center;  
+      padding: 9px 16px;  
+      font-size: 11px;  
+      font-weight: 600;  
+      letter-spacing: 1px;  
+    }  
+  
+    #toastNotification {  
+      position: fixed;  
+      top: 20px;  
+      left: 50%;  
+      transform: translateX(-50%) translateY(-100px);  
+      background: #142218;  
+      color: #ffffff;  
+      padding: 10px 20px;  
+      border-radius: 30px;  
+      font-size: 12px;  
+      font-weight: 600;  
+      z-index: 1000;  
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);  
+      transition: transform 0.3s ease;  
+      opacity: 0;  
+    }  
+    #toastNotification.show {  
+      transform: translateX(-50%) translateY(0);  
+      opacity: 1;  
+    }  
+  
+    header {  
+      background: rgba(255, 255, 255, 0.9);  
+      backdrop-filter: blur(10px);  
+      padding: 18px 32px;  
+      display: flex;  
+      justify-content: space-between;  
+      align-items: center;  
+      border-bottom: 1px solid var(--border-color);  
+      position: sticky;  
+      top: 0;  
+      z-index: 100;  
+    }  
+    .logo-area { display: flex; align-items: center; gap: 8px; cursor: pointer; }  
+    .logo { font-size: 22px; font-weight: 700; letter-spacing: 4px; color: #142218; text-transform: uppercase; }  
+    .nav-links { display: flex; align-items: center; gap: 24px; }  
+    nav a { text-decoration: none; color: #4a5568; font-weight: 600; font-size: 13px; cursor: pointer; position: relative; }  
+    nav a:hover { color: #142218; }  
+      
+    .cart-badge {  
+      background: #142218;  
+      color: #ffffff;  
+      font-size: 10px;  
+      font-weight: 700;  
+      padding: 2px 6px;  
+      border-radius: 50%;  
+      position: absolute;  
+      top: -8px;  
+      right: -12px;  
+    }  
+  
+    .page-section { display: none; }  
+    .page-section.active { display: block; }  
+    .container { max-width: 1000px; margin: 0 auto; padding: 40px 16px; }  
+  
+    .hero-card {  
+      background: var(--surface);  
+      border-radius: var(--radius);  
+      border: 1px solid var(--border-color);  
+      padding: 32px;  
+      display: flex;  
+      flex-direction: row;  
+      gap: 36px;  
+      align-items: flex-start;  
+      box-shadow: 0 4px 20px rgba(20, 34, 24, 0.03);  
+    }  
+  
+    .product-gallery {   
+      position: relative;   
+      background: #f7f5f0;   
+      border-radius: 12px;   
+      padding: 20px;   
+      text-align: center;   
+      flex: 1;  
+      max-width: 450px;  
+    }  
+  
+    .product-main-img {   
+      width: 100%;   
+      height: auto;   
+      max-height: 400px;   
+      object-fit: contain;   
+      display: block;   
+      margin: 0 auto;   
+    }  
+      
+    .badge-tag {  
+      position: absolute;  
+      top: 16px;  
+      left: 16px;  
+      background: #142218;  
+      color: #ffffff;  
+      padding: 5px 12px;  
+      border-radius: 6px;  
+      font-size: 10px;  
+      font-weight: 700;  
+      letter-spacing: 1.5px;  
+    }  
+  
+    .product-details { flex: 1; }  
+    .product-details h1 { font-size: 26px; font-weight: 700; color: #142218; margin-bottom: 6px; line-height: 1.3; }  
+    .subtitle { color: #6b7280; font-size: 13px; margin-bottom: 20px; font-weight: 500; }  
+  
+    .price-box {  
+      display: flex;  
+      align-items: baseline;  
+      gap: 12px;  
+      margin-bottom: 20px;  
+      background: #f7f5f0;  
+      padding: 14px 18px;  
+      border-radius: 10px;  
+    }  
+    .price-offer { font-size: 28px; font-weight: 700; color: #142218; }  
+    .price-original { font-size: 16px; text-decoration: line-through; color: #888; display: none; }  
+    .prepaid-tag { background: #e2ded6; color: #142218; font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 6px; letter-spacing: 0.5px; }  
+  
+    .qty-selector { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }  
+    .qty-selector span { font-size: 13px; font-weight: 700; color: #4a5568; }  
+    .qty-box-controls { display: flex; align-items: center; border: 1px solid var(--border-color); border-radius: 8px; background: #faf8f5; }  
+    .qty-btn { background: none; border: none; padding: 8px 16px; cursor: pointer; font-weight: 700; font-size: 14px; color: #142218; }  
+    .qty-num { padding: 0 10px; font-weight: 700; font-size: 13px; }  
+  
+    .coupon-container { display: flex; gap: 8px; margin-bottom: 20px; }  
+    .coupon-container input {  
+      flex: 1;  
+      padding: 12px 14px;  
+      border: 1px solid var(--border-color);  
+      border-radius: 8px;  
+      font-size: 13px;  
+      font-weight: 600;  
+      text-transform: uppercase;  
+      outline: none;  
+      background: #faf8f5;  
+    }  
+    .btn-apply {  
+      background: #142218;  
+      color: #ffffff;  
+      border: none;  
+      padding: 12px 18px;  
+      border-radius: 8px;  
+      font-weight: 700;  
+      cursor: pointer;  
+      font-size: 12px;  
+      letter-spacing: 0.5px;  
+    }  
+    .coupon-msg { font-size: 12px; margin-bottom: 14px; font-weight: 600; display: none; }  
+  
+    .order-form { display: flex; flex-direction: column; gap: 12px; }  
+    .form-group input, .form-group textarea, .form-group select {  
+      width: 100%;  
+      padding: 12px 14px;  
+      border: 1px solid var(--border-color);  
+      border-radius: 8px;  
+      font-size: 13px;  
+      outline: none;  
+      background: #faf8f5;  
+    }  
+      
+    .btn-group { display: flex; gap: 12px; margin-top: 6px; }  
+    .btn-cart {  
+      background: #ffffff;  
+      color: #142218;  
+      border: 2px solid #142218;  
+      padding: 14px;  
+      border-radius: 8px;  
+      font-size: 13px;  
+      font-weight: 700;  
+      cursor: pointer;  
+      flex: 1;  
+      text-align: center;  
+      text-transform: uppercase;  
+      letter-spacing: 0.5px;  
+    }  
+    .btn-cart:hover { background: #f7f5f0; }  
+  
+    .btn-buy {  
+      background: #142218;  
+      color: #ffffff;  
+      padding: 14px;  
+      border: none;  
+      border-radius: 8px;  
+      font-size: 13px;  
+      font-weight: 700;  
+      cursor: pointer;  
+      flex: 1;  
+      text-align: center;  
+      letter-spacing: 0.5px;  
+      text-transform: uppercase;  
+    }  
+    .btn-buy:hover { background: #1e3323; }  
+  
+    .creator-float-btn {  
+      position: fixed;  
+      bottom: 24px;  
+      right: 24px;  
+      background: #142218;  
+      color: #ffffff;  
+      padding: 12px 20px;  
+      border-radius: 30px;  
+      font-size: 12px;  
+      font-weight: 700;  
+      cursor: pointer;  
+      box-shadow: 0 4px 15px rgba(20, 34, 24, 0.3);  
+      z-index: 99;  
+      display: flex;  
+      align-items: center;  
+      gap: 8px;  
+      transition: transform 0.2s;  
+      border: 1px solid rgba(255,255,255,0.2);  
+    }  
+    .creator-float-btn:hover { transform: scale(1.05); }  
+  
+    .modal-overlay {  
+      position: fixed;  
+      top: 0; left: 0; width: 100%; height: 100%;  
+      background: rgba(0,0,0,0.5);  
+      backdrop-filter: blur(4px);  
+      display: none;  
+      justify-content: center;  
+      align-items: center;  
+      z-index: 1000;  
+      padding: 16px;  
+    }  
+    .modal-card {  
+      background: #ffffff;  
+      border-radius: 16px;  
+      max-width: 500px;  
+      width: 100%;  
+      padding: 28px;  
+      position: relative;  
+      max-height: 90vh;  
+      overflow-y: auto;  
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);  
+    }  
+    .modal-close {  
+      position: absolute;  
+      top: 16px; right: 16px;  
+      background: #f7f5f0;  
+      border: none;  
+      width: 32px; height: 32px;  
+      border-radius: 50%;  
+      font-weight: bold;  
+      cursor: pointer;  
+      display: flex; align-items: center; justify-content: center;  
+    }  
 
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-    body { background-color: var(--bg-main); color: var(--text-main); line-height: 1.6; }
-
-    .announcement-bar {
-      background: #142218;
-      color: #fcf9f5;
-      text-align: center;
-      padding: 9px 16px;
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 1px;
-    }
-
-    #toastNotification {
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%) translateY(-100px);
-      background: #142218;
-      color: #ffffff;
-      padding: 10px 20px;
-      border-radius: 30px;
-      font-size: 12px;
-      font-weight: 600;
-      z-index: 1000;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      transition: transform 0.3s ease;
-      opacity: 0;
-    }
-    #toastNotification.show {
-      transform: translateX(-50%) translateY(0);
-      opacity: 1;
-    }
-
-    header {
-      background: rgba(255, 255, 255, 0.9);
-      backdrop-filter: blur(10px);
-      padding: 18px 32px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid var(--border-color);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-    .logo-area { display: flex; align-items: center; gap: 8px; cursor: pointer; }
-    .logo { font-size: 22px; font-weight: 700; letter-spacing: 4px; color: #142218; text-transform: uppercase; }
-    .nav-links { display: flex; align-items: center; gap: 24px; }
-    nav a { text-decoration: none; color: #4a5568; font-weight: 600; font-size: 13px; cursor: pointer; position: relative; }
-    nav a:hover { color: #142218; }
+    /* UPDATED & EASY TO UNDERSTAND REWARDS STYLING */
+    .rewards-modal-card { max-width: 540px; padding: 24px; border-radius: 20px; }  
+    .rewards-hero { text-align: center; padding: 10px 0 16px; }  
+    .rewards-kicker { background: #e8ede8; color: #142218; font-size: 10px; font-weight: 800; padding: 4px 12px; border-radius: 20px; letter-spacing: 1px; display: inline-block; text-transform: uppercase; }  
+    .rewards-hero h2 { color: #142218; font-size: 22px; font-weight: 800; margin: 10px 0 4px; }  
+    .rewards-intro { color: #62645f; font-size: 13px; line-height: 1.5; }
     
-    .cart-badge {
-      background: #142218;
+    .rewards-prize-banner {
+      background: linear-gradient(135deg, #142218 0%, #263d2c 100%);
       color: #ffffff;
-      font-size: 10px;
-      font-weight: 700;
-      padding: 2px 6px;
-      border-radius: 50%;
-      position: absolute;
-      top: -8px;
-      right: -12px;
-    }
-
-    .page-section { display: none; }
-    .page-section.active { display: block; }
-    .container { max-width: 1000px; margin: 0 auto; padding: 40px 16px; }
-
-    .hero-card {
-      background: var(--surface);
-      border-radius: var(--radius);
-      border: 1px solid var(--border-color);
-      padding: 32px;
-      display: flex;
-      flex-direction: row;
-      gap: 36px;
-      align-items: flex-start;
-      box-shadow: 0 4px 20px rgba(20, 34, 24, 0.03);
-    }
-
-    .product-gallery { 
-      position: relative; 
-      background: #f7f5f0; 
-      border-radius: 12px; 
-      padding: 20px; 
-      text-align: center; 
-      flex: 1;
-      max-width: 450px;
-    }
-
-    .product-main-img { 
-      width: 100%; 
-      height: auto; 
-      max-height: 400px; 
-      object-fit: contain; 
-      display: block; 
-      margin: 0 auto; 
-    }
-    
-    .badge-tag {
-      position: absolute;
-      top: 16px;
-      left: 16px;
-      background: #142218;
-      color: #ffffff;
-      padding: 5px 12px;
-      border-radius: 6px;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-    }
-
-    .product-details { flex: 1; }
-    .product-details h1 { font-size: 26px; font-weight: 700; color: #142218; margin-bottom: 6px; line-height: 1.3; }
-    .subtitle { color: #6b7280; font-size: 13px; margin-bottom: 20px; font-weight: 500; }
-
-    .price-box {
-      display: flex;
-      align-items: baseline;
-      gap: 12px;
-      margin-bottom: 20px;
-      background: #f7f5f0;
-      padding: 14px 18px;
-      border-radius: 10px;
-    }
-    .price-offer { font-size: 28px; font-weight: 700; color: #142218; }
-    .price-original { font-size: 16px; text-decoration: line-through; color: #888; display: none; }
-    .prepaid-tag { background: #e2ded6; color: #142218; font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 6px; letter-spacing: 0.5px; }
-
-    .qty-selector { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
-    .qty-selector span { font-size: 13px; font-weight: 700; color: #4a5568; }
-    .qty-box-controls { display: flex; align-items: center; border: 1px solid var(--border-color); border-radius: 8px; background: #faf8f5; }
-    .qty-btn { background: none; border: none; padding: 8px 16px; cursor: pointer; font-weight: 700; font-size: 14px; color: #142218; }
-    .qty-num { padding: 0 10px; font-weight: 700; font-size: 13px; }
-
-    .coupon-container { display: flex; gap: 8px; margin-bottom: 20px; }
-    .coupon-container input {
-      flex: 1;
-      padding: 12px 14px;
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 600;
-      text-transform: uppercase;
-      outline: none;
-      background: #faf8f5;
-    }
-    .btn-apply {
-      background: #142218;
-      color: #ffffff;
-      border: none;
-      padding: 12px 18px;
-      border-radius: 8px;
-      font-weight: 700;
-      cursor: pointer;
-      font-size: 12px;
-      letter-spacing: 0.5px;
-    }
-    .coupon-msg { font-size: 12px; margin-bottom: 14px; font-weight: 600; display: none; }
-
-    .order-form { display: flex; flex-direction: column; gap: 12px; }
-    .form-group input, .form-group textarea, .form-group select {
-      width: 100%;
-      padding: 12px 14px;
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      font-size: 13px;
-      outline: none;
-      background: #faf8f5;
-    }
-    
-    .btn-group { display: flex; gap: 12px; margin-top: 6px; }
-    .btn-cart {
-      background: #ffffff;
-      color: #142218;
-      border: 2px solid #142218;
-      padding: 14px;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      flex: 1;
-      text-align: center;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .btn-cart:hover { background: #f7f5f0; }
-
-    .btn-buy {
-      background: #142218;
-      color: #ffffff;
-      padding: 14px;
-      border: none;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      flex: 1;
-      text-align: center;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-    }
-    .btn-buy:hover { background: #1e3323; }
-
-    .creator-float-btn {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      background: #142218;
-      color: #ffffff;
-      padding: 12px 20px;
-      border-radius: 30px;
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 4px 15px rgba(20, 34, 24, 0.3);
-      z-index: 99;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: transform 0.2s;
-      border: 1px solid rgba(255,255,255,0.2);
-    }
-    .creator-float-btn:hover { transform: scale(1.05); }
-
-    .modal-overlay {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5);
-      backdrop-filter: blur(4px);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-      padding: 16px;
-    }
-    .modal-card {
-      background: #ffffff;
-      border-radius: 16px;
-      max-width: 500px;
-      width: 100%;
-      padding: 28px;
-      position: relative;
-      max-height: 90vh;
-      overflow-y: auto;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    }
-    .modal-close {
-      position: absolute;
-      top: 16px; right: 16px;
-      background: #f7f5f0;
-      border: none;
-      width: 32px; height: 32px;
-      border-radius: 50%;
-      font-weight: bold;
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-    }
-
-
-    .rewards-modal-card { max-width: 560px; padding: 24px; }
-    .rewards-hero { text-align: center; padding: 10px 8px 20px; }
-    .rewards-kicker { color: #54705b; font-size: 9px; font-weight: 800; letter-spacing: 2px; }
-    .rewards-hero h2 { color: #142218; font-family: Georgia, serif; font-size: clamp(25px, 5vw, 34px); line-height: 1.16; margin: 10px 0; }
-    .rewards-prize { color: #142218; font-size: clamp(42px, 10vw, 58px); font-weight: 800; letter-spacing: -2px; line-height: 1.1; }
-    .rewards-prize-caption { color: #526356; font-size: 11px; font-weight: 700; }
-    .rewards-intro { color: #62645f; font-size: 12px; line-height: 1.7; max-width: 420px; margin: 14px auto 0; }
-    .rewards-steps { display: grid; gap: 10px; margin: 8px 0 16px; }
-    .rewards-steps > div { display: flex; gap: 13px; align-items: flex-start; background: #f7f5f0; border: 1px solid #e9e5dd; border-radius: 10px; padding: 12px; }
-    .rewards-steps > div > span { color: #49664f; font-size: 11px; font-weight: 800; letter-spacing: 1px; padding-top: 2px; }
-    .rewards-steps p { display: grid; gap: 2px; }
-    .rewards-steps strong { color: #142218; font-size: 12px; }
-    .rewards-steps small { color: #62645f; font-size: 11px; line-height: 1.5; }
-    .rewards-voucher-note { background: #142218; color: #fff; border-radius: 11px; padding: 15px; margin: 14px 0 20px; }
-    .rewards-voucher-note strong { font-size: 13px; }
-    .rewards-voucher-note p { color: #e8ece7; font-size: 11px; line-height: 1.65; margin-top: 5px; }
-    .rewards-form { display: grid; gap: 8px; }
-    .rewards-form h3, .participants-heading h3 { color: #142218; font-size: 17px; margin-bottom: 4px; }
-    .rewards-form > label:not(.rewards-consent) { color: #35483a; font-size: 11px; font-weight: 700; margin-top: 4px; }
-    .rewards-form input:not([type="checkbox"]), .rewards-form select { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; background: #faf8f5; font-size: 13px; }
-    .rewards-consent { display: flex; align-items: flex-start; gap: 9px; color: #62645f; font-size: 10px; line-height: 1.55; margin-top: 7px; }
-    .rewards-consent input { margin-top: 2px; accent-color: #142218; flex: 0 0 auto; }
-    .rewards-submit { width: 100%; margin-top: 7px; padding: 14px; }
-    .rewards-smallprint { color: #777; font-size: 10px; line-height: 1.6; text-align: center; }
-    .participants-panel { border-top: 1px solid #e6e2dc; margin-top: 22px; padding-top: 20px; }
-    .participants-heading { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
-    .participants-live { color: #46634d; background: #edf2ec; border-radius: 30px; padding: 5px 9px; font-size: 9px; font-weight: 700; white-space: nowrap; }
-    .participants-note { color: #777; font-size: 10px; line-height: 1.6; margin: 7px 0 12px; }
-    .participants-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
-    .participant-name { border: 1px solid #e8e5dd; background: #fbfaf7; color: #24382a; border-radius: 8px; padding: 9px 11px; font-size: 11px; font-weight: 700; }
-    .participants-empty { grid-column: 1 / -1; color: #777; text-align: center; padding: 16px; font-size: 11px; }
-    .rewards-footer-note { background: #f7f5f0; border-radius: 10px; padding: 14px; margin-top: 18px; }
-    .rewards-footer-note strong { color: #142218; font-size: 12px; }
-    .rewards-footer-note p { color: #62645f; font-size: 10px; line-height: 1.6; margin: 5px 0 8px; }
-    .rewards-footer-note a { color: #244a30; font-size: 11px; font-weight: 700; text-decoration: underline; }
-    .simple-rules {
-      background: #fbf9f5;
-      border: 1px solid #eadecf;
-      border-radius: 10px;
-      padding: 14px;
-      margin: 14px 0 20px;
-      font-size: 12px;
-      color: #4a5568;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .simple-rules div { display: flex; align-items: center; gap: 8px; }
-    .simple-rules div span { color: #2d5a27; font-weight: bold; }
-
-    .cart-card {
-      background: var(--surface);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius);
-      padding: 28px;
-      max-width: 600px;
-      margin: 0 auto;
-    }
-    .cart-item-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px 0;
-      border-bottom: 1px solid var(--border-color);
-    }
-    .btn-remove {
-      background: none;
-      border: none;
-      color: #dc2626;
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
-      margin-top: 6px;
-      display: inline-block;
-    }
-    .btn-remove:hover { text-decoration: underline; }
-    .cart-summary {
-      margin-top: 24px;
-      background: #f7f5f0;
-      padding: 20px;
-      border-radius: 12px;
-    }
-
-    .dashboard-container {
-      max-width: 600px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
-
-    .auth-card {
-      background: var(--surface);
-      padding: 28px;
-      border-radius: var(--radius);
-      border: 1px solid var(--border-color);
-      box-shadow: 0 4px 15px rgba(20,34,24,0.02);
-    }
-
-    .profile-card-display {
-      background: #f7f5f0;
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 18px;
-      position: relative;
-    }
-
-    .edit-pencil-btn {
-      position: absolute;
-      top: 18px;
-      right: 18px;
-      background: #ffffff;
-      border: 1px solid var(--border-color);
-      border-radius: 50%;
-      width: 36px;
-      height: 36px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-      transition: all 0.2s;
-    }
-    .edit-pencil-btn:hover { background: #f0ece4; }
-
-    .google-btn {
-      width: 100%;
-      background: #ffffff;
-      color: #142218;
-      border: 1px solid var(--border-color);
-      padding: 14px;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      transition: background 0.2s;
-    }
-    .google-btn:hover { background: #f7f5f0; }
-
-    .order-card {
-      border: 1px solid var(--border-color);
       border-radius: 14px;
-      padding: 20px;
-      margin-bottom: 20px;
-      background: #ffffff;
-    }
-    .order-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #f0ece4;
-      padding-bottom: 12px;
-    }
-    .status-badge {
-      padding: 5px 14px;
-      border-radius: 20px;
-      font-weight: 700;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .timeline-wrapper {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin: 24px 0;
-      position: relative;
-    }
-    .timeline-wrapper::before {
-      content: '';
-      position: absolute;
-      top: 14px;
-      left: 10%;
-      right: 10%;
-      height: 2px;
-      background: #e6e2dc;
-      z-index: 1;
-    }
-    .timeline-step {
-      position: relative;
-      z-index: 2;
+      padding: 18px;
       text-align: center;
-      background: #fff;
-      padding: 0 4px;
+      margin: 14px 0 18px;
     }
-    .step-circle {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: #e6e2dc;
-      color: #6b7280;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      font-weight: bold;
-      margin: 0 auto 6px;
-    }
-    .timeline-step.active .step-circle {
-      background: #142218;
-      color: #ffffff;
-    }
-    .step-label { font-size: 10px; color: #4a5568; font-weight: 700; }
+    .rewards-prize-banner span { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.85; }
+    .rewards-prize-banner h3 { font-size: 36px; font-weight: 800; color: #ffffff; margin: 2px 0; }
+    .rewards-prize-banner p { font-size: 11px; opacity: 0.9; }
 
-    .support-link-btn {
-      color: #555555;
-      font-size: 12px;
-      font-weight: 700;
-      text-decoration: underline;
-      cursor: pointer;
+    .easy-steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
     }
-    .support-link-btn:hover { color: #142218; }
-
-    .section-title { font-size: 20px; font-weight: 700; margin: 40px 0 16px; color: #142218; }
+    .easy-step-box {
+      background: #f9f8f5;
+      border: 1px solid #e9e5dd;
+      border-radius: 12px;
+      padding: 12px 10px;
+      text-align: center;
+    }
+    .easy-step-box .step-num {
+      width: 24px; height: 24px; background: #142218; color: #fff; font-size: 11px; font-weight: 800; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 6px;
+    }
+    .easy-step-box strong { display: block; font-size: 12px; color: #142218; margin-bottom: 2px; }
+    .easy-step-box span { font-size: 10px; color: #666; line-height: 1.3; display: block; }
+  
+    .rewards-form { display: grid; gap: 10px; background: #ffffff; border: 1px solid var(--border-color); border-radius: 14px; padding: 18px; }  
+    .rewards-form h3 { color: #142218; font-size: 15px; font-weight: 800; border-bottom: 1px solid #f0ece4; padding-bottom: 8px; margin-bottom: 4px; }  
+    .rewards-form label { color: #142218; font-size: 11px; font-weight: 700; margin-top: 2px; }  
+    .rewards-form input:not([type="checkbox"]), .rewards-form select { width: 100%; padding: 11px; border: 1px solid var(--border-color); border-radius: 8px; background: #faf8f5; font-size: 13px; }  
     
-    .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; }
-    .review-item { background: var(--surface); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); }
-    .review-header { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 6px; }
-    .review-user { font-weight: 700; font-size: 13px; color: #142218; }
-    .verified-badge { color: #2d5a27; font-size: 10px; font-weight: 700; }
-    .review-language { color: #7b817a; font-size: 10px; font-weight: 600; margin-bottom: 7px; }
-    .stars { color: #b38b32; font-size: 12px; margin-bottom: 8px; letter-spacing: 1px; }
-    .review-text { font-size: 13px; color: #555; line-height: 1.7; }
-    .reviews-toggle-wrap { display: flex; justify-content: center; margin: 18px 0 4px; }
-    .reviews-toggle-btn { background: #fff; color: #142218; border: 1px solid #d9ded8; border-radius: 30px; padding: 11px 20px; font-size: 12px; font-weight: 700; cursor: pointer; transition: background .2s ease; }
-    .reviews-toggle-btn:hover { background: #f2f4ef; }
-    .review-item.review-hidden { display: none; }
-    @media (max-width: 640px) {
-      .reviews-grid { grid-template-columns: 1fr; }
-      .review-item { padding: 17px; }
-    }
+    .rewards-consent { display: flex; align-items: flex-start; gap: 8px; color: #555; font-size: 11px; line-height: 1.4; margin-top: 4px; }  
+    .rewards-consent input { margin-top: 2px; accent-color: #142218; }  
 
-    .add-review-box { background: var(--surface); border: 1px solid var(--border-color); padding: 24px; border-radius: var(--radius); margin-top: 36px; }
-    .add-review-box h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; color: #142218; }
-    .add-review-box p { font-size: 12px; color: #6b7280; margin-bottom: 16px; }
-
-    footer { background: #142218; color: #fcf9f5; padding: 48px 20px 24px; margin-top: 60px; text-align: center; font-size: 12px; }
-    footer a { color: #cccccc; text-decoration: none; margin: 0 10px; font-weight: 500; }
-    .insta-container { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px; }
-    .insta-link { color: #ffffff; font-weight: 700; text-decoration: none; }
-    .insta-link:hover { text-decoration: underline; }
-
-    /* Delivery Protection & Customer Care */
-    .support-section {
-      margin-top: 40px; background: #fff; border: 1px solid var(--border-color);
-      padding: 34px 28px; border-radius: 18px; text-align: center;
-      box-shadow: 0 4px 20px rgba(20, 34, 24, 0.03);
-    }
-    .support-title { font-family: Georgia, serif; font-size: clamp(22px, 3vw, 30px); line-height: 1.15; color: #142218; margin-bottom: 8px; }
-    .support-tagline { color: #2d5a3b; font-size: 11px; font-weight: 700; letter-spacing: 2px; margin-bottom: 12px; }
-    .support-intro { color: var(--text-muted); max-width: 620px; margin: 0 auto 26px; font-size: 13px; line-height: 1.7; }
-    .support-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-bottom: 24px; align-items: start; }
-    .support-item { background: #fcf9f5; border: 1px solid #e6e2dc; border-radius: 13px; overflow: hidden; min-width: 0; }
-    .support-toggle { appearance: none; width: 100%; min-height: 150px; border: 0; background: transparent; color: inherit; cursor: pointer; padding: 18px 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-    .support-toggle:hover { background: #f7f4ed; }
-    .support-icon { width: 38px; height: 38px; margin-bottom: 10px; fill: none; stroke: #183d28; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: 0 0 auto; }
-    .support-item-title { display: block; color: #142218; font-size: 13px; font-weight: 700; line-height: 1.35; }
-    .support-item-subtitle { display: block; color: #62645f; font-size: 11px; line-height: 1.5; margin-top: 5px; }
-    .support-chevron { color: #183d28; font-size: 21px; line-height: 1; margin-top: 7px; transition: transform .2s ease; }
-    .support-toggle[aria-expanded="true"] .support-chevron { transform: rotate(180deg); }
-    .support-details { padding: 0 16px 17px; text-align: left; color: #555; font-size: 12px; line-height: 1.65; }
-    .support-details p { margin: 0 0 9px; }
-    .support-details strong { color: #183d28; }
-    .support-detail-link { display: inline-block; margin-top: 3px; color: #183d28; font-weight: 700; text-decoration: underline; }
-    .support-static-content { min-height: 150px; padding: 18px 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-    .support-help-banner { background: #f4f1eb; padding: 18px 22px; border-radius: 13px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; text-align: left; }
-    .support-help-copy { display: flex; align-items: center; gap: 14px; }
-    .support-help-icon { width: 38px; height: 38px; fill: none; stroke: #183d28; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: 0 0 auto; }
-    .support-help-copy h4 { font-size: 15px; color: #142218; margin-bottom: 3px; }
-    .support-help-copy p { font-size: 12px; color: #555; }
-    .support-email-link { background: #142218; color: #fff; padding: 12px 17px; border-radius: 8px; font-size: 12px; font-weight: 700; text-decoration: none; overflow-wrap: anywhere; }
-
-    @media (max-width: 768px) {
-      .support-section { padding: 26px 16px; }
-      .support-grid { gap: 8px; }
-      .support-toggle, .support-static-content { min-height: 140px; padding: 14px 7px; }
-      .support-icon { width: 31px; height: 31px; }
-      .support-item-title { font-size: 11px; }
-      .support-item-subtitle { font-size: 10px; }
-      .support-details { grid-column: 1 / -1; font-size: 11px; }
-      .support-help-banner { justify-content: center; text-align: center; }
-      .support-help-copy { text-align: left; }
-      .support-email-link { width: 100%; text-align: center; }
-      .hero-card { flex-direction: column; }
-      .product-gallery { width: 100%; max-width: 100%; }
-    }
-    @media (max-width: 380px) {
-      .support-section { padding-left: 11px; padding-right: 11px; }
-      .support-grid { gap: 6px; }
-      .support-toggle, .support-static-content { padding-left: 4px; padding-right: 4px; }
-      .support-item-title { font-size: 10px; }
-      .support-item-subtitle { font-size: 9px; }
-    }
-  </style>
-</head>
-<body>
-
-  <div id="toastNotification"></div>
-  <div class="announcement-bar">COMPLIMENTARY SHIPPING ON ALL PREPAID ORDERS</div>
-
-  <!-- DAZBERY CUSTOMER REWARDS -->
-  <button class="creator-float-btn" type="button" onclick="openCustomerRewards()">
-    ✨ Customer Rewards
-  </button>
-
-  <div class="modal-overlay" id="customerRewardsModal" aria-hidden="true">
-    <div class="modal-card rewards-modal-card" role="dialog" aria-modal="true" aria-labelledby="rewardsTitle">
-      <button class="modal-close" type="button" onclick="closeCustomerRewards()" aria-label="Close">✕</button>
-
-      <div class="rewards-hero">
-        <span class="rewards-kicker">DAZBERY CUSTOMER REWARDS</span>
-        <h2 id="rewardsTitle">Your Experience.<br>Your Chance to Win.</h2>
-        <div class="rewards-prize">₹1,000</div>
-        <p class="rewards-prize-caption">Shopping voucher · One lucky winner every month</p>
-        <p class="rewards-intro">Bought and tried a DAZBERY product? Share your honest experience in a video and enter our monthly lucky draw.</p>
-      </div>
-
-      <div class="rewards-steps">
-        <div><span>01</span><p><strong>Use your product</strong><small>Share your real experience, whether positive or negative.</small></p></div>
-        <div><span>02</span><p><strong>Post a video</strong><small>Upload it publicly on Instagram, YouTube or Facebook.</small></p></div>
-        <div><span>03</span><p><strong>Submit your entry</strong><small>Share your video link, platform, Order ID and WhatsApp number.</small></p></div>
-        <div><span>04</span><p><strong>Join the monthly draw</strong><small>Eligible Order IDs go into a random spin-wheel draw at month-end.</small></p></div>
-      </div>
-
-      <div class="rewards-voucher-note">
-        <strong>The monthly reward</strong>
-        <p>One eligible participant wins a ₹1,000 shopping voucher for the DAZBERY website. The voucher is valid for 30 days and can be used once. Any amount above ₹1,000 is paid by the customer. Unused balance cannot be carried forward or exchanged for cash.</p>
-      </div>
-
-      <form id="customerRewardsForm" onsubmit="submitCustomerRewardEntry(event)" class="rewards-form">
-        <h3>Submit Your Video</h3>
-        <label for="rewardCustomerName">Your name</label>
-        <input type="text" id="rewardCustomerName" maxlength="80" placeholder="Enter your name" required>
-
-        <label for="claimOrderId">Order ID</label>
-        <input type="text" id="claimOrderId" maxlength="40" placeholder="Enter your DAZBERY Order ID" required>
-
-        <label for="claimPlatform">Where did you post your video?</label>
-        <select id="claimPlatform" required>
-          <option value="">Select a platform</option>
-          <option value="Instagram">Instagram</option>
-          <option value="YouTube">YouTube</option>
-          <option value="Facebook">Facebook</option>
-        </select>
-
-        <label for="claimVideoLink">Video link</label>
-        <input type="url" id="claimVideoLink" placeholder="Paste your public video link" required>
-
-        <label for="claimWhatsapp">WhatsApp number</label>
-        <input type="tel" id="claimWhatsapp" inputmode="numeric" pattern="[6-9][0-9]{9}" maxlength="10" placeholder="10-digit WhatsApp number" required>
-
-        <label class="rewards-consent">
-          <input type="checkbox" id="rewardNameConsent" required>
-          <span>I agree that my first name and last initial may appear on the DAZBERY Participants Board after my entry is verified. My phone number and full Order ID will never be shown publicly.</span>
-        </label>
-        <label class="rewards-consent">
-          <input type="checkbox" id="rewardDisclosureConsent" required>
-          <span>I confirm this is my own honest experience video, and I will clearly disclose that I am participating in DAZBERY's rewards programme.</span>
-        </label>
-
-        <button type="submit" class="btn-apply rewards-submit">SUBMIT MY ENTRY</button>
-        <p class="rewards-smallprint">Entries are subject to Order ID and video verification. One entry per eligible Order ID. Keep your video public for at least 30 days after submission. A positive review is not required.</p>
-      </form>
-
-      <section class="participants-panel" aria-labelledby="participantsTitle">
-        <div class="participants-heading">
-          <div>
-            <span class="rewards-kicker">THE DAZBERY COMMUNITY</span>
-            <h3 id="participantsTitle">Participants Board</h3>
-          </div>
-          <span class="participants-live">Verified entries</span>
-        </div>
-        <p class="participants-note">Names appear here only after the entry is checked and approved, and only when the customer has agreed to public display.</p>
-        <div id="participantsBoard" class="participants-list">
-          <p class="participants-empty">Loading verified participants…</p>
-        </div>
-      </section>
-
-      <div class="rewards-footer-note">
-        <strong>Winner announcement</strong>
-        <p>The lucky winner will be selected at the end of each month using a random spin-wheel draw from eligible entries and announced on the same day on our official Instagram page.</p>
-        <a href="https://instagram.com/dazbery" target="_blank" rel="noopener">Follow @dazbery on Instagram</a>
-      </div>
-    </div>
-  </div>
-
-  <header>
-    <div class="logo-area" onclick="switchPage('shop')">
-      <div class="logo">DAZBERY</div>
-    </div>
-    <nav class="nav-links">
-      <a onclick="switchPage('shop')">Shop</a>
-      <a onclick="switchPage('cart')" style="font-weight: 700;">Cart <span id="cartBadge" class="cart-badge">0</span></a>
-      <a onclick="switchPage('login')" id="navAccountText">My Account</a>
-    </nav>
-  </header>
-
-  <div class="container">
-
-    <!-- SHOP / PRODUCT PAGE -->
-    <div id="shopPage" class="page-section active">
-      <div class="hero-card" id="product">
-        <div class="product-gallery">
-          <span class="badge-tag">BEST SELLER</span>
-          <img src="spray.PNG" alt="DAZBERY Rosemary & Rice Water Hair Growth Spray" class="product-main-img">
-        </div>
-
-        <div class="product-details">
-          <h1>Rosemary & Rice Water Hair Growth Spray</h1>
-          <p class="subtitle">100ml | Pure Botanical Scalp Mist</p>
-
-          <div class="price-box">
-            <span class="price-offer" id="displayPrice">₹599</span>
-            <span class="price-original" id="strikePrice" style="display: none;">₹599</span>
-            <span class="prepaid-tag">Prepaid Only</span>
-          </div>
-
-          <div class="qty-selector">
-            <span>Quantity:</span>
-            <div class="qty-box-controls">
-              <button type="button" class="qty-btn" onclick="updateQty(-1)">-</button>
-              <span class="qty-num" id="productQty">1</span>
-              <button type="button" class="qty-btn" onclick="updateQty(1)">+</button>
-            </div>
-          </div>
-
-          <div class="coupon-container">
-            <input type="text" id="couponInput" placeholder="Enter Creator Code (e.g. DAZBERY50)">
-            <button type="button" class="btn-apply" onclick="applyCoupon()">APPLY</button>
-          </div>
-          <div class="coupon-msg" id="couponMsg"></div>
-
-          <div id="savedAddressCheckoutBox" style="display: none; background: #f7f5f0; border: 1px solid var(--border-color); padding: 16px; border-radius: 10px; margin-bottom: 14px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-              <span style="font-size: 11px; font-weight: 700; color: #142218; text-transform: uppercase; letter-spacing: 0.5px;">Delivering to Saved Address</span>
-              <button type="button" onclick="switchPage('login')" style="background: none; border: none; color: #2d5a27; font-size: 11px; font-weight: 700; cursor: pointer;">Change Address</button>
-            </div>
-            <p id="savedCheckoutName" style="font-size: 13px; font-weight: 700; color: #142218;"></p>
-            <p id="savedCheckoutPhone" style="font-size: 12px; color: #4a5568;"></p>
-            <p id="savedCheckoutAddress" style="font-size: 12px; color: #6b7280; margin-top: 2px;"></p>
-          </div>
-
-          <form class="order-form" id="orderForm" onsubmit="handleOrder(event)">
-            <div id="manualAddressFields">
-              <div class="form-group" style="margin-bottom: 10px;"><input type="text" id="checkoutName" placeholder="Full Name" required></div>
-              <div class="form-group" style="margin-bottom: 10px;"><input type="tel" id="checkoutPhone" placeholder="Mobile / WhatsApp Number" required></div>
-              <div class="form-group" style="margin-bottom: 10px;"><textarea id="checkoutAddress" placeholder="House/Flat No, Street Name" rows="2" required></textarea></div>
-              <div class="form-group" style="margin-bottom: 10px;"><input type="text" id="checkoutPin" placeholder="6-Digit PIN Code" maxlength="6" oninput="fetchLocationByPin(this.value)" required></div>
-              <div class="form-group" style="margin-bottom: 10px;"><input type="text" id="checkoutCity" placeholder="City / District" required></div>
-              <div class="form-group" style="margin-bottom: 10px;"><input type="text" id="checkoutState" placeholder="State" required></div>
-            </div>
-            
-            <div class="btn-group">
-              <button type="button" class="btn-cart" onclick="addToCart()">Add to Cart</button>
-              <button type="submit" class="btn-buy" id="submitBtn">PROCEED TO PAY — ₹599 (PREPAID)</button>
-            </div>
-          </form>
-          <p style="font-size: 10px; color: #777; text-align: center; margin-top: 10px;">🔒 100% Secure & Encrypted Payments via Razorpay</p>
-        </div>
-      </div>
-
-      <h2 class="section-title" id="reviews">Customer Reviews</h2>
-      <div class="reviews-grid" id="reviewsGrid">
-        <p style="font-size: 13px; color: var(--text-muted);">Loading reviews...</p>
-      </div>
-
-      <div class="add-review-box">
-        <h3>Write a Verified Review</h3>
-        <p>Only verified customers who purchased this item can submit feedback using their Order ID.</p>
-        <form onsubmit="submitUserReview(event)">
-          <div class="form-group" style="margin-bottom:10px;"><input type="text" id="rName" placeholder="Your Name & City" required></div>
-          <div class="form-group" style="margin-bottom:10px;"><input type="text" id="rOrder" placeholder="Enter Order ID (e.g. DZ-8492-X9)" required></div>
-          <div class="form-group" style="margin-bottom:10px;">
-            <select id="rRating" style="background:#faf8f5;" required>
-              <option value="5">★★★★★ (5 Stars)</option>
-              <option value="4">★★★★☆ (4 Stars)</option>
-              <option value="3">★★★☆☆ (3 Stars)</option>
-            </select>
-          </div>
-          <div class="form-group" style="margin-bottom:10px;">
-            <select id="rLanguage" required style="background:#faf8f5;">
-              <option value="">Select review language</option>
-              <option value="English">English</option>
-              <option value="Hindi">Hindi</option>
-              <option value="Malayalam">Malayalam</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-          <div class="form-group" style="margin-bottom:10px;"><textarea id="rText" placeholder="Write your honest feedback..." rows="2" required></textarea></div>
-          <button type="submit" class="btn-apply" style="width:100%;">Submit Review</button>
-        </form>
-      </div>
-
-      <!-- DELIVERY PROTECTION & CUSTOMER CARE -->
-      <section id="support" class="support-section" aria-labelledby="supportTitle">
-        <h3 id="supportTitle" class="support-title">Delivery Protection &amp; Customer Care</h3>
-        <p class="support-tagline">YOUR ORDER. OUR RESPONSIBILITY.</p>
-        <p class="support-intro">At DAZBERY, your satisfaction matters. Every order is carefully packed and handled with care.</p>
-
-        <div class="support-grid">
-          <div class="support-item">
-            <button type="button" class="support-toggle" aria-expanded="false" aria-controls="replacementDetails" onclick="toggleSupportDetails(this, 'replacementDetails')">
-              <svg class="support-icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 4 40 10v12c0 10-6.8 17.5-16 22C14.8 39.5 8 32 8 22V10L24 4Z"/><path d="m17 23 5 5 10-11"/></svg>
-              <span class="support-item-title">100% Free Replacement</span>
-              <span class="support-item-subtitle">For damaged or defective products</span>
-              <span class="support-chevron" aria-hidden="true">⌄</span>
-            </button>
-            <div class="support-details" id="replacementDetails" hidden>
-              <p>If your order arrives damaged, defective, or with a delivery-related issue, we're here to help.</p>
-              <p>Please record a clear unboxing video while opening your package and share it with our support team within <strong>24 hours of delivery</strong>.</p>
-              <p>Once the issue is reviewed and verified, we'll arrange a <strong>100% free replacement</strong> for the affected product, at no additional cost to you.</p>
-              <a href="mailto:supportdazbery@gmail.com?subject=Replacement%20Request" class="support-detail-link">Request help with a replacement</a>
-            </div>
-          </div>
-
-          <div class="support-item support-static">
-            <div class="support-static-content">
-              <svg class="support-icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M4 13h25v23H4zM29 20h8l7 8v8H29z"/><circle cx="14" cy="38" r="4"/><circle cx="36" cy="38" r="4"/><path d="M8 19h15M8 25h10"/></svg>
-              <span class="support-item-title">Safe &amp; Secure Delivery</span>
-              <span class="support-item-subtitle">Carefully packed and shipped across India</span>
-            </div>
-          </div>
-
-          <div class="support-item support-static">
-            <div class="support-static-content">
-              <svg class="support-icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 27v-5a16 16 0 0 1 32 0v5"/><rect x="5" y="24" width="8" height="13" rx="3"/><rect x="35" y="24" width="8" height="13" rx="3"/><path d="M39 37c-2 5-7 7-14 7h-4"/><rect x="17" y="41" width="7" height="4" rx="2"/></svg>
-              <span class="support-item-title">Dedicated Support Team</span>
-              <span class="support-item-subtitle">We're always here to help</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="support-help-banner">
-          <div class="support-help-copy">
-            <svg class="support-help-icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 27v-5a16 16 0 0 1 32 0v5"/><rect x="5" y="24" width="8" height="13" rx="3"/><rect x="35" y="24" width="8" height="13" rx="3"/><path d="M39 37c-2 5-7 7-14 7h-4"/><rect x="17" y="41" width="7" height="4" rx="2"/></svg>
-            <div>
-              <h4>We're Here to Help</h4>
-              <p>For any assistance, reach out to our support team.</p>
-            </div>
-          </div>
-          <a href="mailto:supportdazbery@gmail.com" class="support-email-link">✉ supportdazbery@gmail.com</a>
-        </div>
-      </section>
-
-    </div>
-
-    <!-- CART PAGE -->
-    <div id="cartPage" class="page-section">
-      <div class="cart-card">
-        <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 16px; color: #142218;">Your Shopping Cart</h2>
-        <div id="cartItemsContainer"></div>
-        <div class="cart-summary" id="cartSummaryBox" style="display: none;">
-          <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 15px; margin-bottom: 14px; color: #142218;">
-            <span>Total Amount:</span>
-            <span id="cartTotalPrice">₹599</span>
-          </div>
-          <button onclick="proceedCartCheckout()" class="btn-apply" style="width: 100%; padding: 14px; font-size: 13px;">PROCEED TO CHECKOUT</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- GOOGLE SIGN-IN & PROFILE PAGE -->
-    <div id="loginPage" class="page-section">
+    .participants-panel { border-top: 1px solid #e6e2dc; margin-top: 22px; padding-top: 18px; }  
+    .participants-heading { display: flex; justify-content: space-between; align-items: center; }  
+    .participants-live { color: #2d5a27; background: #edf2ec; border-radius: 20px; padding: 4px 10px; font-size: 10px; font-weight: 700; }  
+    .participants-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 10px; }  
+    .participant-name { border: 1px solid #e8e5dd; background: #fbfaf7; color: #142218; border-radius: 8px; padding: 8px 10px; font-size: 11px; font-weight: 700; display: flex; justify-content: space-between; align-items: center; }  
+    .participants-empty { grid-column: 1 / -1; color: #777; text-align: center; padding: 14px; font-size: 11px; }  
+  
+    .simple-rules {  
+      background: #fbf9f5;  
+      border: 1px solid #eadecf;  
+      border-radius: 10px;  
+      padding: 14px;  
+      margin: 14px 0 20px;  
+      font-size: 12px;  
+      color: #4a5568;  
+      display: flex;  
+      flex-direction: column;  
+      gap: 6px;  
+    }  
+    .simple-rules div { display: flex; align-items: center; gap: 8px; }  
+    .simple-rules div span { color: #2d5a27; font-weight: bold; }  
+  
+    .cart-card {  
+      background: var(--surface);  
+      border: 1px solid var(--border-color);  
+      border-radius: var(--radius);  
+      padding: 28px;  
+      max-width: 600px;  
+      margin: 0 auto;  
+    }  
+    .cart-item-row {  
+      display: flex;  
+      justify-content: space-between;  
+      align-items: center;  
+      padding: 16px 0;  
+      border-bottom: 1px solid var(--border-color);  
+    }  
+    .btn-remove {  
+      background: none;  
+      border: none;  
+      color: #dc2626;  
+      font-size: 11px;  
+      font-weight: 700;  
+      cursor: pointer;  
+      margin-top: 6px;  
+      display: inline-block;  
+    }  
+    .btn-remove:hover { text-decoration: underline; }  
+    .cart-summary {  
+      margin-top: 24px;  
+      background: #f7f5f0;  
+      padding: 20px;  
+      border-radius: 12px;  
+    }  
+  
+    .dashboard-container {  
+      max-width: 600px;  
+      margin: 0 auto;  
+      display: flex;  
+      flex-direction: column;  
+      gap: 24px;  
+    }  
+  
+    .auth-card {  
+      background: var(--surface);  
+      padding: 28px;  
+      border-radius: var(--radius);  
+      border: 1px solid var(--border-color);  
+      box-shadow: 0 4px 15px rgba(20,34,24,0.02);  
+    }  
+  
+    .profile-card-display {  
+      background: #f7f5f0;  
+      border: 1px solid var(--border-color);  
+      border-radius: 12px;  
+      padding: 18px;  
+      position: relative;  
+    }  
+  
+    .edit-pencil-btn {  
+      position: absolute;  
+      top: 18px;  
+      right: 18px;  
+      background: #ffffff;  
+      border: 1px solid var(--border-color);  
+      border-radius: 50%;  
+      width: 36px;  
+      height: 36px;  
+      display: flex;  
+      align-items: center;  
+      justify-content: center;  
+      cursor: pointer;  
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);  
+      transition: all 0.2s;  
+    }  
+    .edit-pencil-btn:hover { background: #f0ece4; }  
+  
+    .google-btn {  
+      width: 100%;  
+      background: #ffffff;  
+      color: #142218;  
+      border: 1px solid var(--border-color);  
+      padding: 14px;  
+      border-radius: 8px;  
+      font-size: 13px;  
+      font-weight: 700;  
+      cursor: pointer;  
+      display: flex;  
+      align-items: center;  
+      justify-content: center;  
+      gap: 12px;  
+      transition: background 0.2s;  
+    }  
+    .google-btn:hover { background: #f7f5f0; }  
+  
+    .order-card {  
+      border: 1px solid var(--border-color);  
+      border-radius: 14px;  
+      padding: 20px;  
+      margin-bottom: 20px;  
+      background: #ffffff;  
+    }  
+    .order-header {  
+      display: flex;  
+      justify-content: space-between;  
+      align-items: center;  
+      border-bottom: 1px solid #f0ece4;  
+      padding-bottom: 12px;  
+    }  
+    .status-badge {  
+      padding: 5px 14px;  
+      border-radius: 20px;  
+      font-weight: 700;  
+      font-size: 11px;  
+      text-transform: uppercase;  
+      letter-spacing: 0.5px;  
+    }  
+    .timeline-wrapper {  
+      display: flex;  
+      justify-content: space-between;  
+      align-items: center;  
+      margin: 24px 0;  
+      position: relative;  
+    }  
+    .timeline-wrapper::before {  
+      content: '';  
+      position: absolute;  
+      top: 14px;  
+      left: 10%;  
+      right: 10%;  
+      height: 2px;  
+      background: #e6e2dc;  
+      z-index: 1;  
+    }  
+    .timeline-step {  
+      position: relative;  
+      z-index: 2;  
+      text-align: center;  
+      background: #fff;  
+      padding: 0 4px;  
+    }  
+    .step-circle {  
+      width: 28px;  
+      height: 28px;  
+      border-radius: 50%;  
+      background: #e6e2dc;  
+      color: #6b7280;  
+      display: flex;  
+      align-items: center;  
+      justify-content: center;  
+      font-size: 11px;  
+      font-weight: bold;  
+      margin: 0 auto 6px;  
+    }  
+    .timeline-step.active .step-circle {  
+      background: #142218;  
+      color: #ffffff;  
+    }  
+    .step-label { font-size: 10px; color: #4a5568; font-weight: 700; }  
+  
+    .support-link-btn {  
+      color: #555555;  
+      font-size: 12px;  
+      font-weight: 700;  
+      text-decoration: underline;  
+      cursor: pointer;  
+    }  
+    .support-link-btn:hover { color: #142218; }  
+  
+    .section-title { font-size: 20px; font-weight: 700; margin: 40px 0 16px; color: #142218; }  
       
-      <div class="auth-card" id="loginCard" style="text-align: center; max-width: 480px; margin: 20px auto;">
-        <h2 style="color: #142218; margin-bottom: 6px;">Customer Sign In</h2>
-        <p style="color: #6b7280; font-size: 13px; margin-bottom: 20px;">Sign in with Google to save your delivery address and manage orders.</p>
-        
-        <button type="button" class="google-btn" onclick="loginWithGoogle()">
-          <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.18v3.15C3.17 21.32 7.23 24 12 24z"/><path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.61H1.18C.43 8.14 0 9.87 0 12s.43 3.86 1.18 5.39l4.09-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.23 0 3.17 2.68 1.18 6.61l4.09 3.15c.95-2.85 3.6-4.96 6.73-4.96z"/></svg>
-          Continue with Google
-        </button>
+    .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; }  
+    .review-item { background: var(--surface); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); }  
+    .review-header { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 6px; }  
+    .review-user { font-weight: 700; font-size: 13px; color: #142218; }  
+    .verified-badge { color: #2d5a27; font-size: 10px; font-weight: 700; }  
+    .review-language { color: #7b817a; font-size: 10px; font-weight: 600; margin-bottom: 7px; }  
+    .stars { color: #b38b32; font-size: 12px; margin-bottom: 8px; letter-spacing: 1px; }  
+    .review-text { font-size: 13px; color: #555; line-height: 1.7; }  
+    .reviews-toggle-wrap { display: flex; justify-content: center; margin: 18px 0 4px; }  
+    .reviews-toggle-btn { background: #fff; color: #142218; border: 1px solid #d9ded8; border-radius: 30px; padding: 11px 20px; font-size: 12px; font-weight: 700; cursor: pointer; transition: background .2s ease; }  
+    .reviews-toggle-btn:hover { background: #f2f4ef; }  
+    .review-item.review-hidden { display: none; }  
+    @media (max-width: 640px) {  
+      .reviews-grid { grid-template-columns: 1fr; }  
+      .review-item { padding: 17px; }  
+    }  
+  
+    .add-review-box { background: var(--surface); border: 1px solid var(--border-color); padding: 24px; border-radius: var(--radius); margin-top: 36px; }  
+    .add-review-box h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; color: #142218; }  
+    .add-review-box p { font-size: 12px; color: #6b7280; margin-bottom: 16px; }  
+  
+    footer { background: #142218; color: #fcf9f5; padding: 48px 20px 24px; margin-top: 60px; text-align: center; font-size: 12px; }  
+    footer a { color: #cccccc; text-decoration: none; margin: 0 10px; font-weight: 500; }  
+    .insta-container { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px; }  
+    .insta-link { color: #ffffff; font-weight: 700; text-decoration: none; }  
+    .insta-link:hover { text-decoration: underline; }  
+  
+    /* Delivery Protection & Customer Care */  
+    .support-section {  
+      margin-top: 40px; background: #fff; border: 1px solid var(--border-color);  
+      padding: 34px 28px; border-radius: 18px; text-align: center;  
+      box-shadow: 0 4px 20px rgba(20, 34, 24, 0.03);  
+    }  
+    .support-title { font-family: Georgia, serif; font-size: clamp(22px, 3vw, 30px); line-height: 1.15; color: #142218; margin-bottom: 8px; }  
+    .support-tagline { color: #2d5a3b; font-size: 11px; font-weight: 700; letter-spacing: 2px; margin-bottom: 12px; }  
+    .support-intro { color: var(--text-muted); max-width: 620px; margin: 0 auto 26px; font-size: 13px; line-height: 1.7; }  
+    .support-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-bottom: 24px; align-items: start; }  
+    .support-item { background: #fcf9f5; border: 1px solid #e6e2dc; border-radius: 13px; overflow: hidden; min-width: 0; }  
+    .support-toggle { appearance: none; width: 100%; min-height: 150px; border: 0; background: transparent; color: inherit; cursor: pointer; padding: 18px 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }  
+    .support-toggle:hover { background: #f7f4ed; }  
+    .support-icon { width: 38px; height: 38px; margin-bottom: 10px; fill: none; stroke: #183d28; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: 0 0 auto; }  
+    .support-item-title { display: block; color: #142218; font-size: 13px; font-weight: 700; line-height: 1.35; }  
+    .support-item-subtitle { display: block; color: #62645f; font-size: 11px; line-height: 1.5; margin-top: 5px; }  
+    .support-chevron { color: #183d28; font-size: 21px; line-height: 1; margin-top: 7px; transition: transform .2s ease; }  
+    .support-toggle[aria-expanded="true"] .support-chevron { transform: rotate(180deg); }  
+    .support-details { padding: 0 16px 17px; text-align: left; color: #555; font-size: 12px; line-height: 1.65; }  
+    .support-details p { margin: 0 0 9px; }  
+    .support-details strong { color: #183d28; }  
+    .support-detail-link { display: inline-block; margin-top: 3px; color: #183d28; font-weight: 700; text-decoration: underline; }  
+    .support-static-content { min-height: 150px; padding: 18px 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; }  
+    .support-help-banner { background: #f4f1eb; padding: 18px 22px; border-radius: 13px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; text-align: left; }  
+    .support-help-copy { display: flex; align-items: center; gap: 14px; }  
+    .support-help-icon { width: 38px; height: 38px; fill: none; stroke: #183d28; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: 0 0 auto; }  
+    .support-help-copy h4 { font-size: 15px; color: #142218; margin-bottom: 3px; }  
+    .support-help-copy p { font-size: 12px; color: #555; }  
+    .support-email-link { background: #142218; color: #fff; padding: 12px 17px; border-radius: 8px; font-size: 12px; font-weight: 700; text-decoration: none; overflow-wrap: anywhere; }  
+  
+    @media (max-width: 768px) {  
+      .support-section { padding: 26px 16px; }  
+      .support-grid { gap: 8px; }  
+      .support-toggle, .support-static-content { min-height: 140px; padding: 14px 7px; }  
+      .support-icon { width: 31px; height: 31px; }  
+      .support-item-title { font-size: 11px; }  
+      .support-item-subtitle { font-size: 10px; }  
+      .support-details { grid-column: 1 / -1; font-size: 11px; }  
+      .support-help-banner { justify-content: center; text-align: center; }  
+      .support-help-copy { text-align: left; }  
+      .support-email-link { width: 100%; text-align: center; }  
+      .hero-card { flex-direction: column; }  
+      .product-gallery { width: 100%; max-width: 100%; }  
+      .easy-steps-grid { grid-template-columns: 1fr; }
+    }  
+    @media (max-width: 380px) {  
+      .support-section { padding-left: 11px; padding-right: 11px; }  
+      .support-grid { gap: 6px; }  
+      .support-toggle, .support-static-content { padding-left: 4px; padding-right: 4px; }  
+      .support-item-title { font-size: 10px; }  
+      .support-item-subtitle { font-size: 9px; }  
+    }  
+  </style>  
+</head>  
+<body>  
+  
+  <div id="toastNotification"></div>  
+  <div class="announcement-bar">COMPLIMENTARY SHIPPING ON ALL PREPAID ORDERS</div>  
+  
+  <!-- DAZBERY CUSTOMER REWARDS FLOATING BUTTON -->  
+  <button class="creator-float-btn" type="button" onclick="openCustomerRewards()">  
+    ✨ Customer Rewards  
+  </button>  
+  
+  <!-- REDESIGNED EASY TO UNDERSTAND REWARDS MODAL -->
+  <div class="modal-overlay" id="customerRewardsModal" aria-hidden="true">  
+    <div class="modal-card rewards-modal-card" role="dialog" aria-modal="true" aria-labelledby="rewardsTitle">  
+      <button class="modal-close" type="button" onclick="closeCustomerRewards()" aria-label="Close">✕</button>  
+  
+      <div class="rewards-hero">  
+        <span class="rewards-kicker">DAZBERY REWARDS</span>  
+        <h2 id="rewardsTitle">Share Review & Win! 🎉</h2>  
+        <p class="rewards-intro">Post a video review of your DAZBERY experience and enter our monthly lucky draw.</p>  
+      </div>  
+  
+      <!-- PRIZE HIGHLIGHT BANNER -->
+      <div class="rewards-prize-banner">
+        <span>Monthly Lucky Draw Prize</span>
+        <h3>₹1,000 Voucher</h3>
+        <p>One winner selected at the end of every month via spin-wheel!</p>
       </div>
 
-      <div class="dashboard-container" id="dashboardCard" style="display: none;">
-        
-        <div class="auth-card">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-            <h2 style="font-size: 18px; color: #142218;">My Profile</h2>
-            <button onclick="handleLogout()" style="background: none; border: none; color: #dc2626; font-size: 12px; font-weight: 700; cursor: pointer;">LOGOUT</button>
-          </div>
-          <p id="userEmailDisplay" style="font-size: 12px; font-weight: 600; color: #6b7280; margin-bottom: 16px;"></p>
-
-          <div id="profileSavedView" class="profile-card-display" style="display: none;">
-            <button class="edit-pencil-btn" onclick="enableProfileEdit()" title="Edit Address">✏️</button>
-            <h4 id="dispName" style="font-size: 15px; font-weight: 700; color: #142218; margin-bottom: 4px;"></h4>
-            <p id="dispPhone" style="font-size: 13px; color: #4a5568; font-weight: 600; margin-bottom: 8px;"></p>
-            <p id="dispAddress" style="font-size: 13px; color: #6b7280; line-height: 1.5;"></p>
-          </div>
-
-          <form id="profileEditForm" onsubmit="saveProfileDetails(event)" style="display: flex; flex-direction: column; gap: 10px;">
-            <div class="form-group"><input type="text" id="profName" placeholder="Full Name" required></div>
-            <div class="form-group"><input type="tel" id="profPhone" placeholder="Mobile / WhatsApp Number" required></div>
-            <div class="form-group"><textarea id="profAddress" placeholder="House/Flat No, Street Name" rows="2" required></textarea></div>
-            <div class="form-group"><input type="text" id="profPin" placeholder="6-Digit PIN Code" maxlength="6" oninput="fetchProfileLocation(this.value)" required></div>
-            <div class="form-group"><input type="text" id="profCity" placeholder="City / District" required></div>
-            <div class="form-group"><input type="text" id="profState" placeholder="State" required></div>
-            <button type="submit" class="btn-apply" style="width: 100%;">SAVE ADDRESS</button>
-          </form>
+      <!-- 3 EASY STEPS GUIDE -->
+      <div class="easy-steps-grid">
+        <div class="easy-step-box">
+          <div class="step-num">1</div>
+          <strong>Post Video</strong>
+          <span>Share review on Instagram, YouTube, or Facebook</span>
         </div>
-
-        <div class="auth-card">
-          <h2 style="font-size: 18px; font-weight: 700; margin-bottom: 16px; color: #142218;">Track & Manage Your Orders</h2>
-          <div id="orderHistoryList">
-            <p style="font-size: 12px; color: var(--text-muted);">Loading past orders...</p>
-          </div>
+        <div class="easy-step-box">
+          <div class="step-num">2</div>
+          <strong>Submit Entry</strong>
+          <span>Fill form with Video link & Order ID</span>
         </div>
-
+        <div class="easy-step-box">
+          <div class="step-num">3</div>
+          <strong>Win Prize</strong>
+          <span>Get ₹1,000 voucher for DAZBERY website</span>
+        </div>
       </div>
-
-    </div>
-
-  </div>
-
-  <footer>
-    <p>&copy; 2026 DAZBERY. All Rights Reserved.</p>
-    <div class="insta-container">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-      <span>Official Instagram: <a href="https://instagram.com/dazbery" target="_blank" class="insta-link">@dazbery</a></span>
-    </div>
-    <p style="margin-top: 14px;">
-      <a href="#">Privacy Policy</a> | <a href="#">Terms</a> | <a href="#">Returns & Replacements</a>
-    </p>
-  </footer>
-
-  <script>
-    const SUPABASE_URL = 'https://cccpqyfbwofkfydcacxo.supabase.co';
-    const SUPABASE_KEY = 'sb_publishable_j5jnvFhMmUHaRarHJ_s2LQ_m_TM8ecT';
-    let supabaseClient = null;
-
-    if (window.supabase) {
-      supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-    }
-
-    let currentUser = null;
-    let hasSavedAddress = false;
-    let currentQty = 1;
-    let cartCount = 0;
-    let isDiscountApplied = false;
-
-    function toggleSupportDetails(button, panelId) {
-      const panel = document.getElementById(panelId);
-      const isExpanded = button.getAttribute('aria-expanded') === 'true';
-      button.setAttribute('aria-expanded', String(!isExpanded));
-      panel.hidden = isExpanded;
-    }
-
-    function openCustomerRewards() {
-      const modal = document.getElementById('customerRewardsModal');
-      modal.style.display = 'flex';
-      modal.setAttribute('aria-hidden', 'false');
-      loadParticipantsBoard();
-    }
-    function closeCustomerRewards() {
-      const modal = document.getElementById('customerRewardsModal');
-      modal.style.display = 'none';
-      modal.setAttribute('aria-hidden', 'true');
-    }
-
-    function showToast(message) {
-      const toast = document.getElementById('toastNotification');
-      toast.innerText = message;
-      toast.classList.add('show');
-      setTimeout(() => { toast.classList.remove('show'); }, 2500);
-    }
-
-    function updateQty(change) {
-      currentQty += change;
-      if (currentQty < 1) currentQty = 1;
-      document.getElementById('productQty').innerText = currentQty;
-      updatePriceDisplay();
-    }
-
-    function updatePriceDisplay() {
-      const priceElement = document.getElementById('displayPrice');
-      const strikeElement = document.getElementById('strikePrice');
-      const submitBtn = document.getElementById('submitBtn');
-
-      const activeQty = (cartCount > 0) ? cartCount : currentQty;
-
-      if (isDiscountApplied) {
-        const offerPrice = activeQty * 299;
-        const originalPrice = activeQty * 599;
-        priceElement.innerText = '₹' + offerPrice;
-        strikeElement.innerText = '₹' + originalPrice;
-        strikeElement.style.display = 'inline';
-        submitBtn.innerText = `PROCEED TO PAY — ₹${offerPrice} (PREPAID)`;
-      } else {
-        const originalPrice = activeQty * 599;
-        priceElement.innerText = '₹' + originalPrice;
-        strikeElement.style.display = 'none';
-        submitBtn.innerText = `PROCEED TO PAY — ₹${originalPrice} (PREPAID)`;
-      }
-    }
-
-    function applyCoupon() {
-      const code = document.getElementById('couponInput').value.trim().toUpperCase();
-      const msg = document.getElementById('couponMsg');
-
-      if (code === 'DAZBERY50') {
-        isDiscountApplied = true;
-        updatePriceDisplay();
-        msg.innerText = '✓ Code DAZBERY50 applied (50% OFF).';
-        msg.style.color = '#2d5a27';
-        msg.style.display = 'block';
-        showToast('✓ 50% discount applied successfully!');
-      } else {
-        isDiscountApplied = false;
-        updatePriceDisplay();
-        msg.innerText = 'Invalid code. Use DAZBERY50';
-        msg.style.color = '#777777';
-        msg.style.display = 'block';
-        showToast('❌ Invalid coupon code');
-      }
-    }
-
-    function switchPage(page) {
-      document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
-      if(page === 'shop') document.getElementById('shopPage').classList.add('active');
-      else if(page === 'login') document.getElementById('loginPage').classList.add('active');
-      else if(page === 'cart') {
-        document.getElementById('cartPage').classList.add('active');
-        renderCart();
-      }
-      window.scrollTo(0, 0);
-    }
-
-    function addToCart() {
-      cartCount += currentQty;
-      document.getElementById('cartBadge').innerText = cartCount;
-      updatePriceDisplay();
-      showToast(`✓ Added ${currentQty} item(s) to cart`);
-    }
-
-    function removeFromCart() {
-      cartCount = 0;
-      document.getElementById('cartBadge').innerText = cartCount;
-      updatePriceDisplay();
-      renderCart();
-      showToast('✓ Product removed from cart');
-    }
-
-    function renderCart() {
-      const container = document.getElementById('cartItemsContainer');
-      const summaryBox = document.getElementById('cartSummaryBox');
-      const finalPrice = isDiscountApplied ? (cartCount * 299) : (cartCount * 599);
-      
-      if(cartCount === 0) {
-        container.innerHTML = `<p style="font-size:13px; color:var(--text-muted); text-align:center; padding: 20px;">Your cart is currently empty.</p>`;
-        summaryBox.style.display = 'none';
-      } else {
-        container.innerHTML = `
-          <div class="cart-item-row">
-            <div>
-              <div style="font-weight: 700; font-size: 13px; color: #142218;">Rosemary & Rice Water Hair Growth Spray (100ml)</div>
-              <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Qty: <strong>${cartCount}</strong> ${isDiscountApplied ? '| 50% OFF Applied' : ''}</div>
-              <button class="btn-remove" onclick="removeFromCart()">Remove from Cart</button>
-            </div>
-            <div style="font-weight: 700; font-size: 14px; color: #142218;">₹${finalPrice}</div>
-          </div>
-        `;
-        summaryBox.style.display = 'block';
-        document.getElementById('cartTotalPrice').innerText = '₹' + finalPrice;
-      }
-    }
-
-    function proceedCartCheckout() {
-      if(cartCount === 0) {
-        showToast('❌ Your cart is empty');
-        return;
-      }
-
-      if (hasSavedAddress) {
-        triggerRazorpayCheckout();
-      } else {
-        switchPage('shop');
-        setTimeout(() => {
-          const formElem = document.getElementById('orderForm');
-          if(formElem) {
-            formElem.scrollIntoView({ behavior: 'smooth' });
-            const firstInput = document.getElementById('checkoutName');
-            if(firstInput) firstInput.focus();
-          }
-        }, 200);
-        showToast('👇 Please fill your delivery address to complete order');
-      }
-    }
-
-    async function submitCustomerRewardEntry(e) {
-      e.preventDefault();
-
-      const customerName = document.getElementById('rewardCustomerName').value.trim();
-      const orderId = document.getElementById('claimOrderId').value.trim();
-      const platform = document.getElementById('claimPlatform').value;
-      const videoLink = document.getElementById('claimVideoLink').value.trim();
-      const whatsapp = document.getElementById('claimWhatsapp').value.trim();
-      const publicConsent = document.getElementById('rewardNameConsent').checked;
-      const disclosureConsent = document.getElementById('rewardDisclosureConsent').checked;
-
-      if (!/^[6-9]\d{9}$/.test(whatsapp)) {
-        showToast('Please enter a valid 10-digit WhatsApp number.');
-        return;
-      }
-      if (!publicConsent || !disclosureConsent) {
-        showToast('Please confirm both statements to submit.');
-        return;
-      }
-      if (!supabaseClient) {
-        showToast('Database is not available. Please try again later.');
-        return;
-      }
-
-      const firstName = customerName.split(/\s+/)[0].slice(0, 24);
-      const parts = customerName.trim().split(/\s+/);
-      const publicName = parts.length > 1
-        ? `${firstName} ${parts[parts.length - 1].charAt(0).toUpperCase()}.`
-        : firstName;
-
-      const { error } = await supabaseClient.from('customer_reward_entries').insert([{
-        customer_name: customerName,
-        public_name: publicName,
-        public_consent: true,
-        order_code: orderId,
-        platform: platform,
-        video_link: videoLink,
-        whatsapp: whatsapp,
-        status: 'pending'
-      }]);
-
-      if (error) {
-        console.error('Customer rewards entry error:', error);
-        showToast('Entry could not be submitted. Please check your Order ID or try again.');
-        return;
-      }
-
-      showToast('Thank you! Your entry has been received for verification.');
-      e.target.reset();
-      loadParticipantsBoard();
-    }
-
-    async function loadParticipantsBoard() {
-      const board = document.getElementById('participantsBoard');
-      if (!board) return;
-      if (!supabaseClient) {
-        board.innerHTML = '<p class="participants-empty">Participant entries will appear here after the rewards database is connected.</p>';
-        return;
-      }
-
-      const { data, error } = await supabaseClient
-        .from('customer_reward_entries')
-        .select('public_name')
-        .eq('status', 'approved')
-        .eq('public_consent', true)
-        .order('created_at', { ascending: false })
-        .limit(30);
-
-      if (error) {
-        console.error('Could not load participants:', error);
-        board.innerHTML = '<p class="participants-empty">The Participants Board is temporarily unavailable.</p>';
-        return;
-      }
-
-      if (!data || data.length === 0) {
-        board.innerHTML = '<p class="participants-empty">Be among the first verified DAZBERY participants. Approved entries will appear here.</p>';
-        return;
-      }
-
-      board.innerHTML = data.map(item => {
-        const safeName = String(item.public_name || 'DAZBERY Customer').replace(/[&<>"']/g, ch => ({
-          '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-        }[ch]));
-        return `<div class="participant-name">${safeName} <span aria-label="verified">✓</span></div>`;
-      }).join('');
-    }
-
-    function renderReviews(reviewList) {
-      const grid = document.getElementById('reviewsGrid');
-      if (!grid) return;
-
-      const escapeHTML = (value) => String(value ?? '').replace(/[&<>"']/g, ch => ({
-        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-      }[ch]));
-
-      if (!reviewList || reviewList.length === 0) {
-        grid.innerHTML = '<p class="review-text" style="text-align:center; padding:24px 12px;">No customer reviews yet. Be the first to share your DAZBERY experience.</p>';
-        const oldToggle = document.getElementById('reviewsToggleWrap');
-        if (oldToggle) oldToggle.remove();
-        return;
-      }
-
-      const languagePriority = { english: 0, hindi: 1, malayalam: 2 };
-      const sortedReviews = [...reviewList].sort((a, b) => {
-        const aLang = String(a.language || '').toLowerCase();
-        const bLang = String(b.language || '').toLowerCase();
-        const aPriority = languagePriority[aLang] ?? 3;
-        const bPriority = languagePriority[bLang] ?? 3;
-        return aPriority - bPriority;
-      });
-
-      grid.innerHTML = sortedReviews.map((r, index) => {
-        const rating = Math.max(0, Math.min(5, Number(r.rating) || 0));
-        const starsStr = '★'.repeat(rating) + '☆'.repeat(5 - rating);
-        const hiddenClass = index >= 3 ? ' review-hidden' : '';
-        const rawOrderId = String(r.order_id || '');
-        const maskedOrderId = rawOrderId.length > 4
-          ? '••••' + rawOrderId.slice(-4)
-          : '••••';
-        const language = r.language
-          ? `<div class="review-language">${escapeHTML(r.language)}</div>`
-          : '';
-
-        return `
-          <article class="review-item${hiddenClass}">
-            <div class="review-header">
-              <span class="review-user">${escapeHTML(r.customer_name)}</span>
-              <span class="verified-badge">✔ Verified Purchase</span>
-            </div>
-            <div class="review-language">Order ID: ${escapeHTML(maskedOrderId)}</div>
-            ${language}
-            <div class="stars" aria-label="${rating} out of 5 stars">${starsStr}</div>
-            <div class="review-text">${escapeHTML(r.review_text)}</div>
-          </article>
-        `;
-      }).join('');
-
-      const oldToggle = document.getElementById('reviewsToggleWrap');
-      if (oldToggle) oldToggle.remove();
-
-      if (reviewList.length > 3) {
-        const wrap = document.createElement('div');
-        wrap.className = 'reviews-toggle-wrap';
-        wrap.id = 'reviewsToggleWrap';
-        const button = document.createElement('button');
-        button.className = 'reviews-toggle-btn';
-        button.type = 'button';
-        button.textContent = `View all reviews (${sortedReviews.length})`;
-        button.setAttribute('aria-expanded', 'false');
-        button.addEventListener('click', () => {
-          const expanded = button.getAttribute('aria-expanded') === 'true';
-          grid.querySelectorAll('.review-hidden').forEach(card => {
-            card.style.display = expanded ? 'none' : 'block';
-          });
-          button.setAttribute('aria-expanded', String(!expanded));
-          button.textContent = expanded
-            ? `View all reviews (${sortedReviews.length})`
-            : 'Show fewer reviews';
-        });
-        wrap.appendChild(button);
-        grid.insertAdjacentElement('afterend', wrap);
-      }
-    }
-
-    async function fetchReviews() {
-      const grid = document.getElementById('reviewsGrid');
-      if (!grid) return;
-
-      if (!supabaseClient) {
-        renderReviews([]);
-        return;
-      }
-
-      const { data: reviews, error } = await supabaseClient
-        .from('reviews')
-        .select('*')
-        .eq('is_verified', true)
-        .order('created_at', { ascending: false });
-
-      if (error) {
-        console.error('Could not load customer reviews:', error);
-        renderReviews([]);
-        return;
-      }
-
-      renderReviews(reviews || []);
-    }
-
-    async function submitUserReview(e) {
-      e.preventDefault();
-      const name = document.getElementById('rName').value.trim();
-      const orderId = document.getElementById('rOrder').value.trim();
-      const rating = parseInt(document.getElementById('rRating').value);
-      const text = document.getElementById('rText').value.trim();
-      const language = document.getElementById('rLanguage').value;
-
-      if(!supabaseClient) return;
-
-      const { data: orderData, error: orderErr } = await supabaseClient
-        .from('orders')
-        .select('id')
-        .eq('order_code', orderId)
-        .single();
-
-      if (orderErr || !orderData) {
-        showToast('❌ Invalid Order ID! Only verified buyers can review.');
-        return;
-      }
-
-      const { error } = await supabaseClient.from('reviews').insert([
-        {
-          order_id: orderId,
-          customer_name: name,
-          rating: rating,
-          review_text: text,
-          language: language,
-          is_verified: false,
-          created_at: new Date()
-        }
-      ]);
-
-      if (error) {
-        showToast('❌ Failed to post review: ' + error.message);
-      } else {
-        showToast('Thank you! Your review was submitted for verification.');
-        e.target.reset();
-        fetchReviews();
-      }
-    }
-
-    async function loginWithGoogle() {
-      if (!supabaseClient) {
-        alert('Supabase connecting...');
-        return;
-      }
-      const { error } = await supabaseClient.auth.signInWithOAuth({
-        provider: 'google',
-        options: { 
-          redirectTo: window.location.origin + '/' 
-        }
-      });
-      if (error) showToast('❌ Login Error: ' + error.message);
-    }
-
-    async function checkUserSession() {
-      if (!supabaseClient) return;
-      const { data: { session } } = await supabaseClient.auth.getSession();
-      if (session) {
-        currentUser = session.user;
-
-        document.getElementById('userEmailDisplay').innerText = currentUser.email;
-        document.getElementById('loginCard').style.display = 'none';
-        document.getElementById('dashboardCard').style.display = 'flex';
-        document.getElementById('navAccountText').innerText = 'My Account';
-
-        await loadUserProfile(currentUser.id);
-        fetchUserOrders(currentUser.id);
-      }
-    }
-
-    async function fetchProfileLocation(pin) {
-      if (pin.length === 6) {
-        try {
-          let response = await fetch(`https://api.postalpincode.in/pincode/${pin}`);
-          let data = await response.json();
-          if (data[0].Status === "Success") {
-            let details = data[0].PostOffice[0];
-            document.getElementById('profCity').value = details.District;
-            document.getElementById('profState').value = details.State;
-          }
-        } catch (e) {
-          console.log("PIN fetch error");
-        }
-      }
-    }
-
-    async function fetchLocationByPin(pin) {
-      if (pin.length === 6) {
-        try {
-          let response = await fetch(`https://api.postalpincode.in/pincode/${pin}`);
-          let data = await response.json();
-          if (data[0].Status === "Success") {
-            let details = data[0].PostOffice[0];
-            document.getElementById('checkoutCity').value = details.District;
-            document.getElementById('checkoutState').value = details.State;
-          }
-        } catch (e) {
-          console.log("PIN fetch error");
-        }
-      }
-    }
-
-    function enableProfileEdit() {
-      document.getElementById('profileSavedView').style.display = 'none';
-      document.getElementById('profileEditForm').style.display = 'flex';
-    }
-
-    async function loadUserProfile(userId) {
-      const { data, error } = await supabaseClient
-        .from('profiles')
-        .select('*')
-        .eq('id', userId)
-        .single();
-
-      if (data && data.full_name && data.address) {
-        hasSavedAddress = true;
-
-        document.getElementById('profName').value = data.full_name || '';
-        document.getElementById('profPhone').value = data.phone || '';
-        document.getElementById('profAddress').value = data.address || '';
-        document.getElementById('profPin').value = data.pin || '';
-        document.getElementById('profCity').value = data.city || '';
-        document.getElementById('profState').value = data.state || '';
-
-        document.getElementById('checkoutName').value = data.full_name || '';
-        document.getElementById('checkoutPhone').value = data.phone || '';
-        document.getElementById('checkoutAddress').value = data.address || '';
-        document.getElementById('checkoutPin').value = data.pin || '';
-        document.getElementById('checkoutCity').value = data.city || '';
-        document.getElementById('checkoutState').value = data.state || '';
-
-        document.getElementById('dispName').innerText = data.full_name;
-        document.getElementById('dispPhone').innerText = '📞 ' + data.phone;
-        document.getElementById('dispAddress').innerText = `${data.address}, ${data.city} - ${data.pin}, ${data.state}`;
+  
+      <form id="customerRewardsForm" onsubmit="submitCustomerRewardEntry(event)" class="rewards-form">  
+        <h3>Submit Your Video Entry</h3>  
         
-        document.getElementById('profileSavedView').style.display = 'block';
-        document.getElementById('profileEditForm').style.display = 'none';
+        <div>
+          <label for="rewardCustomerName">Full Name</label>  
+          <input type="text" id="rewardCustomerName" maxlength="80" placeholder="Enter your full name" required>  
+        </div>
 
-        document.getElementById('savedAddressCheckoutBox').style.display = 'block';
-        document.getElementById('manualAddressFields').style.display = 'none';
+        <div>
+          <label for="claimOrderId">DAZBERY Order ID</label>  
+          <input type="text" id="claimOrderId" maxlength="40" placeholder="e.g. DZ-8492-X9" required>  
+        </div>
+
+        <div>
+          <label for="claimPlatform">Platform</label>  
+          <select id="claimPlatform" required>  
+            <option value="">Select Platform</option>  
+            <option value="Instagram">Instagram</option>  
+            <option value="YouTube">YouTube</option>  
+            <option value="Facebook">Facebook</option>  
+          </select>  
+        </div>
+
+        <div>
+          <label for="claimVideoLink">Public Video Link</label>  
+          <input type="url" id="claimVideoLink" placeholder="https://..." required>  
+        </div>
+
+        <div>
+          <label for="claimWhatsapp">WhatsApp Number</label>  
+          <input type="tel" id="claimWhatsapp" inputmode="numeric" pattern="[6-9][0-9]{9}" maxlength="10" placeholder="10-digit phone number" required>  
+        </div>
+
+        <label class="rewards-consent">  
+          <input type="checkbox" id="rewardNameConsent" required>  
+          <span>Display my first name on the verified Participants Board. (Phone number and full Order ID will remain hidden)</span>  
+        </label>  
         
-        document.getElementById('savedCheckoutName').innerText = data.full_name;
-        document.getElementById('savedCheckoutPhone').innerText = '📞 ' + data.phone;
-        document.getElementById('savedCheckoutAddress').innerText = `${data.address}, ${data.city} - ${data.pin}, ${data.state}`;
-
-        ['checkoutName','checkoutPhone','checkoutAddress','checkoutPin','checkoutCity','checkoutState'].forEach(id => {
-          document.getElementById(id).removeAttribute('required');
-        });
-
-      } else {
-        hasSavedAddress = false;
-        document.getElementById('profileSavedView').style.display = 'none';
-        document.getElementById('profileEditForm').style.display = 'flex';
-        document.getElementById('savedAddressCheckoutBox').style.display = 'none';
-        document.getElementById('manualAddressFields').style.display = 'block';
-
-        if (currentUser) {
-          document.getElementById('profName').value = currentUser.user_metadata?.full_name || '';
-          document.getElementById('checkoutName').value = currentUser.user_metadata?.full_name || '';
-        }
-      }
-    }
-
-    async function saveProfileDetails(e) {
-      e.preventDefault();
-      if(!currentUser) return;
-
-      const name = document.getElementById('profName').value;
-      const phone = document.getElementById('profPhone').value;
-      const address = document.getElementById('profAddress').value;
-      const pin = document.getElementById('profPin').value;
-      const city = document.getElementById('profCity').value;
-      const state = document.getElementById('profState').value;
-
-      const { error } = await supabaseClient
-        .from('profiles')
-        .upsert({
-          id: currentUser.id,
-          full_name: name,
-          phone: phone,
-          address: address,
-          pin: pin,
-          city: city,
-          state: state,
-          updated_at: new Date()
-        });
-
-      if (error) {
-        showToast('❌ Failed to save profile: ' + error.message);
-      } else {
-        showToast('✓ Profile saved successfully!');
-        loadUserProfile(currentUser.id);
-      }
-    }
-
-    async function fetchUserOrders(userId) {
-      const historyList = document.getElementById('orderHistoryList');
-      if (!historyList || !supabaseClient) return;
-
-      const { data: orders, error } = await supabaseClient
-        .from('orders')
-        .select('*')
-        .eq('user_id', userId)
-        .order('created_at', { ascending: false });
-
-      if (error || !orders || orders.length === 0) {
-        historyList.innerHTML = `<p style="font-size: 12px; color: var(--text-muted);">No past orders found.</p>`;
-        return;
-      }
-
-      historyList.innerHTML = '';
-
-      orders.forEach(order => {
-        const currentStatus = order.status || 'Confirmed';
-        const isCancelled = (currentStatus.toLowerCase() === 'cancelled');
-
-        const steps = ['Confirmed', 'Packed', 'Shipped', 'Delivered'];
-        const currentStepIndex = steps.indexOf(currentStatus);
-
-        let timelineHTML = '';
-        if (!isCancelled) {
-          timelineHTML = `
-            <div class="timeline-wrapper">
-              ${steps.map((step, idx) => `
-                <div class="timeline-step ${idx <= currentStepIndex ? 'active' : ''}">
-                  <div class="step-circle">${idx <= currentStepIndex ? '✓' : idx + 1}</div>
-                  <div class="step-label">${step}</div>
-                </div>
-              `).join('')}
-            </div>
-          `;
-        }
-
-        let badgeBg = '#eef2ff';
-        let badgeColor = '#4338ca';
-        let displayStatus = currentStatus;
-
-        if (currentStatus === 'Packed') { badgeBg = '#fef3c7'; badgeColor = '#d97706'; }
-        else if (currentStatus === 'Shipped') { badgeBg = '#e0f2fe'; badgeColor = '#0369a1'; }
-        else if (currentStatus === 'Delivered') { badgeBg = '#dcfce7'; badgeColor = '#15803d'; }
-        else if (isCancelled) { 
-          badgeBg = '#fee2e2'; 
-          badgeColor = '#b91c1c'; 
-          displayStatus = 'CANCELLED'; 
-        }
-
-        const displayOrderId = order.order_code || `DZ-${order.id}`;
-
-        const orderCard = `
-          <div class="order-card" style="${isCancelled ? 'background: #fffcfc;' : ''}">
-            <div class="order-header">
-              <div>
-                <strong style="font-size: 13px; color: #142218;">Order #${displayOrderId}</strong>
-                <div style="font-size: 11px; color: #6b7280; margin-top: 2px;">
-                  ${new Date(order.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
-                </div>
-              </div>
-              <span class="status-badge" style="background: ${badgeBg}; color: ${badgeColor};">${displayStatus}</span>
-            </div>
-
-            <div style="margin: 14px 0;">
-              <p style="margin: 2px 0; font-weight: 700; font-size: 14px; color: #142218;">${order.product_name || 'Rosemary & Rice Water Hair Growth Spray'}</p>
-              <p style="margin: 4px 0; font-size: 12px; color: #4a5568;">
-                Quantity: <strong>${order.quantity}</strong> | Total: <strong>₹${order.total_price}</strong>
-              </p>
-              <p style="margin: 4px 0; font-size: 11px; color: #6b7280;">
-                <strong>Address:</strong> ${order.address}
-              </p>
+        <label class="rewards-consent">  
+          <input type="checkbox" id="rewardDisclosureConsent" required>  
+          <span>This video is my honest personal experience. (Video must remain public for at least 30 days)</span>  
+        </label>  
+  
+        <button type="submit" class="btn-apply" style="width:100%; padding:14px; margin-top:6px; font-size:13px;">SUBMIT MY ENTRY</button>  
+        <p style="font-size:10px; color:#777; text-align:center; margin-top:4px;">* Positive review is not mandatory. One entry allowed per Order ID.</p>  
+      </form>  
+  
+      <section class="participants-panel" aria-labelledby="participantsTitle">  
+        <div class="participants-heading">  
+          <div>  
+            <span class="rewards-kicker">COMMUNITY</span>  
+            <h3 id="participantsTitle" style="font-size:15px; color:#142218; margin-top:2px;">Verified Participants</h3>  
+          </div>  
+          <span class="participants-live">✓ Live Board</span>  
+        </div>  
+        <div id="participantsBoard" class="participants-list">  
+          <p class="participants-empty">Loading verified participants…</p>  
+        </div>  
+      </section>  
+  
+      <div style="background: #f7f5f0; border-radius: 12px; padding: 14px; margin-top: 18px; text-align: center;">  
+        <strong style="color: #142218; font-size: 12px;">📢 Winner Announcement</strong>  
+        <p style="color: #62645f; font-size: 11px; margin: 4px 0 8px;">The lucky winner is selected at month-end using a spin-wheel and announced on Instagram.</p>  
+        <a href="https://instagram.com/dazbery" target="_blank" rel="noopener" style="color: #244a30; font-size: 11px; font-weight: bold; text-decoration: underline;">Follow @dazbery on Instagram</a>  
+      </div>  
+    </div>  
+  </div>  
+  
+  <header>  
+    <div class="logo-area" onclick="switchPage('shop')">  
+      <div class="logo">DAZBERY</div>  
+    </div>  
+    <nav class="nav-links">  
+      <a onclick="switchPage('shop')">Shop</a>  
+      <a onclick="switchPage('cart')" style="font-weight: 700;">Cart <span id="cartBadge" class="cart-badge">0</span></a>  
+      <a onclick="switchPage('login')" id="navAccountText">My Account</a>  
+    </nav>  
+  </header>  
+  
+  <div class="container">  
+  
+    <!-- SHOP / PRODUCT PAGE -->  
+    <div id="shopPage" class="page-section active">  
+      <div class="hero-card" id="product">  
+        <div class="product-gallery">  
+          <span class="badge-tag">BEST SELLER</span>  
+          <img src="spray.PNG" alt="DAZBERY Rosemary & Rice Water Hair Growth Spray" class="product-main-img">  
+        </div>  
+  
+        <div class="product-details">  
+          <h1>Rosemary & Rice Water Hair Growth Spray</h1>  
+          <p class="subtitle">100ml | Pure Botanical Scalp Mist</p>  
+  
+          <div class="price-box">  
+            <span class="price-offer" id="displayPrice">₹599</span>  
+            <span class="price-original" id="strikePrice" style="display: none;">₹599</span>  
+            <span class="prepaid-tag">Prepaid Only</span>  
+          </div>  
+  
+          <div class="qty-selector">  
+            <span>Quantity:</span>  
+            <div class="qty-box-controls">  
+              <button type="button" class="qty-btn" onclick="updateQty(-1)">-</button>  
+              <span class="qty-num" id="productQty">1</span>  
+              <button type="button" class="qty-btn" onclick="updateQty(1)">+</button>  
+            </div>  
+          </div>  
+  
+          <div class="coupon-container">  
+            <input type="text" id="couponInput" placeholder="Enter Creator Code (e.g. DAZBERY50)">  
+            <button type="button" class="btn-apply" onclick="applyCoupon()">APPLY</button>  
+          </div>  
+          <div class="coupon-msg" id="couponMsg"></div>  
+  
+          <div id="savedAddressCheckoutBox" style="display: none; background: #f7f5f0; border: 1px solid var(--border-color); padding: 16px; border-radius: 10px; margin-bottom: 14px;">  
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">  
+              <span style="font-size: 11px; font-weight: 700; color: #142218; text-transform: uppercase; letter-spacing: 0.5px;">Delivering to Saved Address</span>  
+              <button type="button" onclick="switchPage('login')" style="background: none; border: none; color: #2d5a27; font-size: 11px; font-weight: 700; cursor: pointer;">Change Address</button>  
+            </div>  
+            <p id="savedCheckoutName" style="font-size: 13px; font-weight: 700; color: #142218;"></p>  
+            <p id="savedCheckoutPhone" style="font-size: 12px; color: #4a5568;"></p>  
+            <p id="savedCheckoutAddress" style="font-size: 12px; color: #6b7280; margin-top: 2px;"></p>  
+          </div>  
+  
+          <form class="order-form" id="orderForm" onsubmit="handleOrder(event)">  
+            <div id="manualAddressFields">  
+              <div class="form-group" style="margin-bottom: 10px;"><input type="text" id="checkoutName" placeholder="Full Name" required></div>  
+              <div class="form-group" style="margin-bottom: 10px;"><input type="tel" id="checkoutPhone" placeholder="Mobile / WhatsApp Number" required></div>  
+              <div class="form-group" style="margin-bottom: 10px;"><textarea id="checkoutAddress" placeholder="House/Flat No, Street Name" rows="2" required></textarea></div>  
+              <div class="form-group" style="margin-bottom: 10px;"><input type="text" id="checkoutPin" placeholder="6-Digit PIN Code" maxlength="6" oninput="fetchLocationByPin(this.value)" required></div>  
+              <div class="form-group" style="margin-bottom: 10px;"><input type="text" id="checkoutCity" placeholder="City / District" required></div>  
+              <div class="form-group" style="margin-bottom: 10px;"><input type="text" id="checkoutState" placeholder="State" required></div>  
+            </div>  
               
-              ${order.tracking_id && order.tracking_id !== 'Pending' ? `
-                <div style="background: #f7f5f0; padding: 10px; border-radius: 8px; margin-top: 10px; font-size: 12px; border: 1px dashed #cbd5e1;">
-                  🚚 <strong>Courier:</strong> ${order.courier_name || 'Delivery Partner'} <br>
-                  📌 <strong>Tracking ID:</strong> <span style="color: #2563eb; font-weight: 700;">${order.tracking_id}</span>
-                </div>
-              ` : ''}
-            </div>
-
-            ${timelineHTML}
-
-            <div style="text-align: right; margin-top: 10px;">
-              <a href="mailto:supportdazbery@gmail.com?subject=Help with Order %23${displayOrderId}" class="support-link-btn">Need Help with Order?</a>
-            </div>
-          </div>
-        `;
-        historyList.innerHTML += orderCard;
-      });
-    }
-
-    async function handleLogout() {
-      if (supabaseClient) await supabaseClient.auth.signOut();
-      currentUser = null;
-      hasSavedAddress = false;
-      document.getElementById('dashboardCard').style.display = 'none';
-      document.getElementById('loginCard').style.display = 'block';
-      document.getElementById('navAccountText').innerText = 'My Account';
-      
-      document.getElementById('checkoutName').value = '';
-      document.getElementById('checkoutPhone').value = '';
-      document.getElementById('checkoutAddress').value = '';
-      document.getElementById('checkoutPin').value = '';
-      document.getElementById('checkoutCity').value = '';
-      document.getElementById('checkoutState').value = '';
-
-      document.getElementById('savedAddressCheckoutBox').style.display = 'none';
-      document.getElementById('manualAddressFields').style.display = 'block';
-
-      ['checkoutName','checkoutPhone','checkoutAddress','checkoutPin','checkoutCity','checkoutState'].forEach(id => {
-        document.getElementById(id).setAttribute('required', 'true');
-      });
-      
-      showToast('✓ Logged out successfully');
-      switchPage('login');
-    }
-
-    function handleOrder(e) {
-      e.preventDefault();
-      triggerRazorpayCheckout();
-    }
-
-    function triggerRazorpayCheckout() {
-      const name = document.getElementById('checkoutName').value;
-      const phone = document.getElementById('checkoutPhone').value;
-      const address = document.getElementById('checkoutAddress').value;
-      const pin = document.getElementById('checkoutPin').value;
-      const city = document.getElementById('checkoutCity').value;
-      const state = document.getElementById('checkoutState').value;
-      
-      const orderQty = (cartCount > 0) ? cartCount : currentQty;
-      const finalPrice = isDiscountApplied ? (orderQty * 299) : (orderQty * 599);
-
-      const fullAddress = address ? `${address}, ${city} - ${pin}, ${state}` : document.getElementById('savedCheckoutAddress').innerText;
-
-      const randomNum = Math.floor(1000 + Math.random() * 9000);
-      const randomSuffix = Math.random().toString(36).substring(2, 4).toUpperCase();
-      const customOrderId = `DZ-${randomNum}-${randomSuffix}`;
-
-      var options = {
-        "key": "rzp_live_Ty5lX0G7dUQdbn",
-        "amount": finalPrice * 100,
-        "currency": "INR",
-        "name": "DAZBERY",
-        "description": "Rosemary & Rice Water Hair Growth Spray (100ml)",
-        "prefill": {
-          "name": name || document.getElementById('savedCheckoutName').innerText,
-          "contact": phone || document.getElementById('savedCheckoutPhone').innerText.replace('📞 ', ''),
-          "email": currentUser ? currentUser.email : ""
-        },
-        "theme": {
-          "color": "#142218"
-        },
-        "handler": async function (response) {
-          showToast('✓ Payment Successful! Saving order...');
-
-          if (supabaseClient) {
-            const { data: { session } } = await supabaseClient.auth.getSession();
-
-            await supabaseClient.from('orders').insert([
-              {
-                order_code: customOrderId,
-                user_id: session ? session.user.id : null,
-                customer_name: name || document.getElementById('savedCheckoutName').innerText,
-                phone: phone || document.getElementById('savedCheckoutPhone').innerText.replace('📞 ', ''),
-                address: fullAddress,
-                quantity: orderQty,
-                total_price: finalPrice,
-                payment_id: response.razorpay_payment_id,
-                status: 'Confirmed',
-                product_name: 'Rosemary & Rice Water Hair Growth Spray',
-                tracking_id: 'Pending'
-              }
-            ]);
-          }
-
-          cartCount = 0;
-          document.getElementById('cartBadge').innerText = cartCount;
-
-          showToast('✓ Order Placed Successfully!');
-          alert(`Payment Success!\nOrder ID: ${customOrderId}\nPayment ID: ${response.razorpay_payment_id}\nOrder confirmed for ₹${finalPrice}.`);
+            <div class="btn-group">  
+              <button type="button" class="btn-cart" onclick="addToCart()">Add to Cart</button>  
+              <button type="submit" class="btn-buy" id="submitBtn">PROCEED TO PAY — ₹599 (PREPAID)</button>  
+            </div>  
+          </form>  
+          <p style="font-size: 10px; color: #777; text-align: center; margin-top: 10px;">🔒 100% Secure & Encrypted Payments via Razorpay</p>  
+        </div>  
+      </div>  
+  
+      <h2 class="section-title" id="reviews">Customer Reviews</h2>  
+      <div class="reviews-grid" id="reviewsGrid">  
+        <p style="font-size: 13px; color: var(--text-muted);">Loading reviews...</p>  
+      </div>  
+  
+      <div class="add-review-box">  
+        <h3>Write a Verified Review</h3>  
+        <p>Only verified customers who purchased this item can submit feedback using their Order ID.</p>  
+        <form onsubmit="submitUserReview(event)">  
+          <div class="form-group" style="margin-bottom:10px;"><input type="text" id="rName" placeholder="Your Name & City" required></div>  
+          <div class="form-group" style="margin-bottom:10px;"><input type="text" id="rOrder" placeholder="Enter Order ID (e.g. DZ-8492-X9)" required></div>  
+          <div class="form-group" style="margin-bottom:10px;">  
+            <select id="rRating" style="background:#faf8f5;" required>  
+              <option value="5">★★★★★ (5 Stars)</option>  
+              <option value="4">★★★★☆ (4 Stars)</option>  
+              <option value="3">★★★☆☆ (3 Stars)</option>  
+            </select>  
+          </div>  
+          <div class="form-group" style="margin-bottom:10px;">  
+            <select id="rLanguage" required style="background:#faf8f5;">  
+              <option value="">Select review language</option>  
+              <option value="English">English</option>  
+              <option value="Hindi">Hindi</option>  
+              <option value="Malayalam">Malayalam</option>  
+              <option value="Other">Other</option>  
+            </select>  
+          </div>  
+          <div class="form-group" style="margin-bottom:10px;"><textarea id="rText" placeholder="Write your honest feedback..." rows="2" required></textarea></div>  
+          <button type="submit" class="btn-apply" style="width:100%;">Submit Review</button>  
+        </form>  
+      </div>  
+  
+      <!-- DELIVERY PROTECTION & CUSTOMER CARE -->  
+      <section id="support" class="support-section" aria-labelledby="supportTitle">  
+        <h3 id="supportTitle" class="support-title">Delivery Protection &amp; Customer Care</h3>  
+        <p class="support-tagline">YOUR ORDER. OUR RESPONSIBILITY.</p>  
+        <p class="support-intro">At DAZBERY, your satisfaction matters. Every order is carefully packed and handled with care.</p>  
+  
+        <div class="support-grid">  
+          <div class="support-item">  
+            <button type="button" class="support-toggle" aria-expanded="false" aria-controls="replacementDetails" onclick="toggleSupportDetails(this, 'replacementDetails')">  
+              <svg class="support-icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 4 40 10v12c0 10-6.8 17.5-16 22C14.8 39.5 8 32 8 22V10L24 4Z"/><path d="m17 23 5 5 10-11"/></svg>  
+              <span class="support-item-title">100% Free Replacement</span>  
+              <span class="support-item-subtitle">For damaged or defective products</span>  
+              <span class="support-chevron" aria-hidden="true">⌄</span>  
+            </button>  
+            <div class="support-details" id="replacementDetails" hidden>  
+              <p>If your order arrives damaged, defective, or with a delivery-related issue, we're here to help.</p>  
+              <p>Please record a clear unboxing video while opening your package and share it with our support team within <strong>24 hours of delivery</strong>.</p>  
+              <p>Once the issue is reviewed and verified, we'll arrange a <strong>100% free replacement</strong> for the affected product, at no additional cost to you.</p>  
+              <a href="mailto:supportdazbery@gmail.com?subject=Replacement%20Request" class="support-detail-link">Request help with a replacement</a>  
+            </div>  
+          </div>  
+  
+          <div class="support-item support-static">  
+            <div class="support-static-content">  
+              <svg class="support-icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M4 13h25v23H4zM29 20h8l7 8v8H29z"/><circle cx="14" cy="38" r="4"/><circle cx="36" cy="38" r="4"/><path d="M8 19h15M8 25h10"/></svg>  
+              <span class="support-item-title">Safe &amp; Secure Delivery</span>  
+              <span class="support-item-subtitle">Carefully packed and shipped across India</span>  
+            </div>  
+          </div>  
+  
+          <div class="support-item support-static">  
+            <div class="support-static-content">  
+              <svg class="support-icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 27v-5a16 16 0 0 1 32 0v5"/><rect x="5" y="24" width="8" height="13" rx="3"/><rect x="35" y="24" width="8" height="13" rx="3"/><path d="M39 37c-2 5-7 7-14 7h-4"/><rect x="17" y="41" width="7" height="4" rx="2"/></svg>  
+              <span class="support-item-title">Dedicated Support Team</span>  
+              <span class="support-item-subtitle">We're always here to help</span>  
+            </div>  
+          </div>  
+        </div>  
+  
+        <div class="support-help-banner">  
+          <div class="support-help-copy">  
+            <svg class="support-help-icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 27v-5a16 16 0 0 1 32 0v5"/><rect x="5" y="24" width="8" height="13" rx="3"/><rect x="35" y="24" width="8" height="13" rx="3"/><path d="M39 37c-2 5-7 7-14 7h-4"/><rect x="17" y="41" width="7" height="4" rx="2"/></svg>  
+            <div>  
+              <h4>We're Here to Help</h4>  
+              <p>For any assistance, reach out to our support team.</p>  
+            </div>  
+          </div>  
+          <a href="mailto:supportdazbery@gmail.com" class="support-email-link">✉ supportdazbery@gmail.com</a>  
+        </div>  
+      </section>  
+  
+    </div>  
+  
+    <!-- CART PAGE -->  
+    <div id="cartPage" class="page-section">  
+      <div class="cart-card">  
+        <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 16px; color: #142218;">Your Shopping Cart</h2>  
+        <div id="cartItemsContainer"></div>  
+        <div class="cart-summary" id="cartSummaryBox" style="display: none;">  
+          <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 15px; margin-bottom: 14px; color: #142218;">  
+            <span>Total Amount:</span>  
+            <span id="cartTotalPrice">₹599</span>  
+          </div>  
+          <button onclick="proceedCartCheckout()" class="btn-apply" style="width: 100%; padding: 14px; font-size: 13px;">PROCEED TO CHECKOUT</button>  
+        </div>  
+      </div>  
+    </div>  
+  
+    <!-- GOOGLE SIGN-IN & PROFILE PAGE -->  
+    <div id="loginPage" class="page-section">  
+        
+      <div class="auth-card" id="loginCard" style="text-align: center; max-width: 480px; margin: 20px auto;">  
+        <h2 style="color: #142218; margin-bottom: 6px;">Customer Sign In</h2>  
+        <p style="color: #6b7280; font-size: 13px; margin-bottom: 20px;">Sign in with Google to save your delivery address and manage orders.</p>  
           
-          if (currentUser) {
-            fetchUserOrders(currentUser.id);
-            switchPage('login');
-          }
-        },
-        "modal": {
-          "ondismiss": function() {
-            showToast('❌ Payment Cancelled');
-          }
-        }
-      };
-
-      var rzp = new Razorpay(options);
-      rzp.on('payment.failed', function (response){
-        alert('Payment Failed: ' + response.error.description);
-      });
-      rzp.open();
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-      checkUserSession();
-      fetchReviews();
-    });
-  </script>
-</body>
+        <button type="button" class="google-btn" onclick="loginWithGoogle()">  
+          <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.18v3.15C3.17 21.32 7.23 24 12 24z"/><path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.61H1.18C.43 8.14 0 9.87 0 12s.43 3.86 1.18 5.39l4.09-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.23 0 3.17 2.68 1.18 6.61l4.09 3.15c.95-2.85 3.6-4.96 6.73-4.96z"/></svg>  
+          Continue with Google  
+        </button>  
+      </div>  
+  
+      <div class="dashboard-container" id="dashboardCard" style="display: none;">  
+          
+        <div class="auth-card">  
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">  
+            <h2 style="font-size: 18px; color: #142218;">My Profile</h2>  
+            <button onclick="handleLogout()" style="background: none; border: none; color: #dc2626; font-size: 12px; font-weight: 700; cursor: pointer;">LOGOUT</button>  
+          </div>  
+          <p id="userEmailDisplay" style="font-size: 12px; font-weight: 600; color: #6b7280; margin-bottom: 16px;"></p>  
+  
+          <div id="profileSavedView" class="profile-card-display" style="display: none;">  
+            <button class="edit-pencil-btn" onclick="enableProfileEdit()" title="Edit Address">✏️</button>  
+            <h4 id="dispName" style="font-size: 15px; font-weight: 700; color: #142218; margin-bottom: 4px;"></h4>  
+            <p id="dispPhone" style="font-size: 13px; color: #4a5568; font-weight: 600; margin-bottom: 8px;"></p>  
+            <p id="dispAddress" style="font-size: 13px; color: #6b7280; line-height: 1.5;"></p>  
+          </div>  
+  
+          <form id="profileEditForm" onsubmit="saveProfileDetails(event)" style="display: flex; flex-direction: column; gap: 10px;">  
+            <div class="form-group"><input type="text" id="profName" placeholder="Full Name" required></div>  
+            <div class="form-group"><input type="tel" id="profPhone" placeholder="Mobile / WhatsApp Number" required></div>  
+            <div class="form-group"><textarea id="profAddress" placeholder="House/Flat No, Street Name" rows="2" required></textarea></div>  
+            <div class="form-group"><input type="text" id="profPin" placeholder="6-Digit PIN Code" maxlength="6" oninput="fetchProfileLocation(this.value)" required></div>  
+            <div class="form-group"><input type="text" id="profCity" placeholder="City / District" required></div>  
+            <div class="form-group"><input type="text" id="profState" placeholder="State" required></div>  
+            <button type="submit" class="btn-apply" style="width: 100%;">SAVE ADDRESS</button>  
+          </form>  
+        </div>  
+  
+        <div class="auth-card">  
+          <h2 style="font-size: 18px; font-weight: 700; margin-bottom: 16px; color: #142218;">Track & Manage Your Orders</h2>  
+          <div id="orderHistoryList">  
+            <p style="font-size: 12px; color: var(--text-muted);">Loading past orders...</p>  
+          </div>  
+        </div>  
+  
+      </div>  
+  
+    </div>  
+  
+  </div>  
+  
+  <footer>  
+    <p>&copy; 2026 DAZBERY. All Rights Reserved.</p>  
+    <div class="insta-container">  
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>  
+      <span>Official Instagram: <a href="https://instagram.com/dazbery" target="_blank" class="insta-link">@dazbery</a></span>  
+    </div>  
+    <p style="margin-top: 14px;">  
+      <a href="#">Privacy Policy</a> | <a href="#">Terms</a> | <a href="#">Returns & Replacements</a>  
+    </p>  
+  </footer>  
+  
+  <script>  
+    const SUPABASE_URL = 'https://cccpqyfbwofkfydcacxo.supabase.co';  
+    const SUPABASE_KEY = 'sb_publishable_j5jnvFhMmUHaRarHJ_s2LQ_m_TM8ecT';  
+    let supabaseClient = null;  
+  
+    if (window.supabase) {  
+      supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);  
+    }  
+  
+    let currentUser = null;  
+    let hasSavedAddress = false;  
+    let currentQty = 1;  
+    let cartCount = 0;  
+    let isDiscountApplied = false;  
+  
+    function toggleSupportDetails(button, panelId) {  
+      const panel = document.getElementById(panelId);  
+      const isExpanded = button.getAttribute('aria-expanded') === 'true';  
+      button.setAttribute('aria-expanded', String(!isExpanded));  
+      panel.hidden = isExpanded;  
+    }  
+  
+    function openCustomerRewards() {  
+      const modal = document.getElementById('customerRewardsModal');  
+      modal.style.display = 'flex';  
+      modal.setAttribute('aria-hidden', 'false');  
+      loadParticipantsBoard();  
+    }  
+    function closeCustomerRewards() {  
+      const modal = document.getElementById('customerRewardsModal');  
+      modal.style.display = 'none';  
+      modal.setAttribute('aria-hidden', 'true');  
+    }  
+  
+    function showToast(message) {  
+      const toast = document.getElementById('toastNotification');  
+      toast.innerText = message;  
+      toast.classList.add('show');  
+      setTimeout(() => { toast.classList.remove('show'); }, 2500);  
+    }  
+  
+    function updateQty(change) {  
+      currentQty += change;  
+      if (currentQty < 1) currentQty = 1;  
+      document.getElementById('productQty').innerText = currentQty;  
+      updatePriceDisplay();  
+    }  
+  
+    function updatePriceDisplay() {  
+      const priceElement = document.getElementById('displayPrice');  
+      const strikeElement = document.getElementById('strikePrice');  
+      const submitBtn = document.getElementById('submitBtn');  
+  
+      const activeQty = (cartCount > 0) ? cartCount : currentQty;  
+  
+      if (isDiscountApplied) {  
+        const offerPrice = activeQty * 299;  
+        const originalPrice = activeQty * 599;  
+        priceElement.innerText = '₹' + offerPrice;  
+        strikeElement.innerText = '₹' + originalPrice;  
+        strikeElement.style.display = 'inline';  
+        submitBtn.innerText = `PROCEED TO PAY — ₹${offerPrice} (PREPAID)`;  
+      } else {  
+        const originalPrice = activeQty * 599;  
+        priceElement.innerText = '₹' + originalPrice;  
+        strikeElement.style.display = 'none';  
+        submitBtn.innerText = `PROCEED TO PAY — ₹${originalPrice} (PREPAID)`;  
+      }  
+    }  
+  
+    function applyCoupon() {  
+      const code = document.getElementById('couponInput').value.trim().toUpperCase();  
+      const msg = document.getElementById('couponMsg');  
+  
+      if (code === 'DAZBERY50') {  
+        isDiscountApplied = true;  
+        updatePriceDisplay();  
+        msg.innerText = '✓ Code DAZBERY50 applied (50% OFF).';  
+        msg.style.color = '#2d5a27';  
+        msg.style.display = 'block';  
+        showToast('✓ 50% discount applied successfully!');  
+      } else {  
+        isDiscountApplied = false;  
+        updatePriceDisplay();  
+        msg.innerText = 'Invalid code. Use DAZBERY50';  
+        msg.style.color = '#777777';  
+        msg.style.display = 'block';  
+        showToast('❌ Invalid coupon code');  
+      }  
+    }  
+  
+    function switchPage(page) {  
+      document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));  
+      if(page === 'shop') document.getElementById('shopPage').classList.add('active');  
+      else if(page === 'login') document.getElementById('loginPage').classList.add('active');  
+      else if(page === 'cart') {  
+        document.getElementById('cartPage').classList.add('active');  
+        renderCart();  
+      }  
+      window.scrollTo(0, 0);  
+    }  
+  
+    function addToCart() {  
+      cartCount += currentQty;  
+      document.getElementById('cartBadge').innerText = cartCount;  
+      updatePriceDisplay();  
+      showToast(`✓ Added ${currentQty} item(s) to cart`);  
+    }  
+  
+    function removeFromCart() {  
+      cartCount = 0;  
+      document.getElementById('cartBadge').innerText = cartCount;  
+      updatePriceDisplay();  
+      renderCart();  
+      showToast('✓ Product removed from cart');  
+    }  
+  
+    function renderCart() {  
+      const container = document.getElementById('cartItemsContainer');  
+      const summaryBox = document.getElementById('cartSummaryBox');  
+      const finalPrice = isDiscountApplied ? (cartCount * 299) : (cartCount * 599);  
+        
+      if(cartCount === 0) {  
+        container.innerHTML = `<p style="font-size:13px; color:var(--text-muted); text-align:center; padding: 20px;">Your cart is currently empty.</p>`;  
+        summaryBox.style.display = 'none';  
+      } else {  
+        container.innerHTML = `  
+          <div class="cart-item-row">  
+            <div>  
+              <div style="font-weight: 700; font-size: 13px; color: #142218;">Rosemary & Rice Water Hair Growth Spray (100ml)</div>  
+              <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Qty: <strong>${cartCount}</strong> ${isDiscountApplied ? '| 50% OFF Applied' : ''}</div>  
+              <button class="btn-remove" onclick="removeFromCart()">Remove from Cart</button>  
+            </div>  
+            <div style="font-weight: 700; font-size: 14px; color: #142218;">₹${finalPrice}</div>  
+          </div>  
+        `;  
+        summaryBox.style.display = 'block';  
+        document.getElementById('cartTotalPrice').innerText = '₹' + finalPrice;  
+      }  
+    }  
+  
+    function proceedCartCheckout() {  
+      if(cartCount === 0) {  
+        showToast('❌ Your cart is empty');  
+        return;  
+      }  
+  
+      if (hasSavedAddress) {  
+        triggerRazorpayCheckout();  
+      } else {  
+        switchPage('shop');  
+        setTimeout(() => {  
+          const formElem = document.getElementById('orderForm');  
+          if(formElem) {  
+            formElem.scrollIntoView({ behavior: 'smooth' });  
+            const firstInput = document.getElementById('checkoutName');  
+            if(firstInput) firstInput.focus();  
+          }  
+        }, 200);  
+        showToast('👇 Please fill your delivery address to complete order');  
+      }  
+    }  
+  
+    async function submitCustomerRewardEntry(e) {  
+      e.preventDefault();  
+  
+      const customerName = document.getElementById('rewardCustomerName').value.trim();  
+      const orderId = document.getElementById('claimOrderId').value.trim();  
+      const platform = document.getElementById('claimPlatform').value;  
+      const videoLink = document.getElementById('claimVideoLink').value.trim();  
+      const whatsapp = document.getElementById('claimWhatsapp').value.trim();  
+      const publicConsent = document.getElementById('rewardNameConsent').checked;  
+      const disclosureConsent = document.getElementById('rewardDisclosureConsent').checked;  
+  
+      if (!/^[6-9]\d{9}$/.test(whatsapp)) {  
+        showToast('Please enter a valid 10-digit WhatsApp number.');  
+        return;  
+      }  
+      if (!publicConsent || !disclosureConsent) {  
+        showToast('Please confirm both statements to submit.');  
+        return;  
+      }  
+      if (!supabaseClient) {  
+        showToast('Database is not available. Please try again later.');  
+        return;  
+      }  
+  
+      const firstName = customerName.split(/\s+/)[0].slice(0, 24);  
+      const parts = customerName.trim().split(/\s+/);  
+      const publicName = parts.length > 1  
+        ? `${firstName} ${parts[parts.length - 1].charAt(0).toUpperCase()}.`  
+        : firstName;  
+  
+      const { error } = await supabaseClient.from('customer_reward_entries').insert([{  
+        customer_name: customerName,  
+        public_name: publicName,  
+        public_consent: true,  
+        order_code: orderId,  
+        platform: platform,  
+        video_link: videoLink,  
+        whatsapp: whatsapp,  
+        status: 'pending'  
+      }]);  
+  
+      if (error) {  
+        console.error('Customer rewards entry error:', error);  
+        showToast('Entry could not be submitted. Please check your Order ID or try again.');  
+        return;  
+      }  
+  
+      showToast('Thank you! Your entry has been received for verification.');  
+      e.target.reset();  
+      loadParticipantsBoard();  
+    }  
+  
+    async function loadParticipantsBoard() {  
+      const board = document.getElementById('participantsBoard');  
+      if (!board) return;  
+      if (!supabaseClient) {  
+        board.innerHTML = '<p class="participants-empty">Participant entries will appear here after the rewards database is connected.</p>';  
+        return;  
+      }  
+  
+      const { data, error } = await supabaseClient  
+        .from('customer_reward_entries')  
+        .select('public_name')  
+        .eq('status', 'approved')  
+        .eq('public_consent', true)  
+        .order('created_at', { ascending: false })  
+        .limit(30);  
+  
+      if (error) {  
+        console.error('Could not load participants:', error);  
+        board.innerHTML = '<p class="participants-empty">The Participants Board is temporarily unavailable.</p>';  
+        return;  
+      }  
+  
+      if (!data || data.length === 0) {  
+        board.innerHTML = '<p class="participants-empty">Be among the first verified DAZBERY participants. Approved entries will appear here.</p>';  
+        return;  
+      }  
+  
+      board.innerHTML = data.map(item => {  
+        const safeName = String(item.public_name || 'DAZBERY Customer').replace(/[&<>"']/g, ch => ({  
+          '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'  
+        }[ch]));  
+        return `<div class="participant-name"><span>${safeName}</span> <span aria-label="verified" style="color:#2d5a27;">✓</span></div>`;  
+      }).join('');  
+    }  
+  
+    function renderReviews(reviewList) {  
+      const grid = document.getElementById('reviewsGrid');  
+      if (!grid) return;  
+  
+      const escapeHTML = (value) => String(value ?? '').replace(/[&<>"']/g, ch => ({  
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'  
+      }[ch]));  
+  
+      if (!reviewList || reviewList.length === 0) {  
+        grid.innerHTML = '<p class="review-text" style="text-align:center; padding:24px 12px;">No customer reviews yet. Be the first to share your DAZBERY experience.</p>';  
+        const oldToggle = document.getElementById('reviewsToggleWrap');  
+        if (oldToggle) oldToggle.remove();  
+        return;  
+      }  
+  
+      const languagePriority = { english: 0, hindi: 1, malayalam: 2 };  
+      const sortedReviews = [...reviewList].sort((a, b) => {  
+        const aLang = String(a.language || '').toLowerCase();  
+        const bLang = String(b.language || '').toLowerCase();  
+        const aPriority = languagePriority[aLang] ?? 3;  
+        const bPriority = languagePriority[bLang] ?? 3;  
+        return aPriority - bPriority;  
+      });  
+  
+      grid.innerHTML = sortedReviews.map((r, index) => {  
+        const rating = Math.max(0, Math.min(5, Number(r.rating) || 0));  
+        const starsStr = '★'.repeat(rating) + '☆'.repeat(5 - rating);  
+        const hiddenClass = index >= 3 ? ' review-hidden' : '';  
+        const rawOrderId = String(r.order_id || '');  
+        const maskedOrderId = rawOrderId.length > 4  
+          ? '••••' + rawOrderId.slice(-4)  
+          : '••••';  
+        const language = r.language  
+          ? `<div class="review-language">${escapeHTML(r.language)}</div>`  
+          : '';  
+  
+        return `  
+          <article class="review-item${hiddenClass}">  
+            <div class="review-header">  
+              <span class="review-user">${escapeHTML(r.customer_name)}</span>  
+              <span class="verified-badge">✔ Verified Purchase</span>  
+            </div>  
+            <div class="review-language">Order ID: ${escapeHTML(maskedOrderId)}</div>  
+            ${language}  
+            <div class="stars" aria-label="${rating} out of 5 stars">${starsStr}</div>  
+            <div class="review-text">${escapeHTML(r.review_text)}</div>  
+          </article>  
+        `;  
+      }).join('');  
+  
+      const oldToggle = document.getElementById('reviewsToggleWrap');  
+      if (oldToggle) oldToggle.remove();  
+  
+      if (reviewList.length > 3) {  
+        const wrap = document.createElement('div');  
+        wrap.className = 'reviews-toggle-wrap';  
+        wrap.id = 'reviewsToggleWrap';  
+        const button = document.createElement('button');  
+        button.className = 'reviews-toggle-btn';  
+        button.type = 'button';  
+        button.textContent = `View all reviews (${sortedReviews.length})`;  
+        button.setAttribute('aria-expanded', 'false');  
+        button.addEventListener('click', () => {  
+          const expanded = button.getAttribute('aria-expanded') === 'true';  
+          grid.querySelectorAll('.review-hidden').forEach(card => {  
+            card.style.display = expanded ? 'none' : 'block';  
+          });  
+          button.setAttribute('aria-expanded', String(!expanded));  
+          button.textContent = expanded  
+            ? `View all reviews (${sortedReviews.length})`  
+            : 'Show fewer reviews';  
+        });  
+        wrap.appendChild(button);  
+        grid.insertAdjacentElement('afterend', wrap);  
+      }  
+    }  
+  
+    async function fetchReviews() {  
+      const grid = document.getElementById('reviewsGrid');  
+      if (!grid) return;  
+  
+      if (!supabaseClient) {  
+        renderReviews([]);  
+        return;  
+      }  
+  
+      const { data: reviews, error } = await supabaseClient  
+        .from('reviews')  
+        .select('*')  
+        .eq('is_verified', true)  
+        .order('created_at', { ascending: false });  
+  
+      if (error) {  
+        console.error('Could not load customer reviews:', error);  
+        renderReviews([]);  
+        return;  
+      }  
+  
+      renderReviews(reviews || []);  
+    }  
+  
+    async function submitUserReview(e) {  
+      e.preventDefault();  
+      const name = document.getElementById('rName').value.trim();  
+      const orderId = document.getElementById('rOrder').value.trim();  
+      const rating = parseInt(document.getElementById('rRating').value);  
+      const text = document.getElementById('rText').value.trim();  
+      const language = document.getElementById('rLanguage').value;  
+  
+      if(!supabaseClient) return;  
+  
+      const { data: orderData, error: orderErr } = await supabaseClient  
+        .from('orders')  
+        .select('id')  
+        .eq('order_code', orderId)  
+        .single();  
+  
+      if (orderErr || !orderData) {  
+        showToast('❌ Invalid Order ID! Only verified buyers can review.');  
+        return;  
+      }  
+  
+      const { error } = await supabaseClient.from('reviews').insert([  
+        {  
+          order_id: orderId,  
+          customer_name: name,  
+          rating: rating,  
+          review_text: text,  
+          language: language,  
+          is_verified: false,  
+          created_at: new Date()  
+        }  
+      ]);  
+  
+      if (error) {  
+        showToast('❌ Failed to post review: ' + error.message);  
+      } else {  
+        showToast('Thank you! Your review was submitted for verification.');  
+        e.target.reset();  
+        fetchReviews();  
+      }  
+    }  
+  
+    async function loginWithGoogle() {  
+      if (!supabaseClient) {  
+        alert('Supabase connecting...');  
+        return;  
+      }  
+      const { error } = await supabaseClient.auth.signInWithOAuth({  
+        provider: 'google',  
+        options: {   
+          redirectTo: window.location.origin + '/'   
+        }  
+      });  
+      if (error) showToast('❌ Login Error: ' + error.message);  
+    }  
+  
+    async function checkUserSession() {  
+      if (!supabaseClient) return;  
+      const { data: { session } } = await supabaseClient.auth.getSession();  
+      if (session) {  
+        currentUser = session.user;  
+  
+        document.getElementById('userEmailDisplay').innerText = currentUser.email;  
+        document.getElementById('loginCard').style.display = 'none';  
+        document.getElementById('dashboardCard').style.display = 'flex';  
+        document.getElementById('navAccountText').innerText = 'My Account';  
+  
+        await loadUserProfile(currentUser.id);  
+        fetchUserOrders(currentUser.id);  
+      }  
+    }  
+  
+    async function fetchProfileLocation(pin) {  
+      if (pin.length === 6) {  
+        try {  
+          let response = await fetch(`https://api.postalpincode.in/pincode/${pin}`);  
+          let data = await response.json();  
+          if (data[0].Status === "Success") {  
+            let details = data[0].PostOffice[0];  
+            document.getElementById('profCity').value = details.District;  
+            document.getElementById('profState').value = details.State;  
+          }  
+        } catch (e) {  
+          console.log("PIN fetch error");  
+        }  
+      }  
+    }  
+  
+    async function fetchLocationByPin(pin) {  
+      if (pin.length === 6) {  
+        try {  
+          let response = await fetch(`https://api.postalpincode.in/pincode/${pin}`);  
+          let data = await response.json();  
+          if (data[0].Status === "Success") {  
+            let details = data[0].PostOffice[0];  
+            document.getElementById('checkoutCity').value = details.District;  
+            document.getElementById('checkoutState').value = details.State;  
+          }  
+        } catch (e) {  
+          console.log("PIN fetch error");  
+        }  
+      }  
+    }  
+  
+    function enableProfileEdit() {  
+      document.getElementById('profileSavedView').style.display = 'none';  
+      document.getElementById('profileEditForm').style.display = 'flex';  
+    }  
+  
+    async function loadUserProfile(userId) {  
+      const { data, error } = await supabaseClient  
+        .from('profiles')  
+        .select('*')  
+        .eq('id', userId)  
+        .single();  
+  
+      if (data && data.full_name && data.address) {  
+        hasSavedAddress = true;  
+  
+        document.getElementById('profName').value = data.full_name || '';  
+        document.getElementById('profPhone').value = data.phone || '';  
+        document.getElementById('profAddress').value = data.address || '';  
+        document.getElementById('profPin').value = data.pin || '';  
+        document.getElementById('profCity').value = data.city || '';  
+        document.getElementById('profState').value = data.state || '';  
+  
+        document.getElementById('checkoutName').value = data.full_name || '';  
+        document.getElementById('checkoutPhone').value = data.phone || '';  
+        document.getElementById('checkoutAddress').value = data.address || '';  
+        document.getElementById('checkoutPin').value = data.pin || '';  
+        document.getElementById('checkoutCity').value = data.city || '';  
+        document.getElementById('checkoutState').value = data.state || '';  
+  
+        document.getElementById('dispName').innerText = data.full_name;  
+        document.getElementById('dispPhone').innerText = '📞 ' + data.phone;  
+        document.getElementById('dispAddress').innerText = `${data.address}, ${data.city} - ${data.pin}, ${data.state}`;  
+          
+        document.getElementById('profileSavedView').style.display = 'block';  
+        document.getElementById('profileEditForm').style.display = 'none';  
+  
+        document.getElementById('savedAddressCheckoutBox').style.display = 'block';  
+        document.getElementById('manualAddressFields').style.display = 'none';  
+          
+        document.getElementById('savedCheckoutName').innerText = data.full_name;  
+        document.getElementById('savedCheckoutPhone').innerText = '📞 ' + data.phone;  
+        document.getElementById('savedCheckoutAddress').innerText = `${data.address}, ${data.city} - ${data.pin}, ${data.state}`;  
+  
+        ['checkoutName','checkoutPhone','checkoutAddress','checkoutPin','checkoutCity','checkoutState'].forEach(id => {  
+          document.getElementById(id).removeAttribute('required');  
+        });  
+  
+      } else {  
+        hasSavedAddress = false;  
+        document.getElementById('profileSavedView').style.display = 'none';  
+        document.getElementById('profileEditForm').style.display = 'flex';  
+        document.getElementById('savedAddressCheckoutBox').style.display = 'none';  
+        document.getElementById('manualAddressFields').style.display = 'block';  
+  
+        if (currentUser) {  
+          document.getElementById('profName').value = currentUser.user_metadata?.full_name || '';  
+          document.getElementById('checkoutName').value = currentUser.user_metadata?.full_name || '';  
+        }  
+      }  
+    }  
+  
+    async function saveProfileDetails(e) {  
+      e.preventDefault();  
+      if(!currentUser) return;  
+  
+      const name = document.getElementById('profName').value;  
+      const phone = document.getElementById('profPhone').value;  
+      const address = document.getElementById('profAddress').value;  
+      const pin = document.getElementById('profPin').value;  
+      const city = document.getElementById('profCity').value;  
+      const state = document.getElementById('profState').value;  
+  
+      const { error } = await supabaseClient  
+        .from('profiles')  
+        .upsert({  
+          id: currentUser.id,  
+          full_name: name,  
+          phone: phone,  
+          address: address,  
+          pin: pin,  
+          city: city,  
+          state: state,  
+          updated_at: new Date()  
+        });  
+  
+      if (error) {  
+        showToast('❌ Failed to save profile: ' + error.message);  
+      } else {  
+        showToast('✓ Profile saved successfully!');  
+        loadUserProfile(currentUser.id);  
+      }  
+    }  
+  
+    async function fetchUserOrders(userId) {  
+      const historyList = document.getElementById('orderHistoryList');  
+      if (!historyList || !supabaseClient) return;  
+  
+      const { data: orders, error } = await supabaseClient  
+        .from('orders')  
+        .select('*')  
+        .eq('user_id', userId)  
+        .order('created_at', { ascending: false });  
+  
+      if (error || !orders || orders.length === 0) {  
+        historyList.innerHTML = `<p style="font-size: 12px; color: var(--text-muted);">No past orders found.</p>`;  
+        return;  
+      }  
+  
+      historyList.innerHTML = '';  
+  
+      orders.forEach(order => {  
+        const currentStatus = order.status || 'Confirmed';  
+        const isCancelled = (currentStatus.toLowerCase() === 'cancelled');  
+  
+        const steps = ['Confirmed', 'Packed', 'Shipped', 'Delivered'];  
+        const currentStepIndex = steps.indexOf(currentStatus);  
+  
+        let timelineHTML = '';  
+        if (!isCancelled) {  
+          timelineHTML = `  
+            <div class="timeline-wrapper">  
+              ${steps.map((step, idx) => `  
+                <div class="timeline-step ${idx <= currentStepIndex ? 'active' : ''}">  
+                  <div class="step-circle">${idx <= currentStepIndex ? '✓' : idx + 1}</div>  
+                  <div class="step-label">${step}</div>  
+                </div>  
+              `).join('')}  
+            </div>  
+          `;  
+        }  
+  
+        let badgeBg = '#eef2ff';  
+        let badgeColor = '#4338ca';  
+        let displayStatus = currentStatus;  
+  
+        if (currentStatus === 'Packed') { badgeBg = '#fef3c7'; badgeColor = '#d97706'; }  
+        else if (currentStatus === 'Shipped') { badgeBg = '#e0f2fe'; badgeColor = '#0369a1'; }  
+        else if (currentStatus === 'Delivered') { badgeBg = '#dcfce7'; badgeColor = '#15803d'; }  
+        else if (isCancelled) {   
+          badgeBg = '#fee2e2';   
+          badgeColor = '#b91c1c';   
+          displayStatus = 'CANCELLED';   
+        }  
+  
+        const displayOrderId = order.order_code || `DZ-${order.id}`;  
+  
+        const orderCard = `  
+          <div class="order-card" style="${isCancelled ? 'background: #fffcfc;' : ''}">  
+            <div class="order-header">  
+              <div>  
+                <strong style="font-size: 13px; color: #142218;">Order #${displayOrderId}</strong>  
+                <div style="font-size: 11px; color: #6b7280; margin-top: 2px;">  
+                  ${new Date(order.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}  
+                </div>  
+              </div>  
+              <span class="status-badge" style="background: ${badgeBg}; color: ${badgeColor};">${displayStatus}</span>  
+            </div>  
+  
+            <div style="margin: 14px 0;">  
+              <p style="margin: 2px 0; font-weight: 700; font-size: 14px; color: #142218;">${order.product_name || 'Rosemary & Rice Water Hair Growth Spray'}</p>  
+              <p style="margin: 4px 0; font-size: 12px; color: #4a5568;">  
+                Quantity: <strong>${order.quantity}</strong> | Total: <strong>₹${order.total_price}</strong>  
+              </p>  
+              <p style="margin: 4px 0; font-size: 11px; color: #6b7280;">  
+                <strong>Address:</strong> ${order.address}  
+              </p>  
+                
+              ${order.tracking_id && order.tracking_id !== 'Pending' ? `  
+                <div style="background: #f7f5f0; padding: 10px; border-radius: 8px; margin-top: 10px; font-size: 12px; border: 1px dashed #cbd5e1;">  
+                  🚚 <strong>Courier:</strong> ${order.courier_name || 'Delivery Partner'} <br>  
+                  📌 <strong>Tracking ID:</strong> <span style="color: #2563eb; font-weight: 700;">${order.tracking_id}</span>  
+                </div>  
+              ` : ''}  
+            </div>  
+  
+            ${timelineHTML}  
+  
+            <div style="text-align: right; margin-top: 10px;">  
+              <a href="mailto:supportdazbery@gmail.com?subject=Help with Order %23${displayOrderId}" class="support-link-btn">Need Help with Order?</a>  
+            </div>  
+          </div>  
+        `;  
+        historyList.innerHTML += orderCard;  
+      });  
+    }  
+  
+    async function handleLogout() {  
+      if (supabaseClient) await supabaseClient.auth.signOut();  
+      currentUser = null;  
+      hasSavedAddress = false;  
+      document.getElementById('dashboardCard').style.display = 'none';  
+      document.getElementById('loginCard').style.display = 'block';  
+      document.getElementById('navAccountText').innerText = 'My Account';  
+        
+      document.getElementById('checkoutName').value = '';  
+      document.getElementById('checkoutPhone').value = '';  
+      document.getElementById('checkoutAddress').value = '';  
+      document.getElementById('checkoutPin').value = '';  
+      document.getElementById('checkoutCity').value = '';  
+      document.getElementById('checkoutState').value = '';  
+  
+      document.getElementById('savedAddressCheckoutBox').style.display = 'none';  
+      document.getElementById('manualAddressFields').style.display = 'block';  
+  
+      ['checkoutName','checkoutPhone','checkoutAddress','checkoutPin','checkoutCity','checkoutState'].forEach(id => {  
+        document.getElementById(id).setAttribute('required', 'true');  
+      });  
+        
+      showToast('✓ Logged out successfully');  
+      switchPage('login');  
+    }  
+  
+    function handleOrder(e) {  
+      e.preventDefault();  
+      triggerRazorpayCheckout();  
+    }  
+  
+    function triggerRazorpayCheckout() {  
+      const name = document.getElementById('checkoutName').value;  
+      const phone = document.getElementById('checkoutPhone').value;  
+      const address = document.getElementById('checkoutAddress').value;  
+      const pin = document.getElementById('checkoutPin').value;  
+      const city = document.getElementById('checkoutCity').value;  
+      const state = document.getElementById('checkoutState').value;  
+        
+      const orderQty = (cartCount > 0) ? cartCount : currentQty;  
+      const finalPrice = isDiscountApplied ? (orderQty * 299) : (orderQty * 599);  
+  
+      const fullAddress = address ? `${address}, ${city} - ${pin}, ${state}` : document.getElementById('savedCheckoutAddress').innerText;  
+  
+      const randomNum = Math.floor(1000 + Math.random() * 9000);  
+      const randomSuffix = Math.random().toString(36).substring(2, 4).toUpperCase();  
+      const customOrderId = `DZ-${randomNum}-${randomSuffix}`;  
+  
+      var options = {  
+        "key": "rzp_live_Ty5lX0G7dUQdbn",  
+        "amount": finalPrice * 100,  
+        "currency": "INR",  
+        "name": "DAZBERY",  
+        "description": "Rosemary & Rice Water Hair Growth Spray (100ml)",  
+        "prefill": {  
+          "name": name || document.getElementById('savedCheckoutName').innerText,  
+          "contact": phone || document.getElementById('savedCheckoutPhone').innerText.replace('📞 ', ''),  
+          "email": currentUser ? currentUser.email : ""  
+        },  
+        "theme": {  
+          "color": "#142218"  
+        },  
+        "handler": async function (response) {  
+          showToast('✓ Payment Successful! Saving order...');  
+  
+          if (supabaseClient) {  
+            const { data: { session } } = await supabaseClient.auth.getSession();  
+  
+            await supabaseClient.from('orders').insert([  
+              {  
+                order_code: customOrderId,  
+                user_id: session ? session.user.id : null,  
+                customer_name: name || document.getElementById('savedCheckoutName').innerText,  
+                phone: phone || document.getElementById('savedCheckoutPhone').innerText.replace('📞 ', ''),  
+                address: fullAddress,  
+                quantity: orderQty,  
+                total_price: finalPrice,  
+                payment_id: response.razorpay_payment_id,  
+                status: 'Confirmed',  
+                product_name: 'Rosemary & Rice Water Hair Growth Spray',  
+                tracking_id: 'Pending'  
+              }  
+            ]);  
+          }  
+  
+          cartCount = 0;  
+          document.getElementById('cartBadge').innerText = cartCount;  
+  
+          showToast('✓ Order Placed Successfully!');  
+          alert(`Payment Success!\nOrder ID: ${customOrderId}\nPayment ID: ${response.razorpay_payment_id}\nOrder confirmed for ₹${finalPrice}.`);  
+            
+          if (currentUser) {  
+            fetchUserOrders(currentUser.id);  
+            switchPage('login');  
+          }  
+        },  
+        "modal": {  
+          "ondismiss": function() {  
+            showToast('❌ Payment Cancelled');  
+          }  
+        }  
+      };  
+  
+      var rzp = new Razorpay(options);  
+      rzp.on('payment.failed', function (response){  
+        alert('Payment Failed: ' + response.error.description);  
+      });  
+      rzp.open();  
+    }  
+  
+    window.addEventListener('DOMContentLoaded', () => {  
+      checkUserSession();  
+      fetchReviews();  
+    });  
+  </script>  
+</body>  
 </html>
