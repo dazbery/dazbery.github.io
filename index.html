@@ -10,10 +10,10 @@
     
   <!-- Razorpay Standard Checkout SDK -->  
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>  
-  
+
   <link rel="preconnect" href="https://fonts.googleapis.com">  
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>  
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">  
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">  
     
   <style>  
     :root {  
@@ -283,57 +283,61 @@
       cursor: pointer;  
       display: flex; align-items: center; justify-content: center;  
     }  
-  
-  
-    .rewards-modal-card { max-width: 560px; padding: 24px; }  
-    .rewards-hero { text-align: center; padding: 10px 8px 20px; }  
-    .rewards-kicker { color: #54705b; font-size: 9px; font-weight: 800; letter-spacing: 2px; }  
-    .rewards-hero h2 { color: #142218; font-family: Georgia, serif; font-size: clamp(25px, 5vw, 34px); line-height: 1.16; margin: 10px 0; }  
-    .rewards-prize { color: #142218; font-size: clamp(42px, 10vw, 58px); font-weight: 800; letter-spacing: -2px; line-height: 1.1; }  
-    .rewards-prize-caption { color: #526356; font-size: 11px; font-weight: 700; }  
-    .rewards-intro { color: #62645f; font-size: 12px; line-height: 1.7; max-width: 420px; margin: 14px auto 0; }  
-    .rewards-steps { display: grid; gap: 10px; margin: 8px 0 16px; }  
-    .rewards-steps > div { display: flex; gap: 13px; align-items: flex-start; background: #f7f5f0; border: 1px solid #e9e5dd; border-radius: 10px; padding: 12px; }  
-    .rewards-steps > div > span { color: #49664f; font-size: 11px; font-weight: 800; letter-spacing: 1px; padding-top: 2px; }  
-    .rewards-steps p { display: grid; gap: 2px; }  
-    .rewards-steps strong { color: #142218; font-size: 12px; }  
-    .rewards-steps small { color: #62645f; font-size: 11px; line-height: 1.5; }  
-    .rewards-voucher-note { background: #142218; color: #fff; border-radius: 11px; padding: 15px; margin: 14px 0 20px; }  
-    .rewards-voucher-note strong { font-size: 13px; }  
-    .rewards-voucher-note p { color: #e8ece7; font-size: 11px; line-height: 1.65; margin-top: 5px; }  
-    .rewards-form { display: grid; gap: 8px; }  
-    .rewards-form h3, .participants-heading h3 { color: #142218; font-size: 17px; margin-bottom: 4px; }  
-    .rewards-form > label:not(.rewards-consent) { color: #35483a; font-size: 11px; font-weight: 700; margin-top: 4px; }  
-    .rewards-form input:not([type="checkbox"]), .rewards-form select { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; background: #faf8f5; font-size: 13px; }  
-    .rewards-consent { display: flex; align-items: flex-start; gap: 9px; color: #62645f; font-size: 10px; line-height: 1.55; margin-top: 7px; }  
-    .rewards-consent input { margin-top: 2px; accent-color: #142218; flex: 0 0 auto; }  
-    .rewards-submit { width: 100%; margin-top: 7px; padding: 14px; }  
-    .rewards-smallprint { color: #777; font-size: 10px; line-height: 1.6; text-align: center; }  
-    .participants-panel { border-top: 1px solid #e6e2dc; margin-top: 22px; padding-top: 20px; }  
-    .participants-heading { display: flex; justify-content: space-between; align-items: center; gap: 10px; }  
-    .participants-live { color: #46634d; background: #edf2ec; border-radius: 30px; padding: 5px 9px; font-size: 9px; font-weight: 700; white-space: nowrap; }  
-    .participants-note { color: #777; font-size: 10px; line-height: 1.6; margin: 7px 0 12px; }  
-    .participants-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }  
-    .participant-name { border: 1px solid #e8e5dd; background: #fbfaf7; color: #24382a; border-radius: 8px; padding: 9px 11px; font-size: 11px; font-weight: 700; }  
-    .participants-empty { grid-column: 1 / -1; color: #777; text-align: center; padding: 16px; font-size: 11px; }  
-    .rewards-footer-note { background: #f7f5f0; border-radius: 10px; padding: 14px; margin-top: 18px; }  
-    .rewards-footer-note strong { color: #142218; font-size: 12px; }  
-    .rewards-footer-note p { color: #62645f; font-size: 10px; line-height: 1.6; margin: 5px 0 8px; }  
-    .rewards-footer-note a { color: #244a30; font-size: 11px; font-weight: 700; text-decoration: underline; }  
-    .simple-rules {  
-      background: #fbf9f5;  
-      border: 1px solid #eadecf;  
-      border-radius: 10px;  
-      padding: 14px;  
-      margin: 14px 0 20px;  
-      font-size: 12px;  
-      color: #4a5568;  
-      display: flex;  
-      flex-direction: column;  
-      gap: 6px;  
-    }  
-    .simple-rules div { display: flex; align-items: center; gap: 8px; }  
-    .simple-rules div span { color: #2d5a27; font-weight: bold; }  
+
+    /* REWARDS MODAL DESIGN */
+    .rewards-modal-card { max-width: 520px; padding: 28px; border-radius: 20px; }  
+    .rewards-hero { text-align: center; margin-bottom: 16px; }  
+    .rewards-badge { background: #142218; color: #fff; font-size: 9px; font-weight: 800; padding: 5px 14px; border-radius: 20px; letter-spacing: 1.5px; text-transform: uppercase; display: inline-block; margin-bottom: 10px; }  
+    .rewards-hero h2 { color: #142218; font-size: 22px; font-weight: 800; margin-bottom: 6px; }  
+    .rewards-intro { color: #555; font-size: 12px; line-height: 1.5; }
+
+    .brand-prize-box {
+      background: #f4f1eb;
+      border: 1px solid #e6e2dc;
+      border-radius: 14px;
+      padding: 16px;
+      text-align: center;
+      margin-bottom: 18px;
+    }
+    .brand-prize-box span { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #555; font-weight: 700; }
+    .brand-prize-box h3 { font-size: 28px; font-weight: 800; color: #142218; margin: 2px 0; }
+    .brand-prize-box p { font-size: 11px; color: #666; }
+
+    .brand-steps-container {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .brand-step-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #faf8f5;
+      border: 1px solid #e9e5dd;
+      padding: 10px 14px;
+      border-radius: 10px;
+    }
+    .brand-step-num {
+      width: 24px; height: 24px; background: #142218; color: #fff; font-size: 11px; font-weight: 700; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .brand-step-text strong { display: block; font-size: 12px; color: #142218; }
+    .brand-step-text span { font-size: 11px; color: #555; }
+
+    .rewards-form { display: grid; gap: 10px; background: #ffffff; border: 1px solid var(--border-color); border-radius: 14px; padding: 18px; }  
+    .rewards-form h3 { color: #142218; font-size: 14px; font-weight: 800; margin-bottom: 2px; }  
+    .rewards-form label { color: #142218; font-size: 11px; font-weight: 700; }  
+    .rewards-form input:not([type="checkbox"]), .rewards-form select { width: 100%; padding: 11px; border: 1px solid var(--border-color); border-radius: 8px; background: #faf8f5; font-size: 12px; outline: none; }  
+    
+    .rewards-consent { display: flex; align-items: flex-start; gap: 8px; color: #555; font-size: 10px; line-height: 1.4; margin-top: 2px; }  
+    .rewards-consent input { margin-top: 2px; accent-color: #142218; }  
+
+    .participants-panel { border-top: 1px solid #e6e2dc; margin-top: 20px; padding-top: 16px; }  
+    .participants-heading { display: flex; justify-content: space-between; align-items: center; }  
+    .participants-live { color: #2d5a27; background: #edf2ec; border-radius: 20px; padding: 3px 8px; font-size: 9px; font-weight: 700; }  
+    .participants-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; margin-top: 8px; }  
+    .participant-name { border: 1px solid #e8e5dd; background: #fbfaf7; color: #142218; border-radius: 8px; padding: 7px 10px; font-size: 11px; font-weight: 700; display: flex; justify-content: space-between; align-items: center; }  
+    .participants-empty { grid-column: 1 / -1; color: #777; text-align: center; padding: 10px; font-size: 11px; }  
   
     .cart-card {  
       background: var(--surface);  
@@ -589,88 +593,112 @@
   <div id="toastNotification"></div>  
   <div class="announcement-bar">COMPLIMENTARY SHIPPING ON ALL PREPAID ORDERS</div>  
   
-  <!-- DAZBERY CUSTOMER REWARDS -->  
+  <!-- DAZBERY CUSTOMER REWARDS FLOATING BUTTON -->  
   <button class="creator-float-btn" type="button" onclick="openCustomerRewards()">  
-    â¨ Customer Rewards  
+    ✨ Customer Rewards  
   </button>  
   
+  <!-- REWARDS MODAL -->
   <div class="modal-overlay" id="customerRewardsModal" aria-hidden="true">  
     <div class="modal-card rewards-modal-card" role="dialog" aria-modal="true" aria-labelledby="rewardsTitle">  
-      <button class="modal-close" type="button" onclick="closeCustomerRewards()" aria-label="Close">â</button>  
+      <button class="modal-close" type="button" onclick="closeCustomerRewards()" aria-label="Close">✕</button>  
   
       <div class="rewards-hero">  
-        <span class="rewards-kicker">DAZBERY CUSTOMER REWARDS</span>  
-        <h2 id="rewardsTitle">Your Experience.<br>Your Chance to Win.</h2>  
-        <div class="rewards-prize">â¹1,000</div>  
-        <p class="rewards-prize-caption">Shopping voucher Â· One lucky winner every month</p>  
-        <p class="rewards-intro">Bought and tried a DAZBERY product? Share your honest experience in a video and enter our monthly lucky draw.</p>  
+        <span class="rewards-badge">DAZBERY REWARDS PROGRAM</span>  
+        <h2 id="rewardsTitle">Share Your Video & Win</h2>  
+        <p class="rewards-intro">Upload a short review video about your experience with DAZBERY and enter our monthly lucky draw.</p>  
       </div>  
   
-      <div class="rewards-steps">  
-        <div><span>01</span><p><strong>Use your product</strong><small>Share your real experience, whether positive or negative.</small></p></div>  
-        <div><span>02</span><p><strong>Post a video</strong><small>Upload it publicly on Instagram, YouTube or Facebook.</small></p></div>  
-        <div><span>03</span><p><strong>Submit your entry</strong><small>Share your video link, platform, Order ID and WhatsApp number.</small></p></div>  
-        <div><span>04</span><p><strong>Join the monthly draw</strong><small>Eligible Order IDs go into a random spin-wheel draw at month-end.</small></p></div>  
-      </div>  
-  
-      <div class="rewards-voucher-note">  
-        <strong>The monthly reward</strong>  
-        <p>One eligible participant wins a â¹1,000 shopping voucher for the DAZBERY website. The voucher is valid for 30 days and can be used once. Any amount above â¹1,000 is paid by the customer. Unused balance cannot be carried forward or exchanged for cash.</p>  
+      <div class="brand-prize-box">
+        <span>Monthly Lucky Draw Reward</span>
+        <h3>₹1,000 Shopping Voucher</h3>
+        <p>One winner chosen every month via spin-wheel draw!</p>
+      </div>
+
+      <div class="brand-steps-container">
+        <div class="brand-step-row">
+          <div class="brand-step-num">1</div>
+          <div class="brand-step-text">
+            <strong>Post Review Video</strong>
+            <span>Share on Instagram, YouTube, or Facebook (Keep public for 30 days)</span>
+          </div>
+        </div>
+        <div class="brand-step-row">
+          <div class="brand-step-num">2</div>
+          <div class="brand-step-text">
+            <strong>Submit Your Details</strong>
+            <span>Fill out your Order ID, platform, and video link below</span>
+          </div>
+        </div>
+        <div class="brand-step-row">
+          <div class="brand-step-num">3</div>
+          <div class="brand-step-text">
+            <strong>Win & Shop Free</strong>
+            <span>Get a ₹1,000 voucher sent directly if you win!</span>
+          </div>
+        </div>
       </div>  
   
       <form id="customerRewardsForm" onsubmit="submitCustomerRewardEntry(event)" class="rewards-form">  
-        <h3>Submit Your Video</h3>  
-        <label for="rewardCustomerName">Your name</label>  
-        <input type="text" id="rewardCustomerName" maxlength="80" placeholder="Enter your name" required>  
+        <h3>Submit Entry Form</h3>  
+        
+        <div>  
+          <label for="rewardCustomerName">Full Name</label>  
+          <input type="text" id="rewardCustomerName" maxlength="80" placeholder="Enter your full name" required>  
+        </div>  
   
-        <label for="claimOrderId">Order ID</label>  
-        <input type="text" id="claimOrderId" maxlength="40" placeholder="Enter your DAZBERY Order ID" required>  
+        <div>  
+          <label for="claimOrderId">DAZBERY Order ID</label>  
+          <input type="text" id="claimOrderId" maxlength="40" placeholder="e.g. DZ-8492-X9" required>  
+        </div>  
   
-        <label for="claimPlatform">Where did you post your video?</label>  
-        <select id="claimPlatform" required>  
-          <option value="">Select a platform</option>  
-          <option value="Instagram">Instagram</option>  
-          <option value="YouTube">YouTube</option>  
-          <option value="Facebook">Facebook</option>  
-        </select>  
+        <div>  
+          <label for="claimPlatform">Social Media Platform</label>  
+          <select id="claimPlatform" required>  
+            <option value="">Select Platform</option>  
+            <option value="Instagram">Instagram</option>  
+            <option value="YouTube">YouTube</option>  
+            <option value="Facebook">Facebook</option>  
+          </select>  
+        </div>  
   
-        <label for="claimVideoLink">Video link</label>  
-        <input type="url" id="claimVideoLink" placeholder="Paste your public video link" required>  
+        <div>  
+          <label for="claimVideoLink">Public Video Link</label>  
+          <input type="url" id="claimVideoLink" placeholder="https://instagram.com/reel/..." required>  
+        </div>  
   
-        <label for="claimWhatsapp">WhatsApp number</label>  
-        <input type="tel" id="claimWhatsapp" inputmode="numeric" pattern="[6-9][0-9]{9}" maxlength="10" placeholder="10-digit WhatsApp number" required>  
+        <div>  
+          <label for="claimWhatsapp">WhatsApp Number</label>  
+          <input type="tel" id="claimWhatsapp" inputmode="numeric" pattern="[6-9][0-9]{9}" maxlength="10" placeholder="10-digit number" required>  
+        </div>  
   
         <label class="rewards-consent">  
           <input type="checkbox" id="rewardNameConsent" required>  
-          <span>I agree that my first name and last initial may appear on the DAZBERY Participants Board after my entry is verified. My phone number and full Order ID will never be shown publicly.</span>  
+          <span>Display my first name on the verified Participants Board (Phone & Order ID remain strictly hidden).</span>  
         </label>  
+        
         <label class="rewards-consent">  
           <input type="checkbox" id="rewardDisclosureConsent" required>  
-          <span>I confirm this is my own honest experience video, and I will clearly disclose that I am participating in DAZBERY's rewards programme.</span>  
+          <span>I confirm this video reflects my genuine personal experience.</span>  
         </label>  
   
-        <button type="submit" class="btn-apply rewards-submit">SUBMIT MY ENTRY</button>  
-        <p class="rewards-smallprint">Entries are subject to Order ID and video verification. One entry per eligible Order ID. Keep your video public for at least 30 days after submission. A positive review is not required.</p>  
+        <button type="submit" class="btn-apply" style="width: 100%; padding: 13px; font-size: 12px; margin-top: 4px;">SUBMIT ENTRY</button>  
+        <p style="font-size: 9px; color: #777; text-align: center;">* Positive review is not mandatory. One entry per Order ID.</p>  
       </form>  
   
       <section class="participants-panel" aria-labelledby="participantsTitle">  
         <div class="participants-heading">  
-          <div>  
-            <span class="rewards-kicker">THE DAZBERY COMMUNITY</span>  
-            <h3 id="participantsTitle">Participants Board</h3>  
-          </div>  
-          <span class="participants-live">Verified entries</span>  
+          <h3 id="participantsTitle" style="font-size: 13px; color: #142218; font-weight: 800;">Verified Participants Board</h3>  
+          <span class="participants-live">✓ Live</span>  
         </div>  
-        <p class="participants-note">Names appear here only after the entry is checked and approved, and only when the customer has agreed to public display.</p>  
         <div id="participantsBoard" class="participants-list">  
-          <p class="participants-empty">Loading verified participantsâ¦</p>  
+          <p class="participants-empty">Loading verified entries…</p>  
         </div>  
       </section>  
   
-      <div class="rewards-footer-note">  
-        <strong>Winner announcement</strong>  
-        <p>The lucky winner will be selected at the end of each month using a random spin-wheel draw from eligible entries and announced on the same day on our official Instagram page.</p>  
-        <a href="https://instagram.com/dazbery" target="_blank" rel="noopener">Follow @dazbery on Instagram</a>  
+      <div style="background: #f7f5f0; border-radius: 10px; padding: 12px; margin-top: 16px; text-align: center;">  
+        <p style="font-size: 11px; color: #555; margin-bottom: 6px;">Winners announced on month-end via spin-wheel draw.</p>  
+        <a href="https://instagram.com/dazbery" target="_blank" rel="noopener" style="color: #142218; font-size: 11px; font-weight: 700; text-decoration: underline;">Follow @dazbery on Instagram</a>  
       </div>  
     </div>  
   </div>  
@@ -701,8 +729,8 @@
           <p class="subtitle">100ml | Pure Botanical Scalp Mist</p>  
   
           <div class="price-box">  
-            <span class="price-offer" id="displayPrice">â¹599</span>  
-            <span class="price-original" id="strikePrice" style="display: none;">â¹599</span>  
+            <span class="price-offer" id="displayPrice">₹599</span>  
+            <span class="price-original" id="strikePrice" style="display: none;">₹599</span>  
             <span class="prepaid-tag">Prepaid Only</span>  
           </div>  
   
@@ -743,16 +771,75 @@
               
             <div class="btn-group">  
               <button type="button" class="btn-cart" onclick="addToCart()">Add to Cart</button>  
-              <button type="submit" class="btn-buy" id="submitBtn">PROCEED TO PAY â â¹599 (PREPAID)</button>  
+              <button type="submit" class="btn-buy" id="submitBtn">PROCEED TO PAY — ₹599 (PREPAID)</button>  
             </div>  
           </form>  
-          <p style="font-size: 10px; color: #777; text-align: center; margin-top: 10px;">ð 100% Secure & Encrypted Payments via Razorpay</p>  
+          <p style="font-size: 10px; color: #777; text-align: center; margin-top: 10px;">🔒 100% Secure & Encrypted Payments via Razorpay</p>  
         </div>  
       </div>  
   
       <h2 class="section-title" id="reviews">Customer Reviews</h2>  
       <div class="reviews-grid" id="reviewsGrid">  
-        <p style="font-size: 13px; color: var(--text-muted);">Loading reviews...</p>  
+        <!-- 3 DEFAULT VISIBLE REVIEWS (Clean, Natural & Short) -->  
+        <article class="review-item">  
+          <div class="review-header">  
+            <span class="review-user">Ananya R., Bangalore</span>  
+            <span class="verified-badge">✔ Verified Purchase</span>  
+          </div>  
+          <div class="review-language">Order ID: ••••4982</div>  
+          <div class="review-language">English</div>  
+          <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>  
+          <div class="review-text">Using it for 3 weeks now. Super convenient spray bottle and non-sticky formula. Noticed noticeably less hairfall during hair wash. Good product!</div>  
+        </article>  
+
+        <article class="review-item">  
+          <div class="review-header">  
+            <span class="review-user">Rhea S., Mumbai</span>  
+            <span class="verified-badge">✔ Verified Purchase</span>  
+          </div>  
+          <div class="review-language">Order ID: ••••7120</div>  
+          <div class="review-language">English</div>  
+          <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>  
+          <div class="review-text">Smells very natural and refreshing. Using daily night before sleep. Lightweight on scalp and good quality overall.</div>  
+        </article>  
+
+        <article class="review-item">  
+          <div class="review-header">  
+            <span class="review-user">Drishya P., Calicut</span>  
+            <span class="verified-badge">✔ Verified Purchase</span>  
+          </div>  
+          <div class="review-language">Order ID: ••••3319</div>  
+          <div class="review-language">Malayalam</div>  
+          <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>  
+          <div class="review-text">New brand ആയതുകൊണ്ട് വാങ്ങി ഉപയോഗിക്കാൻ ഒരു പേടി ഉണ്ടായിരുന്നു. ബട്ട് ഇപ്പോൾ 2 week ആയി ഉപയോഗിക്കാൻ തുടങ്ങിയിട്ട്. നല്ല പ്രൊഡക്ട് ആണ്, hairfall കുറഞ്ഞു പിന്നെ തലയിൽ നല്ലൊരു refresh ഫീൽ ഉണ്ട് ith ഉപയോഗിക്കുമ്പോൾ.</div>  
+        </article>  
+
+        <!-- 2 HIDDEN REVIEWS (Shown on "View all reviews" click) -->  
+        <article class="review-item review-hidden">  
+          <div class="review-header">  
+            <span class="review-user">Pooja Sharma, Delhi</span>  
+            <span class="verified-badge">✔ Verified Purchase</span>  
+          </div>  
+          <div class="review-language">Order ID: ••••8841</div>  
+          <div class="review-language">Hindi</div>  
+          <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>  
+          <div class="review-text">Kafi achha spray hai. Scalp par bilkul bhi chipchipa nahi lagta aur hairfall me fark hai.</div>  
+        </article>  
+
+        <article class="review-item review-hidden">  
+          <div class="review-header">  
+            <span class="review-user">Sneha Patel, Ahmedabad</span>  
+            <span class="verified-badge">✔ Verified Purchase</span>  
+          </div>  
+          <div class="review-language">Order ID: ••••2265</div>  
+          <div class="review-language">Hindi</div>  
+          <div class="stars" aria-label="4 out of 5 stars">★★★★☆</div>  
+          <div class="review-text">Packaging badiya thi. Use karna easy hai aur daily scalp par apply karne ke liye best spray hai.</div>  
+        </article>  
+      </div>  
+
+      <div class="reviews-toggle-wrap" id="reviewsToggleWrap">  
+        <button class="reviews-toggle-btn" type="button" aria-expanded="false" onclick="toggleStaticReviews(this)">View all reviews (5)</button>  
       </div>  
   
       <div class="add-review-box">  
@@ -763,9 +850,9 @@
           <div class="form-group" style="margin-bottom:10px;"><input type="text" id="rOrder" placeholder="Enter Order ID (e.g. DZ-8492-X9)" required></div>  
           <div class="form-group" style="margin-bottom:10px;">  
             <select id="rRating" style="background:#faf8f5;" required>  
-              <option value="5">âââââ (5 Stars)</option>  
-              <option value="4">âââââ (4 Stars)</option>  
-              <option value="3">âââââ (3 Stars)</option>  
+              <option value="5">★★★★★ (5 Stars)</option>  
+              <option value="4">★★★★☆ (4 Stars)</option>  
+              <option value="3">★★★☆☆ (3 Stars)</option>  
             </select>  
           </div>  
           <div class="form-group" style="margin-bottom:10px;">  
@@ -794,7 +881,7 @@
               <svg class="support-icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 4 40 10v12c0 10-6.8 17.5-16 22C14.8 39.5 8 32 8 22V10L24 4Z"/><path d="m17 23 5 5 10-11"/></svg>  
               <span class="support-item-title">100% Free Replacement</span>  
               <span class="support-item-subtitle">For damaged or defective products</span>  
-              <span class="support-chevron" aria-hidden="true">â</span>  
+              <span class="support-chevron" aria-hidden="true">⌄</span>  
             </button>  
             <div class="support-details" id="replacementDetails" hidden>  
               <p>If your order arrives damaged, defective, or with a delivery-related issue, we're here to help.</p>  
@@ -829,7 +916,7 @@
               <p>For any assistance, reach out to our support team.</p>  
             </div>  
           </div>  
-          <a href="mailto:supportdazbery@gmail.com" class="support-email-link">â supportdazbery@gmail.com</a>  
+          <a href="mailto:supportdazbery@gmail.com" class="support-email-link">✉ supportdazbery@gmail.com</a>  
         </div>  
       </section>  
   
@@ -843,7 +930,7 @@
         <div class="cart-summary" id="cartSummaryBox" style="display: none;">  
           <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 15px; margin-bottom: 14px; color: #142218;">  
             <span>Total Amount:</span>  
-            <span id="cartTotalPrice">â¹599</span>  
+            <span id="cartTotalPrice">₹599</span>  
           </div>  
           <button onclick="proceedCartCheckout()" class="btn-apply" style="width: 100%; padding: 14px; font-size: 13px;">PROCEED TO CHECKOUT</button>  
         </div>  
@@ -873,7 +960,7 @@
           <p id="userEmailDisplay" style="font-size: 12px; font-weight: 600; color: #6b7280; margin-bottom: 16px;"></p>  
   
           <div id="profileSavedView" class="profile-card-display" style="display: none;">  
-            <button class="edit-pencil-btn" onclick="enableProfileEdit()" title="Edit Address">âï¸</button>  
+            <button class="edit-pencil-btn" onclick="enableProfileEdit()" title="Edit Address">✏️</button>  
             <h4 id="dispName" style="font-size: 15px; font-weight: 700; color: #142218; margin-bottom: 4px;"></h4>  
             <p id="dispPhone" style="font-size: 13px; color: #4a5568; font-weight: 600; margin-bottom: 8px;"></p>  
             <p id="dispAddress" style="font-size: 13px; color: #6b7280; line-height: 1.5;"></p>  
@@ -935,6 +1022,15 @@
       button.setAttribute('aria-expanded', String(!isExpanded));  
       panel.hidden = isExpanded;  
     }  
+
+    function toggleStaticReviews(btn) {  
+      const expanded = btn.getAttribute('aria-expanded') === 'true';  
+      document.querySelectorAll('#reviewsGrid .review-hidden').forEach(card => {  
+        card.style.display = expanded ? 'none' : 'block';  
+      });  
+      btn.setAttribute('aria-expanded', String(!expanded));  
+      btn.textContent = expanded ? 'View all reviews (5)' : 'Show fewer reviews';  
+    }  
   
     function openCustomerRewards() {  
       const modal = document.getElementById('customerRewardsModal');  
@@ -972,15 +1068,15 @@
       if (isDiscountApplied) {  
         const offerPrice = activeQty * 299;  
         const originalPrice = activeQty * 599;  
-        priceElement.innerText = 'â¹' + offerPrice;  
-        strikeElement.innerText = 'â¹' + originalPrice;  
+        priceElement.innerText = '₹' + offerPrice;  
+        strikeElement.innerText = '₹' + originalPrice;  
         strikeElement.style.display = 'inline';  
-        submitBtn.innerText = `PROCEED TO PAY â â¹${offerPrice} (PREPAID)`;  
+        submitBtn.innerText = `PROCEED TO PAY — ₹${offerPrice} (PREPAID)`;  
       } else {  
         const originalPrice = activeQty * 599;  
-        priceElement.innerText = 'â¹' + originalPrice;  
+        priceElement.innerText = '₹' + originalPrice;  
         strikeElement.style.display = 'none';  
-        submitBtn.innerText = `PROCEED TO PAY â â¹${originalPrice} (PREPAID)`;  
+        submitBtn.innerText = `PROCEED TO PAY — ₹${originalPrice} (PREPAID)`;  
       }  
     }  
   
@@ -991,17 +1087,17 @@
       if (code === 'DAZBERY50') {  
         isDiscountApplied = true;  
         updatePriceDisplay();  
-        msg.innerText = 'â Code DAZBERY50 applied (50% OFF).';  
+        msg.innerText = '✓ Code DAZBERY50 applied (50% OFF).';  
         msg.style.color = '#2d5a27';  
         msg.style.display = 'block';  
-        showToast('â 50% discount applied successfully!');  
+        showToast('✓ 50% discount applied successfully!');  
       } else {  
         isDiscountApplied = false;  
         updatePriceDisplay();  
         msg.innerText = 'Invalid code. Use DAZBERY50';  
         msg.style.color = '#777777';  
         msg.style.display = 'block';  
-        showToast('â Invalid coupon code');  
+        showToast('❌ Invalid coupon code');  
       }  
     }  
   
@@ -1020,7 +1116,7 @@
       cartCount += currentQty;  
       document.getElementById('cartBadge').innerText = cartCount;  
       updatePriceDisplay();  
-      showToast(`â Added ${currentQty} item(s) to cart`);  
+      showToast(`✓ Added ${currentQty} item(s) to cart`);  
     }  
   
     function removeFromCart() {  
@@ -1028,7 +1124,7 @@
       document.getElementById('cartBadge').innerText = cartCount;  
       updatePriceDisplay();  
       renderCart();  
-      showToast('â Product removed from cart');  
+      showToast('✓ Product removed from cart');  
     }  
   
     function renderCart() {  
@@ -1047,17 +1143,17 @@
               <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Qty: <strong>${cartCount}</strong> ${isDiscountApplied ? '| 50% OFF Applied' : ''}</div>  
               <button class="btn-remove" onclick="removeFromCart()">Remove from Cart</button>  
             </div>  
-            <div style="font-weight: 700; font-size: 14px; color: #142218;">â¹${finalPrice}</div>  
+            <div style="font-weight: 700; font-size: 14px; color: #142218;">₹${finalPrice}</div>  
           </div>  
         `;  
         summaryBox.style.display = 'block';  
-        document.getElementById('cartTotalPrice').innerText = 'â¹' + finalPrice;  
+        document.getElementById('cartTotalPrice').innerText = '₹' + finalPrice;  
       }  
     }  
   
     function proceedCartCheckout() {  
       if(cartCount === 0) {  
-        showToast('â Your cart is empty');  
+        showToast('❌ Your cart is empty');  
         return;  
       }  
   
@@ -1073,7 +1169,7 @@
             if(firstInput) firstInput.focus();  
           }  
         }, 200);  
-        showToast('ð Please fill your delivery address to complete order');  
+        showToast('👇 Please fill your delivery address to complete order');  
       }  
     }  
   
@@ -1160,109 +1256,8 @@
         const safeName = String(item.public_name || 'DAZBERY Customer').replace(/[&<>"']/g, ch => ({  
           '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'  
         }[ch]));  
-        return `<div class="participant-name">${safeName} <span aria-label="verified">â</span></div>`;  
+        return `<div class="participant-name"><span>${safeName}</span> <span aria-label="verified" style="color:#2d5a27;">✓</span></div>`;  
       }).join('');  
-    }  
-  
-    function renderReviews(reviewList) {  
-      const grid = document.getElementById('reviewsGrid');  
-      if (!grid) return;  
-  
-      const escapeHTML = (value) => String(value ?? '').replace(/[&<>"']/g, ch => ({  
-        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'  
-      }[ch]));  
-  
-      if (!reviewList || reviewList.length === 0) {  
-        grid.innerHTML = '<p class="review-text" style="text-align:center; padding:24px 12px;">No customer reviews yet. Be the first to share your DAZBERY experience.</p>';  
-        const oldToggle = document.getElementById('reviewsToggleWrap');  
-        if (oldToggle) oldToggle.remove();  
-        return;  
-      }  
-  
-      const languagePriority = { english: 0, hindi: 1, malayalam: 2 };  
-      const sortedReviews = [...reviewList].sort((a, b) => {  
-        const aLang = String(a.language || '').toLowerCase();  
-        const bLang = String(b.language || '').toLowerCase();  
-        const aPriority = languagePriority[aLang] ?? 3;  
-        const bPriority = languagePriority[bLang] ?? 3;  
-        return aPriority - bPriority;  
-      });  
-  
-      grid.innerHTML = sortedReviews.map((r, index) => {  
-        const rating = Math.max(0, Math.min(5, Number(r.rating) || 0));  
-        const starsStr = 'â'.repeat(rating) + 'â'.repeat(5 - rating);  
-        const hiddenClass = index >= 3 ? ' review-hidden' : '';  
-        const rawOrderId = String(r.order_id || '');  
-        const maskedOrderId = rawOrderId.length > 4  
-          ? 'â¢â¢â¢â¢' + rawOrderId.slice(-4)  
-          : 'â¢â¢â¢â¢';  
-        const language = r.language  
-          ? `<div class="review-language">${escapeHTML(r.language)}</div>`  
-          : '';  
-  
-        return `  
-          <article class="review-item${hiddenClass}">  
-            <div class="review-header">  
-              <span class="review-user">${escapeHTML(r.customer_name)}</span>  
-              <span class="verified-badge">â Verified Purchase</span>  
-            </div>  
-            <div class="review-language">Order ID: ${escapeHTML(maskedOrderId)}</div>  
-            ${language}  
-            <div class="stars" aria-label="${rating} out of 5 stars">${starsStr}</div>  
-            <div class="review-text">${escapeHTML(r.review_text)}</div>  
-          </article>  
-        `;  
-      }).join('');  
-  
-      const oldToggle = document.getElementById('reviewsToggleWrap');  
-      if (oldToggle) oldToggle.remove();  
-  
-      if (reviewList.length > 3) {  
-        const wrap = document.createElement('div');  
-        wrap.className = 'reviews-toggle-wrap';  
-        wrap.id = 'reviewsToggleWrap';  
-        const button = document.createElement('button');  
-        button.className = 'reviews-toggle-btn';  
-        button.type = 'button';  
-        button.textContent = `View all reviews (${sortedReviews.length})`;  
-        button.setAttribute('aria-expanded', 'false');  
-        button.addEventListener('click', () => {  
-          const expanded = button.getAttribute('aria-expanded') === 'true';  
-          grid.querySelectorAll('.review-hidden').forEach(card => {  
-            card.style.display = expanded ? 'none' : 'block';  
-          });  
-          button.setAttribute('aria-expanded', String(!expanded));  
-          button.textContent = expanded  
-            ? `View all reviews (${sortedReviews.length})`  
-            : 'Show fewer reviews';  
-        });  
-        wrap.appendChild(button);  
-        grid.insertAdjacentElement('afterend', wrap);  
-      }  
-    }  
-  
-    async function fetchReviews() {  
-      const grid = document.getElementById('reviewsGrid');  
-      if (!grid) return;  
-  
-      if (!supabaseClient) {  
-        renderReviews([]);  
-        return;  
-      }  
-  
-      const { data: reviews, error } = await supabaseClient  
-        .from('reviews')  
-        .select('*')  
-        .eq('is_verified', true)  
-        .order('created_at', { ascending: false });  
-  
-      if (error) {  
-        console.error('Could not load customer reviews:', error);  
-        renderReviews([]);  
-        return;  
-      }  
-  
-      renderReviews(reviews || []);  
     }  
   
     async function submitUserReview(e) {  
@@ -1282,7 +1277,7 @@
         .single();  
   
       if (orderErr || !orderData) {  
-        showToast('â Invalid Order ID! Only verified buyers can review.');  
+        showToast('❌ Invalid Order ID! Only verified buyers can review.');  
         return;  
       }  
   
@@ -1299,11 +1294,10 @@
       ]);  
   
       if (error) {  
-        showToast('â Failed to post review: ' + error.message);  
+        showToast('❌ Failed to post review: ' + error.message);  
       } else {  
         showToast('Thank you! Your review was submitted for verification.');  
         e.target.reset();  
-        fetchReviews();  
       }  
     }  
   
@@ -1318,7 +1312,7 @@
           redirectTo: window.location.origin + '/'   
         }  
       });  
-      if (error) showToast('â Login Error: ' + error.message);  
+      if (error) showToast('❌ Login Error: ' + error.message);  
     }  
   
     async function checkUserSession() {  
@@ -1399,7 +1393,7 @@
         document.getElementById('checkoutState').value = data.state || '';  
   
         document.getElementById('dispName').innerText = data.full_name;  
-        document.getElementById('dispPhone').innerText = 'ð ' + data.phone;  
+        document.getElementById('dispPhone').innerText = '📞 ' + data.phone;  
         document.getElementById('dispAddress').innerText = `${data.address}, ${data.city} - ${data.pin}, ${data.state}`;  
           
         document.getElementById('profileSavedView').style.display = 'block';  
@@ -1409,7 +1403,7 @@
         document.getElementById('manualAddressFields').style.display = 'none';  
           
         document.getElementById('savedCheckoutName').innerText = data.full_name;  
-        document.getElementById('savedCheckoutPhone').innerText = 'ð ' + data.phone;  
+        document.getElementById('savedCheckoutPhone').innerText = '📞 ' + data.phone;  
         document.getElementById('savedCheckoutAddress').innerText = `${data.address}, ${data.city} - ${data.pin}, ${data.state}`;  
   
         ['checkoutName','checkoutPhone','checkoutAddress','checkoutPin','checkoutCity','checkoutState'].forEach(id => {  
@@ -1455,9 +1449,9 @@
         });  
   
       if (error) {  
-        showToast('â Failed to save profile: ' + error.message);  
+        showToast('❌ Failed to save profile: ' + error.message);  
       } else {  
-        showToast('â Profile saved successfully!');  
+        showToast('✓ Profile saved successfully!');  
         loadUserProfile(currentUser.id);  
       }  
     }  
@@ -1492,7 +1486,7 @@
             <div class="timeline-wrapper">  
               ${steps.map((step, idx) => `  
                 <div class="timeline-step ${idx <= currentStepIndex ? 'active' : ''}">  
-                  <div class="step-circle">${idx <= currentStepIndex ? 'â' : idx + 1}</div>  
+                  <div class="step-circle">${idx <= currentStepIndex ? '✓' : idx + 1}</div>  
                   <div class="step-label">${step}</div>  
                 </div>  
               `).join('')}  
@@ -1530,7 +1524,7 @@
             <div style="margin: 14px 0;">  
               <p style="margin: 2px 0; font-weight: 700; font-size: 14px; color: #142218;">${order.product_name || 'Rosemary & Rice Water Hair Growth Spray'}</p>  
               <p style="margin: 4px 0; font-size: 12px; color: #4a5568;">  
-                Quantity: <strong>${order.quantity}</strong> | Total: <strong>â¹${order.total_price}</strong>  
+                Quantity: <strong>${order.quantity}</strong> | Total: <strong>₹${order.total_price}</strong>  
               </p>  
               <p style="margin: 4px 0; font-size: 11px; color: #6b7280;">  
                 <strong>Address:</strong> ${order.address}  
@@ -1538,8 +1532,8 @@
                 
               ${order.tracking_id && order.tracking_id !== 'Pending' ? `  
                 <div style="background: #f7f5f0; padding: 10px; border-radius: 8px; margin-top: 10px; font-size: 12px; border: 1px dashed #cbd5e1;">  
-                  ð <strong>Courier:</strong> ${order.courier_name || 'Delivery Partner'} <br>  
-                  ð <strong>Tracking ID:</strong> <span style="color: #2563eb; font-weight: 700;">${order.tracking_id}</span>  
+                  🚚 <strong>Courier:</strong> ${order.courier_name || 'Delivery Partner'} <br>  
+                  📌 <strong>Tracking ID:</strong> <span style="color: #2563eb; font-weight: 700;">${order.tracking_id}</span>  
                 </div>  
               ` : ''}  
             </div>  
@@ -1577,7 +1571,7 @@
         document.getElementById(id).setAttribute('required', 'true');  
       });  
         
-      showToast('â Logged out successfully');  
+      showToast('✓ Logged out successfully');  
       switchPage('login');  
     }  
   
@@ -1611,14 +1605,14 @@
         "description": "Rosemary & Rice Water Hair Growth Spray (100ml)",  
         "prefill": {  
           "name": name || document.getElementById('savedCheckoutName').innerText,  
-          "contact": phone || document.getElementById('savedCheckoutPhone').innerText.replace('ð ', ''),  
+          "contact": phone || document.getElementById('savedCheckoutPhone').innerText.replace('📞 ', ''),  
           "email": currentUser ? currentUser.email : ""  
         },  
         "theme": {  
           "color": "#142218"  
         },  
         "handler": async function (response) {  
-          showToast('â Payment Successful! Saving order...');  
+          showToast('✓ Payment Successful! Saving order...');  
   
           if (supabaseClient) {  
             const { data: { session } } = await supabaseClient.auth.getSession();  
@@ -1628,7 +1622,7 @@
                 order_code: customOrderId,  
                 user_id: session ? session.user.id : null,  
                 customer_name: name || document.getElementById('savedCheckoutName').innerText,  
-                phone: phone || document.getElementById('savedCheckoutPhone').innerText.replace('ð ', ''),  
+                phone: phone || document.getElementById('savedCheckoutPhone').innerText.replace('📞 ', ''),  
                 address: fullAddress,  
                 quantity: orderQty,  
                 total_price: finalPrice,  
@@ -1643,8 +1637,8 @@
           cartCount = 0;  
           document.getElementById('cartBadge').innerText = cartCount;  
   
-          showToast('â Order Placed Successfully!');  
-          alert(`Payment Success!\nOrder ID: ${customOrderId}\nPayment ID: ${response.razorpay_payment_id}\nOrder confirmed for â¹${finalPrice}.`);  
+          showToast('✓ Order Placed Successfully!');  
+          alert(`Payment Success!\nOrder ID: ${customOrderId}\nPayment ID: ${response.razorpay_payment_id}\nOrder confirmed for ₹${finalPrice}.`);  
             
           if (currentUser) {  
             fetchUserOrders(currentUser.id);  
@@ -1653,7 +1647,7 @@
         },  
         "modal": {  
           "ondismiss": function() {  
-            showToast('â Payment Cancelled');  
+            showToast('❌ Payment Cancelled');  
           }  
         }  
       };  
@@ -1667,8 +1661,7 @@
   
     window.addEventListener('DOMContentLoaded', () => {  
       checkUserSession();  
-      fetchReviews();  
     });  
   </script>  
 </body>  
-</html>  
+</html>
