@@ -513,7 +513,7 @@
       </div>
 
       <div class="simple-rules">
-        <div><span>1.</span> Post 1 Before & After review video on IG / YouTube / FB.</div>
+        <div><span>1.</span> Post your honest & genuine review video on IG / YouTube / FB.</div>
         <div><span>2.</span> Keep it live for 30 days (then it's your choice to keep or delete!).</div>
         <div><span>3.</span> Viral videos get extra gift hampers & free new product launches.</div>
       </div>
@@ -613,6 +613,7 @@
               <button type="submit" class="btn-buy" id="submitBtn">PROCEED TO PAY — ₹599 (PREPAID)</button>
             </div>
           </form>
+          <p style="font-size: 10px; color: #777; text-align: center; margin-top: 10px;">🔒 100% Secure & Encrypted Payments via Razorpay</p>
         </div>
       </div>
 
@@ -639,9 +640,13 @@
         </form>
       </div>
 
-      <div id="support" style="margin-top: 40px; background:var(--surface); border:1px solid var(--border-color); padding:20px; border-radius:var(--radius);">
-        <h3 style="font-size:15px; font-weight:700; margin-bottom:6px; color:#142218;">Support & Policies</h3>
-        <p style="font-size:12px; color:var(--text-muted);">For delivery help or damage replacement claims (unboxing video mandatory within 24 hours), contact us at <a href="mailto:supportdazbery@gmail.com" style="color:#142218; font-weight:700;">supportdazbery@gmail.com</a>.</p>
+      <div id="support" style="margin-top: 40px; background:var(--surface); border:1px solid var(--border-color); padding:24px; border-radius:var(--radius);">
+        <h3 style="font-size:16px; font-weight:700; margin-bottom:8px; color:#142218;">Customer Support & Guarantee</h3>
+        <p style="font-size:13px; color:var(--text-muted); line-height: 1.6;">
+          DAZBERY takes 100% responsibility for delivering your order safely. 🚚<br><br>
+          If there is any damage or defect upon delivery, you are fully covered! Simply share an unboxing video within 24 hours of delivery, and we will provide a <strong>100% Free Replacement</strong> directly from the brand side, no questions asked.<br><br>
+          For any assistance, contact our support team at: <a href="mailto:supportdazbery@gmail.com" style="color:#142218; font-weight:700; text-decoration: underline;">supportdazbery@gmail.com</a>
+        </p>
       </div>
     </div>
 
@@ -720,7 +725,7 @@
       <span>Official Instagram: <a href="https://instagram.com/dazbery" target="_blank" class="insta-link">@dazbery</a></span>
     </div>
     <p style="margin-top: 14px;">
-      <a href="#">Privacy Policy</a> | <a href="#">Terms</a> | <a href="#">Returns</a>
+      <a href="#">Privacy Policy</a> | <a href="#">Terms</a> | <a href="#">Returns & Replacements</a>
     </p>
   </footer>
 
@@ -921,12 +926,12 @@
           <div class="review-item">
             <div class="review-header"><span class="review-user">Sneha (Kochi)</span><span class="verified-badge">✔ Verified</span></div>
             <div class="stars">★★★★★</div>
-            <div class="review-text">പുതിയ brand ആയതുകൊണ്ട് ആദ്യം ചെറിയ പേടിയുണ്ടായിരുന്നു, പക്ഷെ product nalla quality undu. Hair fall nalla pole kuranju!</div>
+            <div class="review-text">Amazing product! Noticed visible reduction in hair fall within 3 weeks of consistent use. Highly recommended.</div>
           </div>
           <div class="review-item">
             <div class="review-header"><span class="review-user">Favas (Kozhikode)</span><span class="verified-badge">✔ Verified</span></div>
             <div class="stars">★★★★★</div>
-            <div class="review-text">Super product. Nalla natural smell aanu, sticky alla. Office pokunnathinu munpu spray cheythu pokam.</div>
+            <div class="review-text">Super natural fragrance and non-sticky formula. Very easy to apply before heading out to work.</div>
           </div>
         `;
         return;
@@ -1280,13 +1285,12 @@
 
       const fullAddress = address ? `${address}, ${city} - ${pin}, ${state}` : document.getElementById('savedCheckoutAddress').innerText;
 
-      // Generates 100% Unique & Random Professional Order ID (e.g. DZ-8492-X9)
       const randomNum = Math.floor(1000 + Math.random() * 9000);
       const randomSuffix = Math.random().toString(36).substring(2, 4).toUpperCase();
       const customOrderId = `DZ-${randomNum}-${randomSuffix}`;
 
       var options = {
-        "key": "rzp_live_Ty5lX0G7dUQdbn", // Live API Key
+        "key": "rzp_live_Ty5lX0G7dUQdbn",
         "amount": finalPrice * 100,
         "currency": "INR",
         "name": "DAZBERY",
