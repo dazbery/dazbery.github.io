@@ -229,7 +229,6 @@
     }
     .btn-buy:hover { background: #1e3323; }
 
-    /* FLOATING CREATOR PROGRAM BUTTON */
     .creator-float-btn {
       position: fixed;
       bottom: 24px;
@@ -251,7 +250,6 @@
     }
     .creator-float-btn:hover { transform: scale(1.05); }
 
-    /* POPUP MODAL STYLING */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -523,7 +521,7 @@
       <form onsubmit="submitCreatorClaim(event)">
         <h4 style="font-size: 13px; font-weight: 700; margin-bottom: 10px; color: #142218;">Submit Your Video Link</h4>
         <div class="form-group" style="margin-bottom: 10px;">
-          <input type="text" id="claimOrderId" placeholder="Your Order ID (e.g. 12)" required>
+          <input type="text" id="claimOrderId" placeholder="Your Order ID (e.g. DZ-8492-X9)" required>
         </div>
         <div class="form-group" style="margin-bottom: 10px;">
           <select id="claimPlatform" required style="background:#faf8f5;">
@@ -628,7 +626,7 @@
         <p>Only verified customers who purchased this item can submit feedback using their Order ID.</p>
         <form onsubmit="submitUserReview(event)">
           <div class="form-group" style="margin-bottom:10px;"><input type="text" id="rName" placeholder="Your Name & City" required></div>
-          <div class="form-group" style="margin-bottom:10px;"><input type="text" id="rOrder" placeholder="Enter Order ID (e.g. 12)" required></div>
+          <div class="form-group" style="margin-bottom:10px;"><input type="text" id="rOrder" placeholder="Enter Order ID (e.g. DZ-8492-X9)" required></div>
           <div class="form-group" style="margin-bottom:10px;">
             <select id="rRating" style="background:#faf8f5;" required>
               <option value="5">★★★★★ (5 Stars)</option>
@@ -941,7 +939,7 @@
           <div class="review-item">
             <div class="review-header">
               <span class="review-user">${r.customer_name}</span>
-              <span class="verified-badge">✔ Verified (ID: #${r.order_id})</span>
+              <span class="verified-badge">✔ Verified (ID: ${r.order_id})</span>
             </div>
             <div class="stars">${starsStr}</div>
             <div class="review-text">${r.review_text}</div>
@@ -962,7 +960,7 @@
       const { data: orderData, error: orderErr } = await supabaseClient
         .from('orders')
         .select('id')
-        .eq('id', orderId)
+        .eq('order_code', orderId)
         .single();
 
       if (orderErr || !orderData) {
@@ -1196,11 +1194,13 @@
           displayStatus = 'CANCELLED'; 
         }
 
+        const displayOrderId = order.order_code || `DZ-${order.id}`;
+
         const orderCard = `
           <div class="order-card" style="${isCancelled ? 'background: #fffcfc;' : ''}">
             <div class="order-header">
               <div>
-                <strong style="font-size: 13px; color: #142218;">Order #${order.id}</strong>
+                <strong style="font-size: 13px; color: #142218;">Order #${displayOrderId}</strong>
                 <div style="font-size: 11px; color: #6b7280; margin-top: 2px;">
                   ${new Date(order.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
                 </div>
@@ -1228,7 +1228,7 @@
             ${timelineHTML}
 
             <div style="text-align: right; margin-top: 10px;">
-              <a href="mailto:supportdazbery@gmail.com?subject=Help with Order %23${order.id}" class="support-link-btn">Need Help with Order?</a>
+              <a href="mailto:supportdazbery@gmail.com?subject=Help with Order %23${displayOrderId}" class="support-link-btn">Need Help with Order?</a>
             </div>
           </div>
         `;
@@ -1280,8 +1280,13 @@
 
       const fullAddress = address ? `${address}, ${city} - ${pin}, ${state}` : document.getElementById('savedCheckoutAddress').innerText;
 
+      // Generates 100% Unique & Random Professional Order ID (e.g. DZ-8492-X9)
+      const randomNum = Math.floor(1000 + Math.random() * 9000);
+      const randomSuffix = Math.random().toString(36).substring(2, 4).toUpperCase();
+      const customOrderId = `DZ-${randomNum}-${randomSuffix}`;
+
       var options = {
-        "key": "rzp_live_Ty5lX0G7dUQdbn", // Updated Live API Key
+        "key": "rzp_live_Ty5lX0G7dUQdbn", // Live API Key
         "amount": finalPrice * 100,
         "currency": "INR",
         "name": "DAZBERY",
@@ -1302,6 +1307,7 @@
 
             await supabaseClient.from('orders').insert([
               {
+                order_code: customOrderId,
                 user_id: session ? session.user.id : null,
                 customer_name: name || document.getElementById('savedCheckoutName').innerText,
                 phone: phone || document.getElementById('savedCheckoutPhone').innerText.replace('📞 ', ''),
@@ -1320,7 +1326,7 @@
           document.getElementById('cartBadge').innerText = cartCount;
 
           showToast('✓ Order Placed Successfully!');
-          alert(`Payment Success!\nPayment ID: ${response.razorpay_payment_id}\nOrder confirmed for ₹${finalPrice}.`);
+          alert(`Payment Success!\nOrder ID: ${customOrderId}\nPayment ID: ${response.razorpay_payment_id}\nOrder confirmed for ₹${finalPrice}.`);
           
           if (currentUser) {
             fetchUserOrders(currentUser.id);
