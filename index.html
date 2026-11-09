@@ -257,13 +257,12 @@
     }
 
     .auth-card {
-      max-width: 480px;
+      max-width: 600px;
       margin: 20px auto;
       background: var(--surface);
       padding: 30px;
       border-radius: var(--radius);
       border: 1px solid var(--border-color);
-      text-align: center;
     }
     .auth-card h2 { font-size: 20px; font-weight: 700; margin-bottom: 6px; color: var(--text-main); }
     .auth-card p { font-size: 12px; color: var(--text-muted); margin-bottom: 20px; }
@@ -287,18 +286,89 @@
     .google-btn:hover { background: #f8f8f8; }
 
     .order-history-box {
-      margin-top: 20px;
+      margin-top: 24px;
       text-align: left;
       border-top: 1px solid var(--border-color);
-      padding-top: 16px;
+      padding-top: 20px;
     }
-    .order-history-item {
-      background: #f9f9f9;
-      padding: 10px;
+    
+    /* Order Management Styles */
+    .order-card {
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 20px;
+      background: #ffffff;
+    }
+    .order-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #edf2f7;
+      padding-bottom: 10px;
+    }
+    .status-badge {
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+    .timeline-wrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 20px 0;
+      position: relative;
+    }
+    .timeline-wrapper::before {
+      content: '';
+      position: absolute;
+      top: 14px;
+      left: 10%;
+      right: 10%;
+      height: 2px;
+      background: #e2e8f0;
+      z-index: 1;
+    }
+    .timeline-step {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      background: #fff;
+      padding: 0 4px;
+    }
+    .step-circle {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      color: #718096;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: bold;
+      margin: 0 auto 6px;
+    }
+    .timeline-step.active .step-circle {
+      background: #111111;
+      color: #ffffff;
+    }
+    .step-label { font-size: 10px; color: #4a5568; font-weight: 600; }
+
+    .cancel-btn {
+      background-color: #ef4444;
+      color: white;
+      border: none;
+      padding: 6px 14px;
       border-radius: 6px;
-      margin-bottom: 8px;
+      cursor: pointer;
       font-size: 12px;
+      font-weight: 600;
+      transition: background 0.2s;
     }
+    .cancel-btn:hover { background-color: #dc2626; }
 
     .section-title { font-size: 18px; font-weight: 700; margin: 40px 0 16px; }
     
@@ -445,7 +515,7 @@
     <!-- GOOGLE SIGN-IN & PROFILE PAGE -->
     <div id="loginPage" class="page-section">
       
-      <div class="auth-card" id="loginCard">
+      <div class="auth-card" id="loginCard" style="text-align: center;">
         <h2>Customer Sign In</h2>
         <p>Sign in with Google to save your delivery address and manage orders.</p>
         
@@ -456,8 +526,8 @@
       </div>
 
       <div class="auth-card" id="dashboardCard" style="display: none; text-align: left;">
-        <h2 style="margin-bottom: 8px; color: var(--text-main);">My Account Dashboard</h2>
-        <p id="userEmailDisplay" style="font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 14px;"></p>
+        <h2 style="margin-bottom: 4px; color: var(--text-main);">My Account Dashboard</h2>
+        <p id="userEmailDisplay" style="font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 16px;"></p>
         
         <form onsubmit="saveProfileDetails(event)" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px;">
           <div class="form-group"><input type="text" id="profName" placeholder="Full Name" required></div>
@@ -469,12 +539,15 @@
           <button type="submit" class="btn-apply" style="width: 100%;">SAVE PROFILE DETAILS</button>
         </form>
 
+        <!-- Dynamic Order Management & Tracking Section -->
         <div class="order-history-box">
-          <h3 style="font-size: 14px; font-weight: 700; margin-bottom: 8px;">Your Order History</h3>
-          <div id="orderHistoryList"><p style="font-size: 12px; color: var(--text-muted);">Loading past orders...</p></div>
+          <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 12px; color: var(--text-main);">Track & Manage Your Orders</h3>
+          <div id="orderHistoryList">
+            <p style="font-size: 12px; color: var(--text-muted);">Loading past orders...</p>
+          </div>
         </div>
 
-        <button onclick="handleLogout()" class="btn-apply" style="background: #dc2626; width: 100%; margin-top: 16px;">LOGOUT</button>
+        <button onclick="handleLogout()" class="btn-apply" style="background: #dc2626; width: 100%; margin-top: 24px;">LOGOUT</button>
       </div>
 
     </div>
@@ -737,29 +810,111 @@
       }
     }
 
+    // Advanced Dynamic Order Tracking & Cancellation Function
     async function fetchUserOrders(userId) {
       const historyList = document.getElementById('orderHistoryList');
-      const { data, error } = await supabaseClient
+      if (!historyList || !supabaseClient) return;
+
+      const { data: orders, error } = await supabaseClient
         .from('orders')
         .select('*')
         .eq('user_id', userId)
         .order('created_at', { ascending: false });
 
-      if (error || !data || data.length === 0) {
+      if (error || !orders || orders.length === 0) {
         historyList.innerHTML = `<p style="font-size: 12px; color: var(--text-muted);">No past orders found.</p>`;
         return;
       }
 
-      let html = '';
-      data.forEach(order => {
-        html += `
-          <div class="order-history-item">
-            <strong>Qty:</strong> ${order.quantity} | <strong>Total:</strong> ₹${order.total_price}<br>
-            <strong>Address:</strong> ${order.address}
+      historyList.innerHTML = '';
+
+      orders.forEach(order => {
+        const currentStatus = order.status || 'Confirmed';
+        const isCancelled = currentStatus === 'Cancelled';
+        const isShipped = currentStatus === 'Shipped' || currentStatus === 'Delivered';
+        const canCancel = !isCancelled && !isShipped;
+
+        const steps = ['Confirmed', 'Packed', 'Shipped', 'Delivered'];
+        const currentStepIndex = steps.indexOf(currentStatus);
+
+        let timelineHTML = '';
+        if (!isCancelled) {
+          timelineHTML = `
+            <div class="timeline-wrapper">
+              ${steps.map((step, idx) => `
+                <div class="timeline-step ${idx <= currentStepIndex ? 'active' : ''}">
+                  <div class="step-circle">${idx <= currentStepIndex ? '✓' : idx + 1}</div>
+                  <div class="step-label">${step}</div>
+                </div>
+              `).join('')}
+            </div>
+          `;
+        }
+
+        let badgeBg = '#eef2ff';
+        let badgeColor = '#4338ca';
+        if (currentStatus === 'Shipped') { badgeBg = '#e0f2fe'; badgeColor = '#0369a1'; }
+        if (currentStatus === 'Delivered') { badgeBg = '#dcfce7'; badgeColor = '#15803d'; }
+        if (isCancelled) { badgeBg = '#fee2e2'; badgeColor = '#b91c1c'; }
+
+        const orderCard = `
+          <div class="order-card">
+            <div class="order-header">
+              <div>
+                <strong style="font-size: 13px; color: var(--text-main);">Order #${order.id}</strong>
+                <div style="font-size: 11px; color: #718096; margin-top: 2px;">
+                  ${new Date(order.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+                </div>
+              </div>
+              <span class="status-badge" style="background: ${badgeBg}; color: ${badgeColor};">${currentStatus}</span>
+            </div>
+
+            <div style="margin: 14px 0;">
+              <p style="margin: 2px 0; font-weight: 600; font-size: 14px;">${order.product_name || 'Rosemary & Rice Water Hair Growth Spray'}</p>
+              <p style="margin: 4px 0; font-size: 12px; color: #4a5568;">
+                Quantity: <strong>${order.quantity}</strong> | Total: <strong>₹${order.total_price}</strong>
+              </p>
+              <p style="margin: 4px 0; font-size: 11px; color: #718096;">
+                <strong>Address:</strong> ${order.address}
+              </p>
+              
+              ${order.tracking_id && order.tracking_id !== 'Pending' ? `
+                <div style="background: #f7fafc; padding: 10px; border-radius: 6px; margin-top: 10px; font-size: 12px; border: 1px dashed #cbd5e0;">
+                  🚚 <strong>Courier:</strong> ${order.courier_name || 'Delivery Partner'} <br>
+                  📌 <strong>Tracking ID:</strong> <span style="color: #2563eb; font-weight: 600;">${order.tracking_id}</span>
+                </div>
+              ` : ''}
+            </div>
+
+            ${timelineHTML}
+
+            ${canCancel ? `
+              <div style="text-align: right; margin-top: 10px;">
+                <button class="cancel-btn" onclick="handleCancelOrder(${order.id})">Cancel Order</button>
+              </div>
+            ` : ''}
           </div>
         `;
+        historyList.innerHTML += orderCard;
       });
-      historyList.innerHTML = html;
+    }
+
+    // Cancel Order Handler (English Alerts)
+    async function handleCancelOrder(orderId) {
+      const confirmCancel = confirm("Are you sure you want to cancel this order?");
+      if (!confirmCancel) return;
+
+      const { data, error } = await supabaseClient
+        .from('orders')
+        .update({ status: 'Cancelled' })
+        .eq('id', orderId);
+
+      if (error) {
+        alert("Failed to cancel the order. Please try again.");
+      } else {
+        alert("Order cancelled successfully.");
+        if (currentUser) fetchUserOrders(currentUser.id);
+      }
     }
 
     async function handleLogout() {
@@ -780,7 +935,7 @@
       switchPage('login');
     }
 
-    // Integrated Razorpay Checkout Logic
+    // Integrated Razorpay Checkout Logic with New Order Data
     async function handleOrder(e) {
       e.preventDefault();
 
@@ -820,13 +975,21 @@
                 address: address + ', ' + city + ' - ' + pin + ', ' + state,
                 quantity: currentQty,
                 total_price: finalPrice,
-                payment_id: response.razorpay_payment_id
+                payment_id: response.razorpay_payment_id,
+                status: 'Confirmed',                                     // Default status
+                product_name: 'Rosemary & Rice Water Hair Growth Spray', // Product Name
+                tracking_id: 'Pending'                                   // Tracking placeholder
               }
             ]);
           }
 
           showToast('✓ Order Placed Successfully!');
           alert(`Payment Success!\nPayment ID: ${response.razorpay_payment_id}\nOrder confirmed for ₹${finalPrice}.`);
+          
+          if (currentUser) {
+            fetchUserOrders(currentUser.id);
+            switchPage('login'); // Switch to account page to view tracking timeline
+          }
         },
         "modal": {
           "ondismiss": function() {
