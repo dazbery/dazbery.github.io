@@ -256,16 +256,48 @@
       border-radius: 8px;
     }
 
-    .auth-card {
+    /* Clean Profile & Account Dashboard UI */
+    .dashboard-container {
       max-width: 600px;
-      margin: 20px auto;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .auth-card {
       background: var(--surface);
-      padding: 30px;
+      padding: 24px;
       border-radius: var(--radius);
       border: 1px solid var(--border-color);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
     }
-    .auth-card h2 { font-size: 20px; font-weight: 700; margin-bottom: 6px; color: var(--text-main); }
-    .auth-card p { font-size: 12px; color: var(--text-muted); margin-bottom: 20px; }
+
+    .profile-card-display {
+      background: #f9fafb;
+      border: 1px solid #edf2f7;
+      border-radius: 10px;
+      padding: 16px;
+      position: relative;
+    }
+
+    .edit-pencil-btn {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      transition: all 0.2s;
+    }
+    .edit-pencil-btn:hover { background: #f1f5f9; }
 
     .google-btn {
       width: 100%;
@@ -285,13 +317,6 @@
     }
     .google-btn:hover { background: #f8f8f8; }
 
-    .order-history-box {
-      margin-top: 24px;
-      text-align: left;
-      border-top: 1px solid var(--border-color);
-      padding-top: 20px;
-    }
-    
     /* Order Management Styles */
     .order-card {
       border: 1px solid #e2e8f0;
@@ -515,7 +540,7 @@
     <!-- GOOGLE SIGN-IN & PROFILE PAGE -->
     <div id="loginPage" class="page-section">
       
-      <div class="auth-card" id="loginCard" style="text-align: center;">
+      <div class="auth-card" id="loginCard" style="text-align: center; max-width: 480px; margin: 20px auto;">
         <h2>Customer Sign In</h2>
         <p>Sign in with Google to save your delivery address and manage orders.</p>
         
@@ -525,29 +550,47 @@
         </button>
       </div>
 
-      <div class="auth-card" id="dashboardCard" style="display: none; text-align: left;">
-        <h2 style="margin-bottom: 4px; color: var(--text-main);">My Account Dashboard</h2>
-        <p id="userEmailDisplay" style="font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 16px;"></p>
+      <!-- DASHBOARD STRUCTURE split into clean sections -->
+      <div class="dashboard-container" id="dashboardCard" style="display: none;">
         
-        <form onsubmit="saveProfileDetails(event)" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px;">
-          <div class="form-group"><input type="text" id="profName" placeholder="Full Name" required></div>
-          <div class="form-group"><input type="tel" id="profPhone" placeholder="Mobile / WhatsApp Number" required></div>
-          <div class="form-group"><textarea id="profAddress" placeholder="House/Flat No, Street Name" rows="2" required></textarea></div>
-          <div class="form-group"><input type="text" id="profPin" placeholder="6-Digit PIN Code" maxlength="6" oninput="fetchProfileLocation(this.value)" required></div>
-          <div class="form-group"><input type="text" id="profCity" placeholder="City / District" required></div>
-          <div class="form-group"><input type="text" id="profState" placeholder="State" required></div>
-          <button type="submit" class="btn-apply" style="width: 100%;">SAVE PROFILE DETAILS</button>
-        </form>
+        <!-- SECTION 1: PROFILE & DELIVERY ADDRESS -->
+        <div class="auth-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <h2 style="font-size: 18px; color: var(--text-main);">My Profile</h2>
+            <button onclick="handleLogout()" style="background: none; border: none; color: #ef4444; font-size: 12px; font-weight: 600; cursor: pointer;">LOGOUT</button>
+          </div>
+          <p id="userEmailDisplay" style="font-size: 12px; font-weight: 500; color: var(--text-muted); margin-bottom: 16px;"></p>
 
-        <!-- Dynamic Order Management & Tracking Section -->
-        <div class="order-history-box">
-          <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 12px; color: var(--text-main);">Track & Manage Your Orders</h3>
+          <!-- SAVED ADDRESS DISPLAY (Default View) -->
+          <div id="profileSavedView" class="profile-card-display" style="display: none;">
+            <button class="edit-pencil-btn" onclick="enableProfileEdit()" title="Edit Address">
+              ✏️
+            </button>
+            <h4 id="dispName" style="font-size: 15px; font-weight: 700; color: #1a202c; margin-bottom: 4px;"></h4>
+            <p id="dispPhone" style="font-size: 13px; color: #4a5568; font-weight: 500; margin-bottom: 8px;"></p>
+            <p id="dispAddress" style="font-size: 13px; color: #718096; line-height: 1.5;"></p>
+          </div>
+
+          <!-- EDIT FORM VIEW (Hidden after saving) -->
+          <form id="profileEditForm" onsubmit="saveProfileDetails(event)" style="display: flex; flex-direction: column; gap: 10px;">
+            <div class="form-group"><input type="text" id="profName" placeholder="Full Name" required></div>
+            <div class="form-group"><input type="tel" id="profPhone" placeholder="Mobile / WhatsApp Number" required></div>
+            <div class="form-group"><textarea id="profAddress" placeholder="House/Flat No, Street Name" rows="2" required></textarea></div>
+            <div class="form-group"><input type="text" id="profPin" placeholder="6-Digit PIN Code" maxlength="6" oninput="fetchProfileLocation(this.value)" required></div>
+            <div class="form-group"><input type="text" id="profCity" placeholder="City / District" required></div>
+            <div class="form-group"><input type="text" id="profState" placeholder="State" required></div>
+            <button type="submit" class="btn-apply" style="width: 100%;">SAVE ADDRESS</button>
+          </form>
+        </div>
+
+        <!-- SECTION 2: TRACK & MANAGE ORDERS -->
+        <div class="auth-card">
+          <h2 style="font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--text-main);">Track & Manage Your Orders</h2>
           <div id="orderHistoryList">
             <p style="font-size: 12px; color: var(--text-muted);">Loading past orders...</p>
           </div>
         </div>
 
-        <button onclick="handleLogout()" class="btn-apply" style="background: #dc2626; width: 100%; margin-top: 24px;">LOGOUT</button>
       </div>
 
     </div>
@@ -702,9 +745,9 @@
       if (session) {
         currentUser = session.user;
 
-        document.getElementById('userEmailDisplay').innerText = 'Account: ' + currentUser.email;
+        document.getElementById('userEmailDisplay').innerText = currentUser.email;
         document.getElementById('loginCard').style.display = 'none';
-        document.getElementById('dashboardCard').style.display = 'block';
+        document.getElementById('dashboardCard').style.display = 'flex';
         document.getElementById('navAccountText').innerText = 'My Account';
 
         await loadUserProfile(currentUser.id);
@@ -744,6 +787,11 @@
       }
     }
 
+    function enableProfileEdit() {
+      document.getElementById('profileSavedView').style.display = 'none';
+      document.getElementById('profileEditForm').style.display = 'flex';
+    }
+
     async function loadUserProfile(userId) {
       const { data, error } = await supabaseClient
         .from('profiles')
@@ -751,7 +799,8 @@
         .eq('id', userId)
         .single();
 
-      if (data) {
+      if (data && data.full_name && data.address) {
+        // Form Values
         document.getElementById('profName').value = data.full_name || '';
         document.getElementById('profPhone').value = data.phone || '';
         document.getElementById('profAddress').value = data.address || '';
@@ -759,15 +808,28 @@
         document.getElementById('profCity').value = data.city || '';
         document.getElementById('profState').value = data.state || '';
 
+        // Checkout Auto-fill Values
         document.getElementById('checkoutName').value = data.full_name || '';
         document.getElementById('checkoutPhone').value = data.phone || '';
         document.getElementById('checkoutAddress').value = data.address || '';
         document.getElementById('checkoutPin').value = data.pin || '';
         document.getElementById('checkoutCity').value = data.city || '';
         document.getElementById('checkoutState').value = data.state || '';
+
+        // Render Clean Card View
+        document.getElementById('dispName').innerText = data.full_name;
+        document.getElementById('dispPhone').innerText = '📞 ' + data.phone;
+        document.getElementById('dispAddress').innerText = `${data.address}, ${data.city} - ${data.pin}, ${data.state}`;
+        
+        document.getElementById('profileSavedView').style.display = 'block';
+        document.getElementById('profileEditForm').style.display = 'none';
       } else {
-        document.getElementById('profName').value = currentUser.user_metadata?.full_name || '';
-        document.getElementById('checkoutName').value = currentUser.user_metadata?.full_name || '';
+        document.getElementById('profileSavedView').style.display = 'none';
+        document.getElementById('profileEditForm').style.display = 'flex';
+        if (currentUser) {
+          document.getElementById('profName').value = currentUser.user_metadata?.full_name || '';
+          document.getElementById('checkoutName').value = currentUser.user_metadata?.full_name || '';
+        }
       }
     }
 
@@ -805,12 +867,11 @@
         document.getElementById('checkoutCity').value = city;
         document.getElementById('checkoutState').value = state;
 
-        showToast('✓ Profile saved successfully! Redirecting to Shop...');
-        setTimeout(() => { switchPage('shop'); }, 1000);
+        showToast('✓ Profile saved successfully!');
+        loadUserProfile(currentUser.id);
       }
     }
 
-    // Advanced Dynamic Order Tracking & Cancellation Function
     async function fetchUserOrders(userId) {
       const historyList = document.getElementById('orderHistoryList');
       if (!historyList || !supabaseClient) return;
@@ -899,7 +960,6 @@
       });
     }
 
-    // Cancel Order Handler (English Alerts)
     async function handleCancelOrder(orderId) {
       const confirmCancel = confirm("Are you sure you want to cancel this order?");
       if (!confirmCancel) return;
@@ -935,7 +995,6 @@
       switchPage('login');
     }
 
-    // Integrated Razorpay Checkout Logic with New Order Data
     async function handleOrder(e) {
       e.preventDefault();
 
@@ -976,9 +1035,9 @@
                 quantity: currentQty,
                 total_price: finalPrice,
                 payment_id: response.razorpay_payment_id,
-                status: 'Confirmed',                                     // Default status
-                product_name: 'Rosemary & Rice Water Hair Growth Spray', // Product Name
-                tracking_id: 'Pending'                                   // Tracking placeholder
+                status: 'Confirmed',
+                product_name: 'Rosemary & Rice Water Hair Growth Spray',
+                tracking_id: 'Pending'
               }
             ]);
           }
@@ -988,7 +1047,7 @@
           
           if (currentUser) {
             fetchUserOrders(currentUser.id);
-            switchPage('login'); // Switch to account page to view tracking timeline
+            switchPage('login');
           }
         },
         "modal": {
