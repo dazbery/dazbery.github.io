@@ -117,33 +117,45 @@
   
     .product-main-img {   
       width: 100%;   
-      height: auto;   
-      max-height: 400px;   
+      height: 380px;   
       object-fit: contain;   
       display: block;   
       margin: 0 auto;   
-      cursor: pointer;  
       border-radius: 8px;  
+      background: #fff;  
+      image-rendering: -webkit-optimize-contrast;  
     }  
 
+    /* HORIZONTAL SCROLLING THUMBNAIL STRIP */  
     .thumbnail-strip {  
       display: flex;  
-      gap: 8px;  
-      justify-content: center;  
-      margin-top: 12px;  
+      gap: 10px;  
+      justify-content: flex-start;  
+      margin-top: 14px;  
       overflow-x: auto;  
-      padding-bottom: 4px;  
+      padding-bottom: 6px;  
+      scroll-behavior: smooth;  
+      -webkit-overflow-scrolling: touch;  
+    }  
+    .thumbnail-strip::-webkit-scrollbar {  
+      height: 6px;  
+    }  
+    .thumbnail-strip::-webkit-scrollbar-thumb {  
+      background: #cbd5e1;  
+      border-radius: 4px;  
     }  
 
     .thumbnail-strip img {  
-      width: 50px;  
-      height: 50px;  
+      width: 65px;  
+      height: 65px;  
       object-fit: cover;  
-      border-radius: 6px;  
+      border-radius: 8px;  
       border: 2px solid transparent;  
       cursor: pointer;  
       opacity: 0.6;  
+      flex-shrink: 0;  
       transition: all 0.2s;  
+      background: #fff;  
     }  
 
     .thumbnail-strip img.active-thumb {  
@@ -162,6 +174,7 @@
       font-size: 10px;  
       font-weight: 700;  
       letter-spacing: 1.5px;  
+      z-index: 10;  
     }  
   
     .product-details { flex: 1; }  
@@ -183,14 +196,17 @@
   
     .variant-selector { margin-bottom: 20px; }  
     .variant-selector label { font-size: 13px; font-weight: 700; color: #4a5568; display: block; margin-bottom: 8px; }  
-    .variant-options { display: flex; gap: 10px; }  
+    .variant-options { display: flex; flex-direction: column; gap: 8px; }  
+    .variant-group-title { font-size: 11px; font-weight: 700; color: #142218; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }  
+    .variant-row { display: flex; gap: 8px; }  
+    
     .variant-btn {  
       flex: 1;  
-      padding: 10px 14px;  
+      padding: 10px 12px;  
       background: #faf8f5;  
       border: 1px solid var(--border-color);  
       border-radius: 8px;  
-      font-size: 12px;  
+      font-size: 11px;  
       font-weight: 700;  
       cursor: pointer;  
       color: #142218;  
@@ -284,7 +300,6 @@
       text-transform: uppercase;  
     }  
     .btn-buy:hover { background: #1e3323; }  
-    .btn-buy:disabled { background: #9ca3af; cursor: not-allowed; }  
   
     .cart-card {  
       background: var(--surface);  
@@ -550,14 +565,17 @@
     <div id="shopPage" class="page-section active">  
       <div class="hero-card" id="product">  
         <div class="product-gallery">  
-          <span class="badge-tag">BEST SELLER</span>  
+          <span class="badge-tag" id="productBadge">BEST SELLER</span>  
+          <!-- FULL QUALITY HIGH-RES IMAGE DISPLAY -->  
           <img id="mainProductImg" src="https://i.ibb.co/PZqnF1b5/serum-1.jpg" alt="DAZBERY Hair Growth Serum Concentrate" class="product-main-img">  
+          
+          <!-- HORIZONTAL SCROLLABLE THUMBNAILS -->  
           <div class="thumbnail-strip" id="thumbnailStrip">  
-            <img src="https://i.ibb.co/PZqnF1b5/serum-1.jpg" class="active-thumb" onclick="changeImage(this, 'https://i.ibb.co/PZqnF1b5/serum-1.jpg')" alt="Thumbnail 1">  
-            <img src="https://i.ibb.co/JRJkQqSN/serum-2.jpg" onclick="changeImage(this, 'https://i.ibb.co/JRJkQqSN/serum-2.jpg')" alt="Thumbnail 2">  
-            <img src="https://i.ibb.co/LztXbMpv/serum-3.jpg" onclick="changeImage(this, 'https://i.ibb.co/LztXbMpv/serum-3.jpg')" alt="Thumbnail 3">  
-            <img src="https://i.ibb.co/j9gGTYQL/serum-4.jpg" onclick="changeImage(this, 'https://i.ibb.co/j9gGTYQL/serum-4.jpg')" alt="Thumbnail 4">  
-            <img src="https://i.ibb.co/G4M9LBNg/serum-5.jpg" onclick="changeImage(this, 'https://i.ibb.co/G4M9LBNg/serum-5.jpg')" alt="Thumbnail 5">  
+            <img src="https://i.ibb.co/PZqnF1b5/serum-1.jpg" class="active-thumb" onclick="switchActiveProduct('serum', 0, this)" alt="Serum View 1">  
+            <img src="https://i.ibb.co/JRJkQqSN/serum-2.jpg" onclick="switchActiveProduct('serum', 1, this)" alt="Serum View 2">  
+            <img src="https://i.ibb.co/LztXbMpv/serum-3.jpg" onclick="switchActiveProduct('serum', 2, this)" alt="Serum View 3">  
+            <img src="https://i.ibb.co/j9gGTYQL/serum-4.jpg" onclick="switchActiveProduct('serum', 3, this)" alt="Serum View 4">  
+            <img src="https://i.ibb.co/G4M9LBNg/serum-5.jpg" onclick="switchActiveProduct('serum', 4, this)" alt="Serum View 5">  
           </div>  
         </div>  
   
@@ -571,13 +589,17 @@
             <span class="prepaid-tag">Prepaid Only</span>  
           </div>  
 
-          <!-- PRODUCT SELECTOR: Serum (In Stock) vs Hair Spray (Sold Out) -->  
+          <!-- PRODUCT & VARIANT SELECTOR -->  
           <div class="variant-selector">  
             <label>Select Product / Variant:</label>  
             <div class="variant-options">  
-              <button type="button" class="variant-btn active" id="btnSerum" onclick="selectProductType('serum')">Hair Serum (30ml)</button>  
-              <button type="button" class="variant-btn sold-out" onclick="showSoldOutAlert('Hair Spray 100ml')">Hair Spray 100ml (Sold Out)</button>  
-              <button type="button" class="variant-btn sold-out" onclick="showSoldOutAlert('Hair Spray 200ml')">Hair Spray 200ml (Sold Out)</button>  
+              <button type="button" class="variant-btn active" id="btnSerum" onclick="selectProductType('serum')">Hair Growth Serum (30ml) - In Stock</button>  
+              
+              <div class="variant-group-title">Hair Spray (Sold Out Variants)</div>  
+              <div class="variant-row">  
+                <button type="button" class="variant-btn sold-out" onclick="showSoldOutAlert('Hair Spray 100ml')">Hair Spray 100ml (Sold Out)</button>  
+                <button type="button" class="variant-btn sold-out" onclick="showSoldOutAlert('Hair Spray 200ml')">Hair Spray 200ml (Sold Out)</button>  
+              </div>  
             </div>  
           </div>  
   
@@ -863,10 +885,20 @@
     let cartCount = 0;  
     let isDiscountApplied = false;  
 
-    function changeImage(thumbElement, newSrc) {  
-      document.getElementById('mainProductImg').src = newSrc;  
-      document.querySelectorAll('.thumbnail-strip img').forEach(img => img.classList.remove('active-thumb'));  
-      thumbElement.classList.add('active-thumb');  
+    const serumImages = [
+      "https://i.ibb.co/PZqnF1b5/serum-1.jpg",
+      "https://i.ibb.co/JRJkQqSN/serum-2.jpg",
+      "https://i.ibb.co/LztXbMpv/serum-3.jpg",
+      "https://i.ibb.co/j9gGTYQL/serum-4.jpg",
+      "https://i.ibb.co/G4M9LBNg/serum-5.jpg"
+    ];
+
+    function switchActiveProduct(type, index, thumbElement) {  
+      if (type === 'serum') {  
+        document.getElementById('mainProductImg').src = serumImages[index];  
+        document.querySelectorAll('.thumbnail-strip img').forEach(img => img.classList.remove('active-thumb'));  
+        if(thumbElement) thumbElement.classList.add('active-thumb');  
+      }  
     }  
 
     function showSoldOutAlert(productName) {  
